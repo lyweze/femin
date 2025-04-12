@@ -103,7 +103,6 @@ main{
 footer{
     display: flex;
     align-items: center;
-    /* justify-content: space-between; */
     position: absolute;
     bottom: 0;
     height: 85px;
@@ -122,7 +121,17 @@ footer{
         letter-spacing: 20%;
     }
 
-    > progress {
+
+    #rangeProgress {
+        opacity: 0;
+        width: 588px;
+        height: 16px;
+        position: absolute;
+        left: 326px;
+        cursor: e-resize;
+    }
+
+    #progressBar {
         width: 588px;
         height: 16px;
         position: absolute;
@@ -131,9 +140,9 @@ footer{
         border: none;
         background-color: #D9D9D9;
         color: #230030;
+        transition: all 0.1s linear;
     }
-
-    > progress::-webkit-progress-bar {
+    #progressBar::-webkit-progress-bar {
         width: 588px;
         height: 16px;
         position: absolute;
@@ -142,18 +151,57 @@ footer{
         border: none;
         background-color: #1E1E1E;
         color: #1E1E1E;
+        transition: all 0.1s linear;
     }
-    > progress::-webkit-progress-value {
+    #progressBar::-webkit-progress-value {
         border-radius: 6px;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
         background-color: #230030;
         color: #230030;
+        transition: all 0.1s linear;
     }
-    > progress::-moz-progress-bar {
+    #progressBar::-moz-progress-bar {
         border-radius: 6px;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
+        background-color: #230030;
+        color: #230030;
+        transition: all 0.1s linear;
+    }
+
+    
+    #rangeVolume {
+        opacity: 0;
+        width: 60px;
+        height: 30px;
+        position: absolute;
+        right: 222px;
+        rotate: -90deg;
+        cursor: s-resize;
+    }
+    
+    #volume {
+        width: 60px;
+        height: 10px;
+        position: absolute;
+        right: 225px;
+        border-radius: 0px;
+        border: none;
+        background-color: #D9D9D9;
+        color: #230030;
+        transition: all 0.2s ease-out;
+        rotate: -90deg;
+    }
+    #volume::-webkit-progress-bar {
+        background-color: #D9D9D9;
+        color: #230030;
+    }
+    #volume::-webkit-progress-value {
+        background-color: #230030;
+        color: #230030;
+    }
+    #volume::-moz-progress-bar {
         background-color: #230030;
         color: #230030;
     }
