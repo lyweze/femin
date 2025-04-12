@@ -3,6 +3,8 @@ let cover = document.getElementById('cover');
 let miniCover = document.getElementById('mini-cover');
 let playButton = document.getElementById('playButton');
 let trackName = document.getElementById('trackName');
+let playerTrackName = document.getElementById('playerTrackName');
+let progressBar = document.getElementById('progressBar');
 
 const tracks = ['moskva.mp3', 'magnolia.mp3'];
 let currenttrack = 0;
@@ -19,9 +21,11 @@ window.addEventListener('keydown', (event) => {
 
 
 function playOnClick() {
+    audio.addEventListener('playing', currentTime());
+    
     if (!audio.paused){
         audio.pause();
-        miniCover.style.cssText = 'width: 65px; border-radius: 8px; margin-left: 10px; transition: all 0.3s cubic-bezier(.45,.06,.19,.97); transform: scale(0.94)';
+        miniCover.style.cssText = 'width: 65px; border-radius: 8px; margin-left: 10px; transition: all 0.3s cubic-bezier(.45,.06,.19,.97); transform: scale(0.94); filter: brightness(80%)';
         cover.style.cssText = 'animation: rotate 10s linear infinite; width: 400px; animation-play-state: paused; filter: brightness(80%) grayscale(40%);';
         playButton.innerHTML = '⏵';
     } else {
@@ -31,6 +35,7 @@ function playOnClick() {
         playButton.innerHTML = '⏸';
     }
 }
+
 
 function changeTrack(pressedBtn) {
     let isPaused = true;
@@ -47,6 +52,7 @@ function changeTrack(pressedBtn) {
         cover.setAttribute('src', ('./music/covers/' + covers[currenttrack]).toString());
         miniCover.setAttribute('src', ('./music/covers/' + covers[currenttrack]).toString());
         trackName.innerHTML = names[currenttrack].toUpperCase();
+        playerTrackName.innerHTML = names[currenttrack].toUpperCase();
 
         if (!isPaused) {
             playOnClick();
@@ -64,9 +70,16 @@ function changeTrack(pressedBtn) {
         cover.setAttribute('src', ('./music/covers/' + covers[currenttrack]).toString());
         miniCover.setAttribute('src', ('./music/covers/' + covers[currenttrack]).toString());
         trackName.innerHTML = names[currenttrack].toUpperCase();
+        playerTrackName.innerHTML = names[currenttrack].toUpperCase();
 
         if (!isPaused) {
             playOnClick();
         }
     }
+}
+
+
+function currentTime(){
+    progressBar.setAttribute('value', audio.currentTime.toString());
+    console.log('it works');
 }

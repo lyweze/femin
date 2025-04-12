@@ -97,7 +97,6 @@ main{
         font-family: 'Koulen';
         font-size: 56px;
         letter-spacing: 20%;
-        /* margin-right: 160px; */
     }
 }
 
@@ -113,6 +112,52 @@ footer{
     margin-left: calc(50% - 620px);
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
+
+    #playerTrackName{
+        position: absolute;
+        left: 95px;
+        color: #fff;
+        font-family: 'Koulen';
+        font-size: 24px;
+        letter-spacing: 20%;
+    }
+
+    > progress {
+        width: 588px;
+        height: 16px;
+        position: absolute;
+        left: 326px;
+        border-radius: 8px;
+        border: none;
+        background-color: #D9D9D9;
+        color: #230030;
+    }
+
+    > progress::-webkit-progress-bar {
+        width: 588px;
+        height: 16px;
+        position: absolute;
+        left: 326px;
+        border-radius: 8px;
+        border: none;
+        background-color: #1E1E1E;
+        color: #1E1E1E;
+    }
+    > progress::-webkit-progress-value {
+        border-radius: 6px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        background-color: #230030;
+        color: #230030;
+    }
+    > progress::-moz-progress-bar {
+        border-radius: 6px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        background-color: #230030;
+        color: #230030;
+    }
+
 
     .playButton,
     .nextButton,
