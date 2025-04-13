@@ -17,13 +17,18 @@ function workingProgressBar(){
         currentTime();
     }
 
+
     function currentTime(){
     progressBar.setAttribute('max', (audio.duration - 0.2).toString());
     progressBar.setAttribute('value', audio.currentTime.toString());
     }
 
     if ((audio.duration === audio.currentTime) && (!isInput)) {
-        currenttrack++;
+        if ((currenttrack + 1) >= tracks.length){
+            currenttrack = 0;
+        } else {
+            currenttrack++;
+        }
 
         playOnClick();
 

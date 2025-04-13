@@ -77,6 +77,7 @@ main{
     width: 1240px;
     height: 492px;
     border-radius: 24px;
+    transition: all 0.7s cubic-bezier(.45,.06,.19,.97);
 
     > img {
         border-radius: 50%;
@@ -102,7 +103,7 @@ main{
 
 footer{
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     position: absolute;
     bottom: 0;
     height: 85px;
@@ -111,6 +112,37 @@ footer{
     margin-left: calc(50% - 620px);
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
+    transition: all 0.7s cubic-bezier(.45,.06,.19,.97);
+
+    #karaokeText{
+        list-style-type: none;
+        width: 60%;
+        position: absolute;
+        left: 20%;
+        top: 20%;
+        height: 60%;
+        text-align: start;
+        color: #fff;
+        font-family: 'Koulen';
+        font-size: 52px;
+        letter-spacing: 10%;
+        transition: all 0.3s cubic-bezier(.45,.06,.19,.97);
+        overflow: hidden;
+
+        > li {
+            /* margin-top: 20px; */
+            transition: all 0.3s cubic-bezier(.45,.06,.19,.97);
+        }
+    }
+
+    > div {
+        position: absolute;
+        bottom: 0;
+        height: 85px;
+        width: 1240px;
+        display: flex;
+        align-items: center;
+    }
 
     #playerTrackName{
         position: absolute;
