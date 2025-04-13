@@ -5,8 +5,14 @@ import tempfile
 from sclib import SoundcloudAPI, Track, Playlist
 from sclib.asyncio import SoundcloudAPI, Playlist
 import yadisk
-from config import tok
+from config import tok, default_cover
 
+async def save_track(cover_url, save_to) -> bool:
+    try:
+        if not cover_url:
+            pass
+    except:
+        pass
 
 async def save_album(url: str, y: yadisk.YaDisk) -> int:
     api = SoundcloudAPI()
