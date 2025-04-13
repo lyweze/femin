@@ -2,16 +2,24 @@
 function playOnClick() {
     if (!audio.paused){
         audio.pause();
-        miniCover.style.cssText = 'width: 65px; border-radius: 8px; margin-left: 10px; transition: all 0.3s cubic-bezier(.45,.06,.19,.97); transform: scale(0.94); filter: brightness(80%)';
+        miniCover.style.cssText = 'width: 65px; border-radius: 8px; margin-left: 10px; transition: all 0.3s cubic-bezier(.45,.06,.19,.97); transform: scale(0.94); filter: brightness(80%); cursor:pointer';
         cover.style.cssText = 'animation: rotate 10s linear infinite; width: 400px; animation-play-state: paused; filter: brightness(80%) grayscale(40%);';
         playerTrackName.style.letterSpacing = '10%';
         playButton.innerHTML = '⏵';
     } else {
         audio.play();
-        miniCover.style.cssText = 'width: 65px; border-radius: 8px; margin-left: 10px; transition: all 0.3s cubic-bezier(.45,.06,.19,.97);';
+        miniCover.style.cssText = 'width: 65px; border-radius: 8px; margin-left: 10px; transition: all 0.3s cubic-bezier(.45,.06,.19,.97); cursor:pointer';
         cover.style.cssText = 'animation: rotate 10s linear infinite; width: 400px; animation-play-state: running;';
         playButton.innerHTML = '⏸';
         playerTrackName.style.letterSpacing = '20%';
+
+        karaokeText.innerHTML = '';
+
+        for (let i = parseInt(audio.currentTime); i < trackText.length; i++){
+            let kg = document.createElement('li');
+            kg.innerHTML = trackText[i];
+            karaokeText.innerHTML += '<li id="karaokeLi">' + kg.innerHTML + '</li>';
+        }
     }
     playButton.blur();
 }
@@ -22,10 +30,22 @@ function changeTrack(pressedBtn) {
     let isPaused = true;
 
     if (pressedBtn == 'next') {
-        currenttrack++;
+        if ((currenttrack + 1) >= tracks.length){
+            currenttrack = 0;
+        } else {
+            currenttrack++;
+        }
     }
     else {
-        currenttrack--;
+        if (audio.currentTime < 3){
+            if (currenttrack - 1 < 0){
+                audio.currentTime = 0;
+            } else {
+                currenttrack--;
+            }
+        } else {
+            audio.currentTime = 0;
+        }
     }
 
     if (!audio.paused){

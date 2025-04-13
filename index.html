@@ -18,35 +18,42 @@
     </header>
 
 
-    <main>
+    <main id="main">
         <img src="./music/covers/moskva.jpeg" id="cover" style="width: 400px; filter: brightness(80%) grayscale(40%);" onclick="playOnClick()" alt="">
 
         <p id="trackName">МОСКВА</p>
     </main>
 
-    <footer>
-        <audio id="audioPlayer" src="./music/moskva.mp3"></audio>
-        <img src="./music/covers/moskva.jpeg" id="mini-cover" style="width: 65px; border-radius: 8px; margin-left: 10px; transition: all 0.3s cubic-bezier(.45,.06,.19,.97); transform: scale(0.94); filter: brightness(80%)" alt="">
-        <p id="playerTrackName">МОСКВА</p>
+    <footer id="footer">
+        <ul id="karaokeText" class="karaokeText">
+        </ul>
+
+        <div id="footer-div">
+            <audio id="audioPlayer" src="./music/moskva.mp3"></audio>
+            <img onclick="openPlayer()" src="./music/covers/moskva.jpeg" id="mini-cover" style="width: 65px; border-radius: 8px; margin-left: 10px; transition: all 0.3s cubic-bezier(.45,.06,.19,.97); transform: scale(0.94); filter: brightness(80%); cursor:pointer" alt="">
+            <p id="playerTrackName">МОСКВА</p>
 
 
-        <!-- Громкость и прогрессбар -->
-        <progress id="progressBar" value="0" max="100"></progress>
-        <input type="range" min="0" max="100" step="0.1" value="0" id="rangeProgress">
-        <progress id="volume" max="1" value="1"></progress>
-        <input type="range" min="0" max="1" step="any" value="1" title="Громкость" id="rangeVolume">
-        <p id="trackTime"></p>
+            <!-- Громкость и прогрессбар -->
+            <progress id="progressBar" value="0" max="100"></progress>
+            <input type="range" min="0" max="100" step="0.1" value="0" id="rangeProgress">
+            <progress id="volume" max="1" value="1"></progress>
+            <input type="range" min="0" max="1" step="any" value="1" title="Громкость" id="rangeVolume">
+            <p id="trackTime"></p>
 
 
-        <button onclick="playOnClick()" class="playButton" id="playButton" href="" style="background-color: #230030;">⏵</button>
-        <button onclick="changeTrack('previous')" class="previousButton" href="" style="background-color: #4C1C62;">⏮</button>
-        <button onclick="changeTrack('next')" class="nextButton" href="" style="background-color: #4C1C62;">⏭</button>
+            <button onclick="playOnClick()" class="playButton" id="playButton" href="" style="background-color: #230030;">⏵</button>
+            <button onclick="changeTrack('previous')" class="previousButton" href="" style="background-color: #4C1C62;">⏮</button>
+            <button onclick="changeTrack('next')" class="nextButton" href="" style="background-color: #4C1C62;">⏭</button>
+        </div>
     </footer>
+    
 
+    <script src="./scripts/vars.js"></script>
     <script src="./scripts/playerFunctions.js"></script>
     <script src="./scripts/progressBar.js"></script>
-    <script src="./scripts/vars.js"></script>
     <script src="./scripts/player.js"></script>
     <script src="./scripts/keyWork.js"></script>
+    <script src="./scripts/playerOpen.js"></script>
 </body>
 </html>
