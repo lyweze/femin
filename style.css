@@ -118,13 +118,22 @@ footer{
         color: #fff;
         font-family: 'Koulen';
         font-size: 24px;
-        letter-spacing: 20%;
+        letter-spacing: 10%;
+        transition: all 0.3s cubic-bezier(.45,.06,.19,.97);
+    }
+
+    #trackTime{position: absolute;
+        left: 890px;
+        color: #fff;
+        font-family: 'Koulen';
+        font-size: 18px;
+        letter-spacing: 10%;
     }
 
 
     #rangeProgress {
         opacity: 0;
-        width: 588px;
+        width: 530px;
         height: 16px;
         position: absolute;
         left: 326px;
@@ -132,7 +141,7 @@ footer{
     }
 
     #progressBar {
-        width: 588px;
+        width: 530px;
         height: 16px;
         position: absolute;
         left: 326px;
@@ -147,14 +156,12 @@ footer{
         height: 16px;
         position: absolute;
         left: 326px;
-        border-radius: 8px;
         border: none;
         background-color: #1E1E1E;
         color: #1E1E1E;
         transition: all 0.1s linear;
     }
     #progressBar::-webkit-progress-value {
-        border-radius: 6px;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
         background-color: #230030;
@@ -162,7 +169,6 @@ footer{
         transition: all 0.1s linear;
     }
     #progressBar::-moz-progress-bar {
-        border-radius: 6px;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
         background-color: #230030;
@@ -173,7 +179,7 @@ footer{
     
     #rangeVolume {
         opacity: 0;
-        width: 60px;
+        width: 65px;
         height: 30px;
         position: absolute;
         right: 222px;
@@ -186,7 +192,6 @@ footer{
         height: 10px;
         position: absolute;
         right: 225px;
-        border-radius: 0px;
         border: none;
         background-color: #D9D9D9;
         color: #230030;
