@@ -8,6 +8,7 @@ function openPlayer(){
         main.style.filter = 'blur(20px)';
         karaokeText.style.opacity = '1';
         karaokeText.style.transform = 'scale(1)';
+        karaokeText.style.height = '50%';
         isOpened = true;
     } else {
         karaokeText.style.opacity = '0';
@@ -15,6 +16,7 @@ function openPlayer(){
         footer.style.height = '85px';
         main.style.transform= 'scale(1)';
         main.style.filter = 'blur(0)';
+        karaokeText.style.height = '0';
         isOpened = false;
     }
 }

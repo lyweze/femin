@@ -120,7 +120,7 @@ footer{
         position: absolute;
         left: 20%;
         top: 20%;
-        height: 60%;
+        height: 0;
         text-align: start;
         color: #fff;
         font-family: 'Koulen';
