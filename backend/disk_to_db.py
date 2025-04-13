@@ -3,6 +3,7 @@ import requests
 import json
 import pandas as pd
 import psycopg2
+import ssl
 from sclib import SoundcloudAPI, Track, Playlist
 
 api = SoundcloudAPI()
