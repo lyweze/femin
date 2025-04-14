@@ -1,17 +1,41 @@
 # Правильный формат (Python + psycopg2)
+from datetime import timedelta, datetime
+
 import requests
 import json
 import pandas as pd
 import psycopg2
 import ssl
-from sclib import SoundcloudAPI, Track, Playlist
+from backend.config import DB_NAME, DB_USER
 
-api = SoundcloudAPI()
-track = api.resolve('https://soundcloud.com/icegergert-685473693/casino')
+def init_db():
+    conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER)
+    return conn
 
-assert type(track) is Track
+def save_track_to_db(title, signed_url,expires, conn, cursor):
+    expires_time = datetime.now() + timedelta(seconds=expires)
+    cursor.execute(
+        """
+        INSERT INTO tracks (title, signed_url, expires_at)
+        VALUES (%s, %s, %s)
+        RETURNING track_id
+        """,
+        (title, signed_url, expires_time)
 
-filename = f'./{track.artist} - {track.title}.mp3'
+    )
+    track_id = cursor.fetchone()[0]
+    conn.commit()
+    return track_id
+def save_cover_to_db(track_id, signed_url, resolution, file_size, expires, conn, cursor):
+    expires_time = datetime.now() + timedelta(seconds=expires)
+    cursor.execute(
+        """
+        INSERT INTO covers (track_id, signed_url, resolution, file_size, expires_at)
+        VALUES (%s, %s, %s, %s, %s)
+        RETURNING cover_id""",
+        (track_id, signed_url, resolution, file_size, expires_time)
 
-with open(filename, 'wb+') as file:
-    track.write_mp3_to(file)
+    )
+    cover_id = cursor.fetchone()[0]
+    conn.commit()
+    return cover_id
