@@ -1,5 +1,8 @@
-ALTER TABLE tracks
-ADD COLUMN url_expires TIMESTAMP;
+DELETE FROM covers
+WHERE cover_id = (SELECT MIN(cover_id) FROM covers);
 
-ALTER TABLE covers
-ADD COLUMN url_expires TIMESTAMP;
+DELETE FROM tracks
+WHERE track_id = (SELECT MIN(track_id) FROM tracks);
+
+ALTER SEQUENCE covers_cover_id_seq RESTART WITH 1;
+ALTER sequence tracks_track_id_seq RESTART WITH 1;
