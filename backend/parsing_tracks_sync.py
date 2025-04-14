@@ -2,16 +2,53 @@ import io
 import requests
 import tempfile
 from sclib import SoundcloudAPI, Track, Playlist
-
+from PIL import Image
+from datetime import datetime, timedelta
 from backend.config import B2_KEY_ID, B2_APPLICATION_KEY, B2_BUCKET_NAME, default_cover
 import b2sdk.v2 as b2
+import psycopg2
+from psycopg2.extras import DictCursor
 
+##  инициализация бакета
 def init_b2():
     info = b2.InMemoryAccountInfo()
     b2_api = b2.B2Api(info)
     b2_api.authorize_account('production', B2_KEY_ID, B2_APPLICATION_KEY)
     bucket = b2_api.get_bucket_by_name(B2_BUCKET_NAME)
     return b2_api, bucket
+
+
+def get_url(b2_api, bucket, file_name, expires_in=3600):
+    download_url = b2_api.get_download_url_for_file_name(bucket.bucket_name, file_name)
+    signed_url = b2_api.get_download_authorization_token(bucket.bucket_name, file_name, expires_in=expires_in, prefix=None)
+
+    full_url = f"{download_url}?Authorization={signed_url}"
+    return full_url, expires_in
+
+def generate_and_save_url(b2_api, bucket, path, table, url_column, expires_column, path_column, conn, cursor):
+    signed_url, expires_in = get_url(b2_api, bucket, path)
+    expires = datetime.now() + timedelta(seconds=expires_in)
+    cursor.execute(
+        f"UPDATE {table} SET {url_column} = %s, {expires_column} = %s WHERE {path_column} = %s", (signed_url, expires, path)
+    )
+    conn.commit()
+    return signed_url
+
+def refresh_url(b2_api, bucket, path, table, url_column, expires_column, path_column, conn, cursor, force=False):
+    if not force:
+        now = datetime.now()
+        cursor.execute(
+            f"SELECT {expires_column} FROM {table} WHERE {path_column} = %s", (path,)
+
+        )
+        result = cursor.fetchone()
+        expires = result[0] if result else None
+        if expires and expires > now:
+            return path
+
+    return generate_and_save_url(b2_api, bucket, path, table, url_column, expires_column, path_column, conn, cursor)
+def update_url(b2_api, bucket, path, table, url_column, expires_column, path_column, conn, cursor):
+    return refresh_url(b2_api, bucket, path, table, url_column, expires_column, path_column, conn, cursor, force=True)
 
 def save_cover(cover_url, b2_path, bucket):
 
