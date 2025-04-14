@@ -8,7 +8,7 @@ from backend.config import B2_KEY_ID, B2_APPLICATION_KEY, B2_BUCKET_NAME, defaul
 import b2sdk.v2 as b2
 import psycopg2
 from psycopg2.extras import DictCursor
-
+from backend.disk_to_db import save_track_to_db, save_cover_to_db
 ##  инициализация бакета
 def init_b2():
     info = b2.InMemoryAccountInfo()
@@ -47,23 +47,35 @@ def refresh_url(b2_api, bucket, path, table, url_column, expires_column, path_co
             return path
 
     return generate_and_save_url(b2_api, bucket, path, table, url_column, expires_column, path_column, conn, cursor)
+
+
 def update_url(b2_api, bucket, path, table, url_column, expires_column, path_column, conn, cursor):
     return refresh_url(b2_api, bucket, path, table, url_column, expires_column, path_column, conn, cursor, force=True)
 
-def save_cover(cover_url, b2_path, bucket):
 
+
+def save_cover(track_id, cover_url, cover_path, bucket, conn, cursor):
     try:
         if not cover_url:
             cover_url = default_cover
+        response = requests.get(cover_url or default_cover, timeout=10)
+        bucket.upload_bytes(data_bytes=response.content, file_name=cover_path, content_type='image/jpeg')
 
-        response = requests.get(cover_url)
-        bucket.upload_bytes(data_bytes=response.content, file_name=b2_path, content_type='image/jpeg')
+        image = Image.open(io.BytesIO(response.content))
+        resolution = f"{image.width}x{image.height}"
+        file_size = image.size
+
+        cover_signed_url, cover_expires_in = get_url(b2_api, bucket, cover_url)
+
+        save_cover_to_db(track_id, cover_signed_url, resolution, file_size, cover_expires_in, conn, cursor)
         return True
     except Exception as e:
         print(e)
         return False
 
-def save_track(url, b2_api, bucket): # скачка трека - оперативка
+
+
+def save_track(url, b2_api, bucket, conn, cursor): # скачка трека - оперативка
     track = api.resolve(url)
     assert type(track) is Track
 
@@ -75,14 +87,18 @@ def save_track(url, b2_api, bucket): # скачка трека - операти�
     bucket.upload_bytes(mp3_data.read(), b2_path, content_type='audio/mp3')
     mp3_data.close()
 
-    cover_path = f"music/covers/{track.artist} - {track.title}.jpg"
-    save_cover(track.artwork_url, cover_path, bucket)
-    return 1
+    signed_url, expires_in = get_url(b2_api, bucket, b2_path)
+    track_id = save_track_to_db(track.title, signed_url, expires_in, conn, cursor)
 
-def save_album(url, b2_api, bucket):
+    cover_path = f"music/covers/{track.artist} - {track.title}.jpg"
+    save_cover(track_id, track.artwork_url, cover_path, bucket, conn, cursor)
+    return track_id
+
+def save_album(url, b2_api, bucket, conn, cursor):
     playlist = api.resolve(url)
     assert type(playlist) is Playlist
 
+    track_ids = []
     playlist_path = f"music/{playlist.title}"
 
     for track in playlist.tracks:
@@ -92,9 +108,13 @@ def save_album(url, b2_api, bucket):
             b2_path = f"{playlist_path}/{track.artist} - {track.title}.mp3"
             bucket.upload_local_file(f.name, b2_path, content_type='audio/mp3')
 
-            cover_path = f"music/covers/{track.artist} - {track.title}.jpg"
-            save_cover(track.artwork_url, cover_path, bucket)
-    return 1
+            signed_url, expires_in = get_url(b2_api, bucket, b2_path)
+            track_id = save_track_to_db(track.title, signed_url, expires_in, conn, cursor)
+            track_ids.append(track_id)
+
+            cover_path = f"music/covers/{playlist_path}/{track.artist} - {track.title}.jpg"
+            save_cover(track.artwork_url, cover_path, bucket, conn, cursor)
+    return track_ids
 
 if __name__ == "__main__":
     b2_api, bucket = init_b2()
