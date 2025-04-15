@@ -7,6 +7,7 @@ def init_db():
 
 from datetime import datetime, timedelta
 
+# сохранение трека в бд по колонкам
 def save_track_to_db(title, signed_url, expires_in, conn, cursor):
     now = datetime.now()
     expires_time = now + timedelta(hours=expires_in)
