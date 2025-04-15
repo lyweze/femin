@@ -125,19 +125,15 @@ footer{
         color: #ffffff7e;
         font-family: 'Koulen';
         font-size: 52px;
-        letter-spacing: 10%;
+        letter-spacing: 5px;
         transition: all 0.3s cubic-bezier(.45,.06,.19,.97);
         overflow: hidden;
 
         > li {
             transition: all 0.3s cubic-bezier(.45,.06,.19,.97);
         }
-
-        /* >li:nth-child(1) {
-            color:#fff;
-            font-size: 60px;
-        } */
     }
+    #karaokeText:--webkit-
 
     #blur {
         z-index: 100;
@@ -198,25 +194,19 @@ footer{
         transition: all 0.1s linear;
     }
     #progressBar::-webkit-progress-bar {
-        width: 588px;
-        height: 16px;
         position: absolute;
-        left: 326px;
+        border-radius: 8px;
         border: none;
-        background-color: #1E1E1E;
+        background-color: #D9D9D9;
         color: #1E1E1E;
         transition: all 0.1s linear;
     }
     #progressBar::-webkit-progress-value {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
+        border-radius: 8px;
         background-color: #230030;
-        color: #230030;
         transition: all 0.1s linear;
     }
     #progressBar::-moz-progress-bar {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
         background-color: #230030;
         color: #230030;
         transition: all 0.1s linear;
@@ -250,7 +240,6 @@ footer{
     }
     #volume::-webkit-progress-value {
         background-color: #230030;
-        color: #230030;
     }
     #volume::-moz-progress-bar {
         background-color: #230030;
