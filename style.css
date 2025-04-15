@@ -1,3 +1,7 @@
+* { 
+    touch-action: manipulation;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -104,7 +108,7 @@ main{
 
 footer{
     display: flex;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     height: 85px;
     width: 1240px;
