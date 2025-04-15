@@ -314,3 +314,46 @@ footer{
     font-family: 'Koulen';
     src: url('./fonts/TT\ Berlinerins\ Trial\ Grotesk.otf');
 }
+
+@media screen and (max-width: 700px) {
+    header {
+        width: 100vw;
+        justify-content: center;
+        padding: 0;
+
+        .nav {
+            display: none;
+        }
+    }
+
+    main {
+        display: none;
+    }
+
+    footer {
+        margin-left: 0px;
+        align-content: center;
+        justify-content: flex-start;
+        width: 100vw;
+
+        #footer-div{
+            width: 100vw;
+        }
+    }
+
+    #progressBar{
+        display: none;
+    }
+    #rangeVolume {
+        display: none;
+    }
+    #volume{
+        display: none;
+    }
+    #rangeProgress{
+        display: none;
+    }
+    #trackTime{
+        display: none;
+    }
+}
