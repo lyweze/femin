@@ -135,6 +135,7 @@ footer{
 
         > li {
             transition: all 0.3s cubic-bezier(.45,.06,.19,.97);
+            line-height: 60px;
         }
     }
 
@@ -319,7 +320,7 @@ footer{
     src: url('./fonts/TT\ Berlinerins\ Trial\ Grotesk.otf');
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 1260px) {
     header {
         width: 100vw;
         justify-content: center;

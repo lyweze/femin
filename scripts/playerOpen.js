@@ -30,10 +30,11 @@ function audioText(){
     function gg(){
         let karaokeLi = document.getElementById('karaokeLi'); //Строчка текста песни
         if (pageWidth < 700){
+            karaokeLi.style.lineHeight = 'normal';
             karaokeElement.textContent = '#karaokeText{ >li:nth-child(' + parseInt(audio.currentTime * 0.65 + 1).toString() + '){ color: #fff; font-size:26px; }}';
-            karaokeLi.style.marginTop = (-32 * parseInt(audio.currentTime * 0.65)).toString() + 'px';
+            karaokeLi.style.marginTop =(parseInt(audio.currentTime * 0.65)).toString() + 'px)';
         } else {
-            karaokeElement.textContent = '#karaokeText{ >li:nth-child(' + parseInt(audio.currentTime * 0.65 + 1).toString() + '){ color: #fff; font-size:16px; }}';
+            karaokeElement.textContent = '#karaokeText{ >li:nth-child(' + parseInt(audio.currentTime * 0.65 + 1).toString() + '){ color: #fff; font-size:64px; }}';
             karaokeLi.style.marginTop = (-64 * parseInt(audio.currentTime * 0.65)).toString() + 'px';
         }
     }
