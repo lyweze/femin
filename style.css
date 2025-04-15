@@ -327,7 +327,25 @@ footer{
     }
 
     main {
-        display: none;
+        width: fit-content;
+        height: fit-content;
+        background-color: #1e1e1e00;
+        margin-top: 120px;
+        flex-direction: column;
+
+        align-items: center;
+        justify-content: center;
+
+
+        > img {
+            margin: 0;
+            border-radius: 16px;
+        }
+        > p {
+            right: 0;
+            padding: 0;
+            text-align: center;
+        }
     }
 
     footer {
@@ -354,6 +372,20 @@ footer{
         display: none;
     }
     #trackTime{
+        display: none;
+    }
+
+    @keyframes rotate {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(0deg);
+        }
+    }
+}
+@media screen and (max-width: 450px){
+    #playerTrackName {
         display: none;
     }
 }
