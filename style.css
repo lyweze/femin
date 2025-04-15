@@ -25,12 +25,12 @@ header{
         color: #fff;
         font-family: 'Koulen';
         font-size: 36px;
-        letter-spacing: 20%;
+        letter-spacing: 5px;
         transition: all 0.4s ease-out;
     }
     .logo:hover{
         transition: all 0.4s ease-out;
-        letter-spacing: 30%;
+        letter-spacing: 10px;
     }
     
     .nav{
@@ -53,16 +53,16 @@ header{
             color: #fff;
             font-family: 'Koulen';
             font-size: 24px;
-            letter-spacing: 20%;
+            letter-spacing: 5px;
             transition: all 0.4s ease-out;
         }
         .nav-top:hover{
             transition: all 0.4s ease-out;
-            letter-spacing: 30%;
+            letter-spacing: 10px;
         }
         .nav-popular:hover{
             transition: all 0.4s ease-out;
-            letter-spacing: 30%;
+            letter-spacing: 10px;
         }
     }    
 }
@@ -97,7 +97,7 @@ main{
         color: #fff;
         font-family: 'Koulen';
         font-size: 56px;
-        letter-spacing: 20%;
+        letter-spacing: 5px;
     }
 }
 
@@ -133,7 +133,6 @@ footer{
             transition: all 0.3s cubic-bezier(.45,.06,.19,.97);
         }
     }
-    #karaokeText:--webkit-
 
     #blur {
         z-index: 100;
