@@ -206,6 +206,7 @@ footer{
         transition: all 0.1s linear;
     }
     #progressBar::-moz-progress-bar {
+        border-radius: 8px;
         background-color: #230030;
         color: #230030;
         transition: all 0.1s linear;
