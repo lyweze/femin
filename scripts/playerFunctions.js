@@ -5,12 +5,12 @@ function playOnClick() {
         miniCover.style.cssText = 'width: 65px; border-radius: 8px; margin-left: 10px; transition: all 0.3s cubic-bezier(.45,.06,.19,.97); transform: scale(0.94); filter: brightness(80%); cursor:pointer';
         cover.style.cssText = 'animation: rotate 10s linear infinite; width: 400px; animation-play-state: paused; filter: brightness(80%) grayscale(40%);';
         playerTrackName.style.letterSpacing = '2px';
-        playButton.innerHTML = '⏵';
+        playButton.innerHTML = '&#9205';
     } else {
         audio.play();
         miniCover.style.cssText = 'width: 65px; border-radius: 8px; margin-left: 10px; transition: all 0.3s cubic-bezier(.45,.06,.19,.97); cursor:pointer';
         cover.style.cssText = 'animation: rotate 10s linear infinite; width: 400px; animation-play-state: running;';
-        playButton.innerHTML = '⏸';
+        playButton.innerHTML = '&#9208;';
         playerTrackName.style.letterSpacing = '5px';
 
         karaokeText.innerHTML = '';
