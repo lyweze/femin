@@ -116,13 +116,13 @@ footer{
 
     #karaokeText{
         list-style-type: none;
-        width: 60%;
+        width: 70%;
         position: absolute;
-        left: 20%;
-        top: 20%;
+        left: 15%;
+        top: 30%;
         height: 0;
         text-align: start;
-        color: #fff;
+        color: #ffffff7e;
         font-family: 'Koulen';
         font-size: 52px;
         letter-spacing: 10%;
@@ -130,12 +130,26 @@ footer{
         overflow: hidden;
 
         > li {
-            /* margin-top: 20px; */
             transition: all 0.3s cubic-bezier(.45,.06,.19,.97);
         }
+
+        /* >li:nth-child(1) {
+            color:#fff;
+            font-size: 60px;
+        } */
     }
 
-    > div {
+    #blur {
+        z-index: 100;
+        position: absolute;
+        top: calc(10% + 112px);
+        width: 100%;
+        height: calc(100% - 300px);
+        backdrop-filter: blur(1px);
+        filter: blur(7px);
+    }
+
+    #footer-div {
         position: absolute;
         bottom: 0;
         height: 85px;
