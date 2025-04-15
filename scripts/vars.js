@@ -17,7 +17,10 @@ let footer = document.getElementById('footer'); //Весь футер
 let main = document.getElementById('main'); //Main блок
 let karaokeText = document.getElementById('karaokeText'); //Текст песни (список)
 let karaokeElement = document.getElementById('karaokeElement'); //Строка (верхнаяя) текста песни
+let pageWidth = document.documentElement.scrollWidth;
 let isOpened = false;
+
+// alert(pageWidth);
 
 let ad = 'Еду сейчас на Москва-Сити; Долбоёбы, хуй сосите; Я только прилетел с Ростова,; завтра улетаю в Питер; Сисястых сук ебать их давно; профи — не любитель;Я сам себе предприниматель,; вижу лохов — наебать их;Чёрная рубашка, галстук;— я уже мужчина;Её туфли зацепили,; ведь они из крокодила;Первый день в Москве,; мы закрываем всю дрочильню;Я сейчас на чилле, так что,; шлюха, подрочи мне;'
 

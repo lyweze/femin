@@ -29,8 +29,13 @@ function audioText(){
     audio.addEventListener('playing', gg());
     function gg(){
         let karaokeLi = document.getElementById('karaokeLi'); //Строчка текста песни
-        karaokeElement.textContent = '#karaokeText{ >li:nth-child(' + parseInt(audio.currentTime * 0.65 + 1).toString() + '){ color: #fff; font-size:60px; }}';
-        karaokeLi.style.marginTop = (-64 * parseInt(audio.currentTime * 0.65)).toString() + 'px';
+        if (pageWidth < 700){
+            karaokeElement.textContent = '#karaokeText{ >li:nth-child(' + parseInt(audio.currentTime * 0.65 + 1).toString() + '){ color: #fff; font-size:26px; }}';
+            karaokeLi.style.marginTop = (-32 * parseInt(audio.currentTime * 0.65)).toString() + 'px';
+        } else {
+            karaokeElement.textContent = '#karaokeText{ >li:nth-child(' + parseInt(audio.currentTime * 0.65 + 1).toString() + '){ color: #fff; font-size:16px; }}';
+            karaokeLi.style.marginTop = (-64 * parseInt(audio.currentTime * 0.65)).toString() + 'px';
+        }
     }
 }
 setInterval(audioText, 50);

@@ -361,6 +361,10 @@ footer{
         #footer-div{
             width: 100vw;
         }
+
+        #karaokeText{
+            font-size: 24px;
+        }
     }
 
     #progressBar{
