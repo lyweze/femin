@@ -194,10 +194,9 @@ if __name__ == "__main__":
     b2_api, bucket = init_b2()
     api = SoundcloudAPI()
     #url = "https://soundcloud.com/muc-sik/uglystephan-milly-rock-x-slime-love-speed-up"
-    url = "https://soundcloud.com/pershin-maksim/sets/dsrfsfs"
+    # url = "https://soundcloud.com/pershin-maksim/sets/dsrfsfs"
 
-    urls = ["https://soundcloud.com/elizaveta-lavrova-108256826/sets/morgenshtern-golden-edition",
-            "https://soundcloud.com/instasamka/sets/moneydealer"]
+    urls = ["https://soundcloud.com/elizaveta-lavrova-108256826/sets/morgenshtern-golden-edition"]
     conn = init_db()
     cursor = conn.cursor(cursor_factory=DictCursor)
     for url in urls:
