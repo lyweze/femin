@@ -100,4 +100,33 @@ function goToTrack(name) {
 	currenttrack = +name + 1;
 
 	changeTrack();
+    
+	playList.innerHTML = "";
+	for (let i = 0; i < tracks.length; i++) {
+		if (i == currenttrack) {
+			playList.innerHTML +=
+				'<li style="background-color: #ffffff52" onclick="goToTrack(' +
+				"'" +
+				i +
+				"')" +
+				'"' +
+				'><img src="./music/covers/' +
+				covers[i] +
+				'"</img><p>' +
+				names[i] +
+				"</p></li>";
+		} else {
+			playList.innerHTML +=
+				'<li onclick="goToTrack(' +
+				"'" +
+				i +
+				"')" +
+				'"' +
+				'><img src="./music/covers/' +
+				covers[i] +
+				'"</img><p>' +
+				names[i] +
+				"</p></li>";
+		}
+	}
 }
