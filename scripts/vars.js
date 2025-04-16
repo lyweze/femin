@@ -16,6 +16,9 @@ let currenttrack = 0; //Текущий трек
 let footer = document.getElementById("footer"); //Весь футер
 let main = document.getElementById("main"); //Main блок
 let playList = document.getElementById("playList"); //Текущий плейлист
+let playlists = document.getElementById("article1"); //Плейлисты
+let liked = document.getElementById("article2"); //Плейлисты
+let playlist = document.getElementById("playlist"); //Плейлисты (блоки)
 let pageWidth = document.documentElement.scrollWidth;
 let isOpened = false;
 
