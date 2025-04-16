@@ -9,7 +9,7 @@ from requests import RequestException
 from sclib import SoundcloudAPI, Track, Playlist
 from PIL import Image
 from datetime import datetime, timedelta
-from backend.config import B2_KEY_ID, B2_APPLICATION_KEY, B2_BUCKET_NAME, default_cover, DB_NAME, DB_USER
+from config import B2_KEY_ID, B2_APPLICATION_KEY, B2_BUCKET_NAME, DEFAULT_COVER, DB_NAME, DB_USER
 import b2sdk.v2 as b2
 from disk_to_db import save_track_to_db
 from tenacity import retry, stop_after_attempt, wait_fixed, retry_if_exception_type, before_sleep_log
@@ -18,9 +18,12 @@ import time
 logging.basicConfig(level=logging.INFO, format='%(asctime)s -- %(levelname)s -- %(message)s')
 logger = logging.getLogger(__name__)
 
+
 def init_db():
     conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER)
     return conn
+
+
 ##  инициализация бакета
 def init_b2():
     info = b2.InMemoryAccountInfo()
@@ -29,6 +32,7 @@ def init_b2():
     bucket = b2_api.get_bucket_by_name(B2_BUCKET_NAME)
     return b2_api, bucket
 
+
 ## получаем ссылку на backblaze
 def get_url(bucket, file_name):
     download_url = b2_api.get_download_url_for_file_name(bucket.name, file_name)
@@ -36,20 +40,20 @@ def get_url(bucket, file_name):
     expires_in = 1
     return download_url, expires_in
 
+
 ## сохранение обложки
 @retry(stop=stop_after_attempt(5),
        wait=wait_fixed(3),
        retry=retry_if_exception_type((RequestException, Exception)),
-        before_sleep=before_sleep_log(logger, logging.WARNING)
+       before_sleep=before_sleep_log(logger, logging.WARNING)
        )
 def save_cover(track_id, cover_url, cover_path, bucket, conn, cursor):
     try:
         if not cover_url:
-            cover_url = default_cover
+            cover_url = DEFAULT_COVER
 
         response = requests.get(cover_url, timeout=10)
         response.raise_for_status()
-
 
         bucket.upload_bytes(data_bytes=response.content, file_name=cover_path, content_type='image/jpeg')
 
@@ -67,7 +71,6 @@ def save_cover(track_id, cover_url, cover_path, bucket, conn, cursor):
 
             cover_id, url_expires = result
             if url_expires and url_expires <= now:
-
                 signed_url, expires_in = get_url(bucket, cover_path)
                 expires_time = datetime.now() + timedelta(hours=expires_in)
                 cursor.execute(
@@ -98,11 +101,12 @@ def save_cover(track_id, cover_url, cover_path, bucket, conn, cursor):
         print(f"error by uploading the cover: {e}")
         return None
 
+
 # сохранение трека в backblaze
 @retry(stop=stop_after_attempt(5),
        wait=wait_fixed(3),
        retry=retry_if_exception_type((RequestException, Exception)),
-        before_sleep=before_sleep_log(logger, logging.WARNING)
+       before_sleep=before_sleep_log(logger, logging.WARNING)
        )
 def save_track(url, bucket, conn, cursor):
     try:
@@ -138,6 +142,8 @@ def save_track(url, bucket, conn, cursor):
     except Exception as e:
         print(f"eRROR WE CANT MANAGED THIS TRACK: {e}")
         return None
+
+
 # сохранение альбома в baclblazr
 
 def save_album(url, bucket, conn, cursor):
@@ -152,10 +158,10 @@ def save_album(url, bucket, conn, cursor):
             time.sleep(1)
 
             @retry(stop=stop_after_attempt(5),
-                       wait=wait_fixed(3),
+                   wait=wait_fixed(3),
                    retry=retry_if_exception_type((RequestException, Exception)),
-                       before_sleep=before_sleep_log(logger, logging.WARNING)
-                    )
+                   before_sleep=before_sleep_log(logger, logging.WARNING)
+                   )
             def single_track():
                 with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as f:
                     track.write_mp3_to(f)
@@ -172,8 +178,9 @@ def save_album(url, bucket, conn, cursor):
                     cover_path = f"music/covers/{playlist_path}/{track.artist} - {track.title}.jpg"
                     time.sleep(1)
 
-                    cover_id =save_cover(track_id, track.artwork_url, cover_path, bucket, conn, cursor)
+                    cover_id = save_cover(track_id, track.artwork_url, cover_path, bucket, conn, cursor)
                     return track_id, cover_id
+
             try:
                 track_id, cover_id = single_track()
                 track_ids.append(track_id)
@@ -193,10 +200,11 @@ def save_album(url, bucket, conn, cursor):
 if __name__ == "__main__":
     b2_api, bucket = init_b2()
     api = SoundcloudAPI()
-    #url = "https://soundcloud.com/muc-sik/uglystephan-milly-rock-x-slime-love-speed-up"
+    # url = "https://soundcloud.com/muc-sik/uglystephan-milly-rock-x-slime-love-speed-up"
     # url = "https://soundcloud.com/pershin-maksim/sets/dsrfsfs"
 
-    urls = ["https://soundcloud.com/elizaveta-lavrova-108256826/sets/morgenshtern-golden-edition"]
+    urls = ["https://soundcloud.com/elizaveta-lavrova-108256826/sets/morgenshtern-golden-edition",
+            "https://soundcloud.com/instasamka/sets/moneydealer"]
     conn = init_db()
     cursor = conn.cursor(cursor_factory=DictCursor)
     for url in urls:
@@ -214,12 +222,3 @@ if __name__ == "__main__":
         finally:
             cursor.close()
             conn.close()
-    '''try:
-        track_id = save_track(url, bucket, conn, cursor)
-        if track_id:
-            print(f"Track saved successfully with ID: {track_id}")
-        else:
-            print("How no guts to save this track?")
-    finally:
-        cursor.close()
-        conn.close()'''

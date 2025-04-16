@@ -1,11 +1,12 @@
+from config import DB_NAME, DB_USER
+from datetime import datetime, timedelta
 import psycopg2
-from backend.config import DB_NAME, DB_USER
+
 
 def init_db():
     conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER)
     return conn
 
-from datetime import datetime, timedelta
 
 # сохранение трека в бд по колонкам
 def save_track_to_db(title, signed_url, expires_in, conn, cursor):
