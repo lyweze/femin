@@ -1,14 +1,13 @@
 import logging
 from typing import List
-
 import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.params import Depends
 from pydantic import BaseModel
 import psycopg2
 from psycopg2.extras import DictCursor
-from config import DB_NAME, DB_USER
-from parsing_tracks_sync import init_b2
+from backend.config import DB_NAME, DB_USER
+from backend.parsing_tracks_sync import init_b2
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
