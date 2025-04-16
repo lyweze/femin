@@ -389,6 +389,20 @@ footer {
 	}
 }
 
+/* Адаптация высота 400px*/
+@media screen and (max-height: 400px) {
+	main {
+		> img {
+			width: auto;
+			height: calc(100vh - 85px - 85px - 0px);
+		}
+
+		#trackName {
+			display: none;
+		}
+	}
+}
+
 /* Адаптация высота 600px и ширина 1100px*/
 @media screen and (max-height: 600px) and (max-width: 1100px) {
 	footer {
