@@ -53,7 +53,7 @@ function playOnClick() {
 }
 
 //Смена аудиофайла
-function changeTrack(pressedBtn) {
+function changeTrack(pressedBtn, k) {
 	let isPaused = true;
 
 	if (pressedBtn == "next") {
@@ -72,6 +72,10 @@ function changeTrack(pressedBtn) {
 		} else {
 			audio.currentTime = 0;
 		}
+	}
+
+	if (k != null) {
+		currenttrack = k;
 	}
 
 	if (!audio.paused) {
@@ -97,10 +101,10 @@ function changeTrack(pressedBtn) {
 }
 
 function goToTrack(name) {
-	currenttrack = +name + 1;
+	currenttrack = +name;
 
-	changeTrack();
-    
+	changeTrack("", currenttrack);
+
 	playList.innerHTML = "";
 	for (let i = 0; i < tracks.length; i++) {
 		if (i == currenttrack) {
