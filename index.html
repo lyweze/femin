@@ -1,63 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>FEMIN</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <style id="karaokeElement"></style>
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, user-scalable=no"
+		/>
+		<title>FEMIN</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<style id="karaokeElement"></style>
 
-    <header>
-        <a class="logo" href="#">FEMIN</a>
+		<header>
+			<a class="logo" href="#">FEMIN</a>
 
-        <div class="nav">
-            <a class="nav-top" href="">TOP 30</a>
-            <img class="nav-img" src="./img/1.svg" alt="">
-            <a class="nav-popular" href="">POPULAR</a>
-        </div>
-    </header>
+			<div class="nav">
+				<a class="nav-top" href="">TOP 30</a>
+				<img class="nav-img" src="./img/1.svg" alt="" />
+				<a class="nav-popular" href="">POPULAR</a>
+			</div>
+		</header>
 
-    
+		<main id="main">
+			<img
+				src="./music/covers/moskva.jpeg"
+				id="cover"
+				style="filter: brightness(80%) grayscale(40%)"
+				onclick="playOnClick()"
+				alt=""
+			/>
 
-    <main id="main">
-        <img src="./music/covers/moskva.jpeg" id="cover" style="filter: brightness(80%) grayscale(40%);" onclick="playOnClick()" alt="">
+			<p id="trackName">МОСКВА</p>
+		</main>
 
-        <p id="trackName">МОСКВА</p>
-    </main>
+		<footer id="footer">
+			<ul id="karaokeText" class="karaokeText"></ul>
 
-    <footer id="footer">
+			<div id="footer-div">
+				<audio id="audioPlayer" src="./music/moskva.mp3"></audio>
+				<img
+					onclick="openPlayer()"
+					src="./music/covers/moskva.jpeg"
+					id="mini-cover"
+					style="
+						width: 65px;
+						border-radius: 8px;
+						margin-left: 10px;
+						transition: all 0.3s cubic-bezier(0.45, 0.06, 0.19, 0.97);
+						transform: scale(0.94);
+						filter: brightness(80%);
+						cursor: pointer;
+					"
+					alt=""
+				/>
+				<p id="playerTrackName">МОСКВА</p>
 
-        <ul id="karaokeText" class="karaokeText">
-        </ul>
+				<!-- Громкость и прогрессбар -->
+				<progress id="progressBar" value="0" max="100"></progress>
+				<input
+					type="range"
+					min="0"
+					max="100"
+					step="0.1"
+					value="0"
+					id="rangeProgress"
+				/>
+				<progress id="volume" max="1" value="1"></progress>
+				<input
+					type="range"
+					min="0"
+					max="1"
+					step="any"
+					value="1"
+					title="Громкость"
+					id="rangeVolume"
+				/>
+				<p id="trackTime"></p>
 
-        <div id="footer-div">
-            <audio id="audioPlayer" src="./music/moskva.mp3"></audio>
-            <img onclick="openPlayer()" src="./music/covers/moskva.jpeg" id="mini-cover" style="width: 65px; border-radius: 8px; margin-left: 10px; transition: all 0.3s cubic-bezier(.45,.06,.19,.97); transform: scale(0.94); filter: brightness(80%); cursor:pointer" alt="">
-            <p id="playerTrackName">МОСКВА</p>
+				<button
+					onclick="playOnClick()"
+					class="playButton"
+					id="playButton"
+					href=""
+					style="background-color: #230030"
+				>
+					&#9205;
+				</button>
+				<button
+					onclick="changeTrack('previous')"
+					class="previousButton"
+					id="eblan"
+					href=""
+					style="background-color: #4c1c62"
+				>
+					表
+				</button>
+				<!-- &#9198;-->
+				<button
+					onclick="changeTrack('next')"
+					class="nextButton"
+					id="debil"
+					href=""
+					style="background-color: #4c1c62"
+				>
+					&#9197;
+				</button>
+			</div>
+		</footer>
 
-            
-            <!-- Громкость и прогрессбар -->
-            <progress id="progressBar" value="0" max="100"></progress>
-            <input type="range" min="0" max="100" step="0.1" value="0" id="rangeProgress">
-            <progress id="volume" max="1" value="1"></progress>
-            <input type="range" min="0" max="1" step="any" value="1" title="Громкость" id="rangeVolume">
-            <p id="trackTime"></p>
-
-
-            <button onclick="playOnClick()" class="playButton" id="playButton" href="" style="background-color: #230030;">&#9205;</button>
-            <button onclick="changeTrack('previous')" class="previousButton" id="eblan" href="" style="background-color: #4C1C62;">表</button> <!-- &#9198;-->
-            <button onclick="changeTrack('next')" class="nextButton" id="debil" href="" style="background-color: #4C1C62;">&#9197;</button>
-        </div>
-    </footer>
-    
-
-    <script src="./scripts/vars.js"></script>
-    <script src="./scripts/playerFunctions.js"></script>
-    <script src="./scripts/progressBar.js"></script>
-    <script src="./scripts/player.js"></script>
-    <script src="./scripts/keyWork.js"></script>
-    <script src="./scripts/playerOpen.js"></script>
-</body>
+		<script src="./scripts/vars.js"></script>
+		<script src="./scripts/playerFunctions.js"></script>
+		<script src="./scripts/progressBar.js"></script>
+		<script src="./scripts/player.js"></script>
+		<script src="./scripts/keyWork.js"></script>
+		<script src="./scripts/playerOpen.js"></script>
+	</body>
 </html>

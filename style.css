@@ -1,406 +1,367 @@
-* { 
-    touch-action: manipulation;
+* {
+	touch-action: manipulation;
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    background-color: #451365;
+	margin: 0;
+	padding: 0;
+	background-color: #451365;
 }
 
-header{
-    position: absolute;
-    top: 0;
-    width: calc(100% - 80px);
-    height: 85px;
-    background-color: #38004F;
+header {
+	position: absolute;
+	top: 0;
+	width: calc(100% - 80px);
+	height: 85px;
+	background-color: #38004f;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-left: 40px;
-    padding-right: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-left: 40px;
+	padding-right: 40px;
 
+	.logo {
+		text-decoration: none;
+		cursor: pointer;
 
-    .logo{
-        text-decoration: none;
-        cursor: pointer;
-    
-        color: #fff;
-        font-family: 'Koulen';
-        font-size: 36px;
-        letter-spacing: 5px;
-        transition: all 0.4s ease-out;
-    }
-    .logo:hover{
-        transition: all 0.4s ease-out;
-        letter-spacing: 10px;
-    }
-    
-    .nav{
-        display: flex;
-        align-items: center;
-    
-        .nav-top{
-            margin-right: 15px;
-        }
-        
-        .nav-popular{
-            margin-left: 15px;
-        }
-        
-        .nav-top,
-        .nav-popular{
-            text-decoration: none;
-            cursor: pointer;
-        
-            color: #fff;
-            font-family: 'Koulen';
-            font-size: 24px;
-            letter-spacing: 5px;
-            transition: all 0.4s ease-out;
-        }
-        .nav-top:hover{
-            transition: all 0.4s ease-out;
-            letter-spacing: 10px;
-        }
-        .nav-popular:hover{
-            transition: all 0.4s ease-out;
-            letter-spacing: 10px;
-        }
-    }    
+		color: #fff;
+		font-family: "Koulen";
+		font-size: 36px;
+		letter-spacing: 5px;
+		transition: all 0.4s ease-out;
+	}
+	.logo:hover {
+		transition: all 0.4s ease-out;
+		letter-spacing: 10px;
+	}
+
+	.nav {
+		display: flex;
+		align-items: center;
+
+		.nav-top {
+			margin-right: 15px;
+		}
+
+		.nav-popular {
+			margin-left: 15px;
+		}
+
+		.nav-top,
+		.nav-popular {
+			text-decoration: none;
+			cursor: pointer;
+
+			color: #fff;
+			font-family: "Koulen";
+			font-size: 24px;
+			letter-spacing: 5px;
+			transition: all 0.4s ease-out;
+		}
+		.nav-top:hover {
+			transition: all 0.4s ease-out;
+			letter-spacing: 10px;
+		}
+		.nav-popular:hover {
+			transition: all 0.4s ease-out;
+			letter-spacing: 10px;
+		}
+	}
 }
 
-main{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: auto;
-    margin-top: calc(50vh - 246px);
-    background-color: rgba(255, 255, 255, 0.29);
-    width: 1240px;
-    height: 492px;
-    border-radius: 24px;
-    transition: all 0.7s cubic-bezier(.45,.06,.19,.97);
+main {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: auto;
+	margin-top: calc(50vh - 246px);
+	background-color: rgba(255, 255, 255, 0.29);
+	width: 1240px;
+	height: 492px;
+	border-radius: 24px;
+	transition: all 0.7s cubic-bezier(0.45, 0.06, 0.19, 0.97);
 
-    > img {
-        width: 400px;
-        border-radius: 50%;
-        cursor: pointer;
-        margin-left: 42px;
-        transition: all 0.3s cubic-bezier(.45,.06,.19,.97);
-        box-shadow: 0 0 10px #38004F;
-    }
-    > img:hover {
-        transition: all 0.3s cubic-bezier(.45,.06,.19,.97);
-        box-shadow: 0 0 20px #38004F;
-    }
+	> img {
+		width: 400px;
+		border-radius: 50%;
+		cursor: pointer;
+		margin-left: 42px;
+		transition: all 0.3s cubic-bezier(0.45, 0.06, 0.19, 0.97);
+		box-shadow: 0 0 10px #38004f;
+	}
+	> img:hover {
+		transition: all 0.3s cubic-bezier(0.45, 0.06, 0.19, 0.97);
+		box-shadow: 0 0 20px #38004f;
+	}
 
-    >p {
-        position: relative;
-        right: 160px;
-        color: #fff;
-        font-family: 'Koulen';
-        font-size: 56px;
-        letter-spacing: 5px;
-    }
+	> p {
+		position: relative;
+		right: 160px;
+		color: #fff;
+		font-family: "Koulen";
+		font-size: 56px;
+		letter-spacing: 5px;
+	}
 }
 
-footer{
-    display: flex;
-    position: fixed;
-    bottom: 0;
-    height: 85px;
-    width: 1240px;
-    background-color: #38004F;
-    margin-left: calc(50% - 620px);
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    transition: all 0.7s cubic-bezier(.45,.06,.19,.97);
+footer {
+	display: flex;
+	position: fixed;
+	bottom: 0;
+	height: 85px;
+	width: 1240px;
+	background-color: #38004f;
+	margin-left: calc(50% - 620px);
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+	transition: all 0.7s cubic-bezier(0.45, 0.06, 0.19, 0.97);
 
-    #karaokeText{
-        list-style-type: none;
-        width: 70%;
-        position: absolute;
-        left: 15%;
-        top: 30%;
-        height: 0;
-        text-align: start;
-        color: #ffffff7e;
-        font-family: 'Koulen';
-        font-size: 52px;
-        letter-spacing: 5px;
-        transition: all 0.3s cubic-bezier(.45,.06,.19,.97);
-        overflow: hidden;
+	#blur {
+		z-index: 100;
+		position: absolute;
+		top: calc(10% + 112px);
+		width: 100%;
+		height: calc(100% - 300px);
+		backdrop-filter: blur(1px);
+		filter: blur(7px);
+	}
 
-        > li {
-            transition: all 0.3s cubic-bezier(.45,.06,.19,.97);
-            line-height: 60px;
-        }
-    }
+	#footer-div {
+		position: absolute;
+		bottom: 0;
+		height: 85px;
+		width: 1240px;
+		display: flex;
+		align-items: center;
+	}
 
-    #blur {
-        z-index: 100;
-        position: absolute;
-        top: calc(10% + 112px);
-        width: 100%;
-        height: calc(100% - 300px);
-        backdrop-filter: blur(1px);
-        filter: blur(7px);
-    }
+	#playerTrackName {
+		position: absolute;
+		left: 95px;
+		color: #fff;
+		font-family: "Koulen";
+		font-size: 24px;
+		letter-spacing: 10%;
+		transition: all 0.3s cubic-bezier(0.45, 0.06, 0.19, 0.97);
+	}
 
-    #footer-div {
-        position: absolute;
-        bottom: 0;
-        height: 85px;
-        width: 1240px;
-        display: flex;
-        align-items: center;
-    }
+	#trackTime {
+		position: absolute;
+		left: 890px;
+		color: #fff;
+		font-family: "Koulen";
+		font-size: 18px;
+		letter-spacing: 10%;
+	}
 
-    #playerTrackName{
-        position: absolute;
-        left: 95px;
-        color: #fff;
-        font-family: 'Koulen';
-        font-size: 24px;
-        letter-spacing: 10%;
-        transition: all 0.3s cubic-bezier(.45,.06,.19,.97);
-    }
+	#rangeProgress {
+		opacity: 0;
+		width: 530px;
+		height: 16px;
+		position: absolute;
+		left: 326px;
+		cursor: e-resize;
+	}
+	#progressBar {
+		width: 530px;
+		height: 16px;
+		position: absolute;
+		left: 326px;
+		border-radius: 8px;
+		border: none;
+		background-color: #d9d9d9;
+		color: #230030;
+		transition: all 0.1s linear;
+	}
+	#progressBar::-webkit-progress-bar {
+		position: absolute;
+		border-radius: 8px;
+		border: none;
+		background-color: #d9d9d9;
+		color: #1e1e1e;
+		transition: all 0.1s linear;
+	}
+	#progressBar::-webkit-progress-value {
+		border-radius: 8px;
+		background-color: #230030;
+		transition: all 0.1s linear;
+	}
+	#progressBar::-moz-progress-bar {
+		border-radius: 8px;
+		background-color: #230030;
+		color: #230030;
+		transition: all 0.1s linear;
+	}
 
-    #trackTime{position: absolute;
-        left: 890px;
-        color: #fff;
-        font-family: 'Koulen';
-        font-size: 18px;
-        letter-spacing: 10%;
-    }
+	#rangeVolume {
+		opacity: 0;
+		width: 65px;
+		height: 30px;
+		position: absolute;
+		right: 222px;
+		rotate: -90deg;
+		cursor: s-resize;
+	}
+	#volume {
+		width: 60px;
+		height: 10px;
+		position: absolute;
+		right: 225px;
+		border: none;
+		background-color: #d9d9d9;
+		color: #230030;
+		transition: all 0.2s ease-out;
+		rotate: -90deg;
+	}
+	#volume::-webkit-progress-bar {
+		background-color: #d9d9d9;
+		color: #230030;
+	}
+	#volume::-webkit-progress-value {
+		background-color: #230030;
+	}
+	#volume::-moz-progress-bar {
+		background-color: #230030;
+		color: #230030;
+	}
 
+	.playButton,
+	.nextButton,
+	.previousButton {
+		position: absolute;
+		width: 65px;
+		height: 65px;
+		border: none;
+		border-radius: 16px;
+		cursor: pointer;
 
-    #rangeProgress {
-        opacity: 0;
-        width: 530px;
-        height: 16px;
-        position: absolute;
-        left: 326px;
-        cursor: e-resize;
-    }
+		display: flex;
+		align-items: center;
+		justify-content: center;
 
-    #progressBar {
-        width: 530px;
-        height: 16px;
-        position: absolute;
-        left: 326px;
-        border-radius: 8px;
-        border: none;
-        background-color: #D9D9D9;
-        color: #230030;
-        transition: all 0.1s linear;
-    }
-    #progressBar::-webkit-progress-bar {
-        position: absolute;
-        border-radius: 8px;
-        border: none;
-        background-color: #D9D9D9;
-        color: #1E1E1E;
-        transition: all 0.1s linear;
-    }
-    #progressBar::-webkit-progress-value {
-        border-radius: 8px;
-        background-color: #230030;
-        transition: all 0.1s linear;
-    }
-    #progressBar::-moz-progress-bar {
-        border-radius: 8px;
-        background-color: #230030;
-        color: #230030;
-        transition: all 0.1s linear;
-    }
+		font-family: "Koulen";
+		color: #ffffff7a;
+		font-size: 40px;
+		font-weight: 800;
+		padding: 0;
+		transition: all 0.4s ease-out;
+	}
 
-    
-    #rangeVolume {
-        opacity: 0;
-        width: 65px;
-        height: 30px;
-        position: absolute;
-        right: 222px;
-        rotate: -90deg;
-        cursor: s-resize;
-    }
-    
-    #volume {
-        width: 60px;
-        height: 10px;
-        position: absolute;
-        right: 225px;
-        border: none;
-        background-color: #D9D9D9;
-        color: #230030;
-        transition: all 0.2s ease-out;
-        rotate: -90deg;
-    }
-    #volume::-webkit-progress-bar {
-        background-color: #D9D9D9;
-        color: #230030;
-    }
-    #volume::-webkit-progress-value {
-        background-color: #230030;
-    }
-    #volume::-moz-progress-bar {
-        background-color: #230030;
-        color: #230030;
-    }
+	.playButton {
+		right: 85px;
+	}
+	.nextButton {
+		right: 10px;
+	}
+	.previousButton {
+		right: 160px;
+	}
 
-
-    .playButton,
-    .nextButton,
-    .previousButton {
-        position: absolute;
-        width: 65px;
-        height: 65px;
-        border: none;
-        border-radius: 16px;
-        cursor: pointer;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        
-        font-family: 'Koulen';
-        color: #ffffff7a;
-        font-size: 40px;
-        font-weight: 800;
-        padding: 0;
-        transition: all 0.4s ease-out;
-    }
-
-    .playButton {
-        right: 85px;
-    }
-    .nextButton {
-        right: 10px;
-    }
-    .previousButton {
-        right: 160px;
-    }
-
-    .playButton:hover{
-        transition: all 0.2s ease-out;
-        box-shadow: 0 0 20px #4C1C62;
-    }
-    .nextButton:hover{
-        transition: all 0.2s ease-out;
-        box-shadow: 0 0 20px #230030;
-    }
-    .previousButton:hover{
-        transition: all 0.2s ease-out;
-        box-shadow: 0 0 20px #230030;
-    }
+	.playButton:hover {
+		transition: all 0.2s ease-out;
+		box-shadow: 0 0 20px #4c1c62;
+	}
+	.nextButton:hover {
+		transition: all 0.2s ease-out;
+		box-shadow: 0 0 20px #230030;
+	}
+	.previousButton:hover {
+		transition: all 0.2s ease-out;
+		box-shadow: 0 0 20px #230030;
+	}
 }
 
-
-
-/* Animations */
 @keyframes rotate {
-    0% {
-        transform: rotate(0deg);
+	0% {
+		transform: rotate(0deg);
 	}
 	100% {
 		transform: rotate(360deg);
 	}
 }
 
-
-
-
-
-
 @font-face {
-    font-family: 'Koulen';
-    src: url('./fonts/TT\ Berlinerins\ Trial\ Grotesk.otf');
+	font-family: "Koulen";
+	src: url("./fonts/TT\ Berlinerins\ Trial\ Grotesk.otf");
 }
 
 @media screen and (max-width: 1300px) {
-    header {
-        width: 100vw;
-        justify-content: center;
-        padding: 0;
+	header {
+		width: 100vw;
+		justify-content: center;
+		padding: 0;
 
-        .nav {
-            display: none;
-        }
-    }
+		.nav {
+			display: none;
+		}
+	}
 
-    main {
-        width: fit-content;
-        height: fit-content;
-        background-color: #1e1e1e00;
-        margin-top: 120px;
-        flex-direction: column;
+	main {
+		width: fit-content;
+		height: fit-content;
+		background-color: #1e1e1e00;
+		margin-top: 120px;
+		flex-direction: column;
 
-        align-items: center;
-        justify-content: center;
+		align-items: center;
+		justify-content: center;
 
+		> img {
+			margin: 0;
+			border-radius: 16px;
+		}
+		> p {
+			right: 0;
+			padding: 0;
+			text-align: center;
+		}
+	}
 
-        > img {
-            margin: 0;
-            border-radius: 16px;
-        }
-        > p {
-            right: 0;
-            padding: 0;
-            text-align: center;
-        }
-    }
+	footer {
+		margin-left: 0px;
+		align-content: center;
+		justify-content: flex-start;
+		width: 100vw;
 
-    footer {
-        margin-left: 0px;
-        align-content: center;
-        justify-content: flex-start;
-        width: 100vw;
+		#footer-div {
+			width: 100vw;
+		}
 
-        #footer-div{
-            width: 100vw;
-        }
+		#progressBar {
+			display: none;
+		}
+		#rangeVolume {
+			display: none;
+		}
+		#volume {
+			display: none;
+		}
+		#rangeProgress {
+			display: none;
+		}
+		#trackTime {
+			display: none;
+		}
+	}
 
-        #karaokeText{
-            font-size: 24px;
-        }
-    }
-
-    #progressBar{
-        display: none;
-    }
-    #rangeVolume {
-        display: none;
-    }
-    #volume{
-        display: none;
-    }
-    #rangeProgress{
-        display: none;
-    }
-    #trackTime{
-        display: none;
-    }
-
-    @keyframes rotate {
-        0% {
-            transform: rotate(0deg);
-        }
-        100% {
-            transform: rotate(0deg);
-        }
-    }
+	@keyframes rotate {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(0deg);
+		}
+	}
 }
-@media screen and (max-width: 500px){
-    main {
-        > img{
-            width: 80vw;
-        }
-    }
+@media screen and (max-width: 500px) {
+	main {
+		> img {
+			width: 80vw;
+		}
+	}
 
-    #playerTrackName {
-        display: none;
-    }
+	#playerTrackName {
+		display: none;
+	}
 }
