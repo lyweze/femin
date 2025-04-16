@@ -391,10 +391,19 @@ footer {
 
 /* Адаптация высота 400px*/
 @media screen and (max-height: 400px) {
+	header {
+		width: fit-content;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-bottom-right-radius: 12px;
+	}
+
 	main {
+        margin-top: 20px;
+
 		> img {
 			width: auto;
-			height: calc(100vh - 85px - 85px - 0px);
+			height: 90vh;
 		}
 
 		#trackName {
