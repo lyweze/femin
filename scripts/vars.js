@@ -18,7 +18,6 @@ let main = document.getElementById("main"); //Main блок
 let pageWidth = document.documentElement.scrollWidth;
 let isOpened = false;
 
-//??
 const tracks = ["moskva.mp3", "casino.mp3", "magnolia.mp3"];
 
 const covers = ["moskva.jpeg", "casino.jpeg", "magnolia.jpeg"];

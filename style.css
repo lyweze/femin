@@ -1,13 +1,4 @@
-* {
-	touch-action: manipulation;
-}
-
-body {
-	margin: 0;
-	padding: 0;
-	background-color: #451365;
-}
-
+/* Шапка */
 header {
 	position: absolute;
 	top: 0;
@@ -70,6 +61,7 @@ header {
 	}
 }
 
+/* Обложка + название */
 main {
 	display: flex;
 	align-items: center;
@@ -105,6 +97,7 @@ main {
 	}
 }
 
+/* Мини-плеер */
 footer {
 	display: flex;
 	position: fixed;
@@ -116,16 +109,6 @@ footer {
 	border-top-left-radius: 12px;
 	border-top-right-radius: 12px;
 	transition: all 0.7s cubic-bezier(0.45, 0.06, 0.19, 0.97);
-
-	#blur {
-		z-index: 100;
-		position: absolute;
-		top: calc(10% + 112px);
-		width: 100%;
-		height: calc(100% - 300px);
-		backdrop-filter: blur(1px);
-		filter: blur(7px);
-	}
 
 	#footer-div {
 		position: absolute;
@@ -272,6 +255,7 @@ footer {
 	}
 }
 
+/* Анимация */
 @keyframes rotate {
 	0% {
 		transform: rotate(0deg);
@@ -281,11 +265,7 @@ footer {
 	}
 }
 
-@font-face {
-	font-family: "Koulen";
-	src: url("./fonts/TT\ Berlinerins\ Trial\ Grotesk.otf");
-}
-
+/* Адаптация ширина 1300px*/
 @media screen and (max-width: 1300px) {
 	header {
 		width: 100vw;
@@ -354,6 +334,8 @@ footer {
 		}
 	}
 }
+
+/* Адаптация ширина 500px*/
 @media screen and (max-width: 500px) {
 	main {
 		> img {
@@ -364,4 +346,73 @@ footer {
 	#playerTrackName {
 		display: none;
 	}
+}
+
+/* Адаптация высота 600px*/
+@media screen and (max-height: 600px) {
+	main {
+		margin-left: 0;
+		margin-right: 0;
+		position: absolute;
+		right: 0;
+		padding-right: 20px;
+
+		> img {
+			width: auto;
+			height: calc(100vh - 85px - 85px - 60px);
+		}
+
+		#trackName {
+			margin-top: 20px;
+			margin-bottom: 0;
+		}
+	}
+	footer {
+		width: 60vw;
+
+		#footer-div {
+			width: 100%;
+		}
+
+		#progressBar {
+			display: flex;
+			width: 20vw;
+			left: auto;
+			right: 270px;
+		}
+		#rangeProgress {
+			display: flex;
+			width: 20vw;
+			left: auto;
+			right: 270px;
+		}
+	}
+}
+
+/* Адаптация высота 600px и ширина 1100px*/
+@media screen and (max-height: 600px) and (max-width: 1100px) {
+	footer {
+		#progressBar {
+			display: none;
+		}
+		#rangeProgress {
+			display: none;
+		}
+	}
+}
+
+/* Шрифт */
+@font-face {
+	font-family: "Koulen";
+	src: url("./fonts/TT\ Berlinerins\ Trial\ Grotesk.otf");
+}
+
+/* Остальные настройки */
+* {
+	touch-action: manipulation;
+}
+body {
+	margin: 0;
+	padding: 0;
+	background-color: #451365;
 }
