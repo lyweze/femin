@@ -110,6 +110,47 @@ footer {
 	border-top-right-radius: 12px;
 	transition: all 0.7s cubic-bezier(0.45, 0.06, 0.19, 0.97);
 
+	> ul {
+		width: 100%;
+		padding: 0;
+		margin: 0;
+		margin: 20px;
+		margin-top: 15px;
+		list-style-type: none;
+		transition: all 0.6s cubic-bezier(0.45, 0.06, 0.19, 0.97);
+		overflow-y: scroll;
+		border-radius: 8px;
+
+		> li {
+			cursor: pointer;
+			background-color: #ffffff1e;
+			border-radius: 16px;
+			width: 100%;
+			height: 12vh;
+			display: flex;
+			align-items: center;
+			margin-top: 10px;
+			padding: 0;
+
+			> img {
+				margin-left: 1vh;
+				width: 10vh;
+				border-radius: 8px;
+			}
+
+			> p {
+				margin-left: 20px;
+				color: #fff;
+				font-family: "Koulen";
+				font-size: 3vh;
+				letter-spacing: 10%;
+			}
+		}
+	}
+	> ul::-webkit-scrollbar {
+		width: 0;
+	}
+
 	#footer-div {
 		position: absolute;
 		bottom: 0;
@@ -117,6 +158,7 @@ footer {
 		width: 1240px;
 		display: flex;
 		align-items: center;
+		background-color: #38004f;
 	}
 
 	#playerTrackName {
@@ -393,13 +435,13 @@ footer {
 @media screen and (max-height: 400px) {
 	header {
 		width: fit-content;
-        padding-left: 20px;
-        padding-right: 20px;
-        border-bottom-right-radius: 12px;
+		padding-left: 20px;
+		padding-right: 20px;
+		border-bottom-right-radius: 12px;
 	}
 
 	main {
-        margin-top: 20px;
+		margin-top: 20px;
 
 		> img {
 			width: auto;
@@ -415,10 +457,10 @@ footer {
 /* Адаптация высота 600px и ширина 1100px*/
 @media screen and (max-height: 600px) and (max-width: 1100px) {
 	footer {
-        #playerTrackName {
-            width: calc(100% - 330px);
-            overflow: scroll;
-        }
+		#playerTrackName {
+			width: calc(100% - 330px);
+			overflow: scroll;
+		}
 		#progressBar {
 			display: none;
 		}

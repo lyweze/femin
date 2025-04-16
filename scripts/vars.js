@@ -15,6 +15,7 @@ let rangeVolume = document.getElementById("rangeVolume"); //Изменение �
 let currenttrack = 0; //Текущий трек
 let footer = document.getElementById("footer"); //Весь футер
 let main = document.getElementById("main"); //Main блок
+let playList = document.getElementById("playList"); //Текущий плейлист
 let pageWidth = document.documentElement.scrollWidth;
 let isOpened = false;
 
