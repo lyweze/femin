@@ -1,13 +1,10 @@
 import asyncio
-import io
 from tqdm.asyncio import tqdm_asyncio
-import tempfile
-from sclib import SoundcloudAPI, Track, Playlist
 from sclib.asyncio import SoundcloudAPI, Playlist
 import yadisk
-from config import tok, default_cover
+from config import TOKEN_YA
 
-async def save_track(cover_url, save_to) -> bool:
+async def save_track(cover_url) -> bool:
     try:
         if not cover_url:
             pass
@@ -37,11 +34,9 @@ async def save_album(url: str, y: yadisk.YaDisk) -> int:
 
 
 async def main():
-    y = yadisk.YaDisk(token=tok)
-    api = SoundcloudAPI()
+    y = yadisk.YaDisk(token=TOKEN_YA)
     # url = "https://soundcloud.com/icegergert-685473693/casino"
     url = "https://soundcloud.com/illya-poludnenko/sets/serega-pirat"
     await save_album(url, y)
 if __name__ == "__main__":
     asyncio.run(main())
-
