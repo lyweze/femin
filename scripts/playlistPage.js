@@ -22,17 +22,6 @@ window.addEventListener("wheel", (event) => {
         playlists.style =
 		"margin-top: 1000px; filter: blur(30px); transform: scale(0.8)";
 	}
-	// if (delta > 60 && delta < 200) {
-	// 	if (lk === true) {
-	// 		main.style = "";
-	// 		liked.style =
-	// 			"margin-top: -1000px; filter: blur(30px); transform: scale(0.8)";
-	// 	} else {
-	// 		main.style =
-	// 			"margin-top: -80vh; filter: blur(30px); transform: scale(0.8)";
-	// 	}
-	// 	// if (delta > 200)
-	// }
 });
 
 function collapseAll() {
