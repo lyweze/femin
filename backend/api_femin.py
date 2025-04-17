@@ -53,6 +53,7 @@ async def get_tracks(supabase: Client = Depends(get_supabase)):
 
 @app.get("/")
 async def root():
+
     return {"message": "Welcome to Femin tracks API",
             "tracks": "http://localhost:8000/tracks"}
 
