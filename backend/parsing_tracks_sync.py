@@ -11,7 +11,7 @@ from PIL import Image
 from storage3.exceptions import StorageApiError
 
 from backend.config import SUPABASE_URL, SUPABASE_KEY, DEFAULT_COVER
-from disk_to_db import save_track_to_db
+from disk_to_db import save_track_to_db, save_cover_to_db
 from tenacity import retry, stop_after_attempt, wait_fixed, retry_if_exception_type, before_sleep_log
 import time
 from supabase import Client, create_client
@@ -44,67 +44,32 @@ def get_url(bucket_name, file_path):
 
 ## сохранение обложки
 @retry(stop=stop_after_attempt(5),
-       wait=wait_fixed(3),
-       retry=retry_if_exception_type((RequestException, StorageApiError, RequestException)),
-        before_sleep=before_sleep_log(logger, logging.WARNING)
-       )
-def save_cover(track_id, cover_url, cover_path):
+                       wait=wait_fixed(3),
+                   retry=retry_if_exception_type((RequestException, StorageApiError, HTTPError, ConnectionResetError)),
+                       before_sleep=before_sleep_log(logger, logging.WARNING)
+                    )
+def save_cover(solo_track_id: str, artwork_url: str, solo_cover_path: str) -> str:
     try:
-        if not cover_url:
-            cover_url = DEFAULT_COVER
-
-        response = requests.get(cover_url, timeout=10)
+        response = requests.get(artwork_url)
         response.raise_for_status()
 
-        supabase.storage("covers").upload(file=response.content,
-                                          path = cover_path,
-                                          file_options={"content-type": "image/jpeg"})
-
-        image = Image.open(io.BytesIO(response.content))
-        resolution = f"{image.width}x{image.height}"
-        file_size = len(response.content) // 1024
-        cover_bucket = "covers"
-        download_url = get_url(cover_bucket, cover_path)
-
-        result = supabase.table(cover_bucket).select("cover_id").eq("cover_path", download_url).execute()
-
-
-
-        if result.data:
-            cover_id = result[0]["cover_id"]
-            supabase.table(cover_bucket).update(
-                {"cover_id": cover_id,
-                 "cover_path": cover_path,
-                 }).eq("cover_id", cover_id).execute()
-
-            return cover_id
-        else:
-            insert_result = (
-                supabase.table(cover_bucket)
-                .insert(
-                {
-                "track_id": track_id,
-                "cover_path": cover_path,
-                "resolution": resolution,
-                "file_size": file_size,
-            }
-                .execute()
-                    )
-            )
-
-            cover_id = insert_result[0]["cover_id"]
-            return cover_id
-    except StorageApiError as e:
-        logger.error(e)
-    except RequestException as e:
-        logger.error(e)
+        upload_response = supabase.storage.from_("covers").upload(
+            path=solo_cover_path,
+            file=response.content
+        )
+        public_url = supabase.storage.from_("covers").get_public_url(solo_cover_path)
+        cover_id = save_cover_to_db(solo_track_id, public_url)
+        return cover_id
+    except Exception as e:
+        print(f"Error saving cover for track {solo_track_id}: {e}")
+        raise
 
 # сохранение трека в backblaze
 @retry(stop=stop_after_attempt(5),
-       wait=wait_fixed(3),
-       retry=retry_if_exception_type((RequestException, StorageApiError, HTTPError)),
-        before_sleep=before_sleep_log(logger, logging.WARNING)
-       )
+                       wait=wait_fixed(3),
+                   retry=retry_if_exception_type((RequestException, StorageApiError, HTTPError, ConnectionResetError)),
+                       before_sleep=before_sleep_log(logger, logging.WARNING)
+                    )
 def save_track(url, soundcloud_api):
     try:
         time.sleep(1)
@@ -115,13 +80,26 @@ def save_track(url, soundcloud_api):
         track.write_mp3_to(mp3_data)
         mp3_data.seek(0)
 
-        supabase_path = f"{track.artist}_{track.title}.mp3"
-        track_bucket = "tracks"
+        with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as mp3_data_file:
+            track.write_mp3_to(mp3_data_file)
+            mp3_data_file.flush()
+            temp_mp3_path = mp3_data_file.name
+
+            track_artist_path = sanitize_path(track.artist)
+            track_title_path = sanitize_path(track.title)
+
+        with open(temp_mp3_path, "rb") as mp3_file:
+            mp3_data = mp3_file.read()
+
+
+        supabase_path = f"{track_artist_path}_{track_title_path}.mp3"
+        track_bucket = "covers"
         supabase.storage.from_(track_bucket).upload(
             path=supabase_path,
             file=mp3_data,
             file_options={"content-type": "audio/mp3"}
         )
+        os.remove(temp_mp3_path)
 
         download_url = get_url(track_bucket, supabase_path)
         track_id = save_track_to_db(track.title, download_url)
@@ -160,7 +138,7 @@ def save_album(url, soundcloud_api):
 
             @retry(stop=stop_after_attempt(5),
                        wait=wait_fixed(3),
-                   retry=retry_if_exception_type((RequestException, StorageApiError, HTTPError)),
+                   retry=retry_if_exception_type((RequestException, StorageApiError, HTTPError, ConnectionResetError)),
                        before_sleep=before_sleep_log(logger, logging.WARNING)
                     )
             def single_track():
@@ -184,13 +162,13 @@ def save_album(url, soundcloud_api):
                     file_options={"content-type": "audio/mp3"}
                 )
                 os.remove(temp_file_path)
-                os.remove(mp3_data)
 
                 solo_download_url = get_url(album_bucket, supabase_path)
 
                 solo_track_id = save_track_to_db(track.title, solo_download_url)
 
-                solo_cover_path = f"{playlist.title}/covers/{track.artist}_{track.title}.jpg"
+                solo_cover_path = f"{playlist.title}/{track.artist}_{track.title}.jpg"
+                solo_cover_path = sanitize_path(solo_cover_path)
                 time.sleep(1)
                 solo_cover_id = save_cover(solo_track_id, track.artwork_url, solo_cover_path)
 

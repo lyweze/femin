@@ -1,5 +1,6 @@
 from supabase import create_client, Client
 from config import SUPABASE_URL, SUPABASE_KEY
+import uuid
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
@@ -19,3 +20,17 @@ def save_track_to_db(title, signed_url):
         track_id = insert_result.data[0]["track_id"]
 
         return track_id
+
+def save_cover_to_db(solo_track_id, public_cover_url):
+    result = supabase.table("covers").select("cover_id").eq("track_id", solo_track_id).execute()
+
+    if result.data:
+        cover_id = result.data[0]["cover_id"]
+        return cover_id
+    else:
+        insert_result = supabase.table("covers").insert({
+            "track_id": solo_track_id,
+            "image_path": public_cover_url,
+        }).execute()
+        cover_id = insert_result.data[0]["cover_id"]
+        return cover_id
