@@ -7,10 +7,9 @@ import requests
 import tempfile
 from requests import RequestException
 from sclib import SoundcloudAPI, Track, Playlist
-from PIL import Image
 from storage3.exceptions import StorageApiError
 
-from backend.config import SUPABASE_URL, SUPABASE_KEY, DEFAULT_COVER
+from config import SUPABASE_URL, SUPABASE_KEY, DEFAULT_COVER
 from disk_to_db import save_track_to_db, save_cover_to_db
 from tenacity import retry, stop_after_attempt, wait_fixed, retry_if_exception_type, before_sleep_log
 import time
