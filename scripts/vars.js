@@ -22,7 +22,15 @@ let playlist = document.getElementById("playlist"); //Плейлисты (бло
 let pageWidth = document.documentElement.scrollWidth;
 let isOpened = false;
 
-const tracks = ["moskva.mp3", "casino.mp3", "magnolia.mp3"];
+const tracks = ["moskva.mp3", "casino.mp3", "magnolia.mp3", "zloy_zhora.mp3"];
 
-const covers = ["moskva.jpeg", "casino.jpeg", "magnolia.jpeg"];
-const names = ["москва", "casino", "magnolia"];
+const covers = [
+	"moskva.jpeg",
+	"casino.jpeg",
+	"magnolia.jpeg",
+	"zloy_zhora.jpeg",
+];
+
+const names = ["москва", "casino", "magnolia", "злой жора"];
+
+const likedTracks = [];
