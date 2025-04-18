@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 	<head>
 		<meta charset="UTF-8" />
 		<meta
@@ -8,7 +8,7 @@
 		/>
 		<title>FEMIN</title>
 		<link rel="shortcut icon" href="./img/favicon.jpeg" type="image/x-icon" />
-		<link rel="stylesheet" href="style.css" />
+		<link rel="stylesheet" href="./style.css" />
 		<link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -18,14 +18,39 @@
 		<style id="karaokeElement"></style>
 
 		<header>
-			<a class="logo" href="#">FEMIN</a>
+			<button
+				style="background: none; border: none"
+				class="logo"
+				onclick="collapseAll()"
+			>
+				FEMIN
+			</button>
 
 			<div class="nav">
-				<a class="nav-top" href="">TOP 30</a>
+				<button
+					style="background: none; border: none"
+					class="nav-top"
+					onclick="openPlaylists()"
+				>
+					ПЛЕЙЛИСТЫ
+				</button>
 				<img class="nav-img" src="./img/1.svg" alt="" />
-				<a class="nav-popular" href="">POPULAR</a>
+				<button
+					style="background: none; border: none"
+					class="nav-popular"
+					onclick="openLiked()"
+				>
+					ИЗБРАННОЕ
+				</button>
 			</div>
 		</header>
+
+		<article
+			id="article2"
+			style="margin-top: -1000px; filter: blur(30px); transform: scale(0.8)"
+		>
+			dvoovdmdo
+		</article>
 
 		<main id="main">
 			<img
@@ -38,6 +63,20 @@
 
 			<p id="trackName">МОСКВА</p>
 		</main>
+
+		<article
+			id="article1"
+			style="margin-top: 1000px; filter: blur(30px); transform: scale(0.8)"
+		>
+			<div id="playlist-div">
+				<ul id="playlist">
+					<li>
+						<img src="./music/covers/casino.jpeg" style="width: 30vh" alt="" />
+						<p>ИЗБРАННОЕ</p>
+					</li>
+				</ul>
+			</div>
+		</article>
 
 		<footer id="footer">
 			<ul id="playList"></ul>
@@ -155,11 +194,14 @@
 			</div>
 		</footer>
 
+		<button onclick="moveToLike()">Add to like</button>
+
 		<script src="./scripts/vars.js"></script>
 		<script src="./scripts/playerFunctions.js"></script>
 		<script src="./scripts/progressBar.js"></script>
 		<script src="./scripts/player.js"></script>
 		<script src="./scripts/keyWork.js"></script>
 		<script src="./scripts/playerOpen.js"></script>
+		<script src="./scripts/playlistPage.js"></script>
 	</body>
 </html>

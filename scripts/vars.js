@@ -16,10 +16,21 @@ let currenttrack = 0; //Текущий трек
 let footer = document.getElementById("footer"); //Весь футер
 let main = document.getElementById("main"); //Main блок
 let playList = document.getElementById("playList"); //Текущий плейлист
+let playlists = document.getElementById("article1"); //Плейлисты
+let liked = document.getElementById("article2"); //Плейлисты
+let playlist = document.getElementById("playlist"); //Плейлисты (блоки)
 let pageWidth = document.documentElement.scrollWidth;
 let isOpened = false;
 
-const tracks = ["moskva.mp3", "casino.mp3", "magnolia.mp3"];
+const tracks = ["moskva.mp3", "casino.mp3", "magnolia.mp3", "zloy_zhora.mp3"];
 
-const covers = ["moskva.jpeg", "casino.jpeg", "magnolia.jpeg"];
-const names = ["москва", "casino", "magnolia"];
+const covers = [
+	"moskva.jpeg",
+	"casino.jpeg",
+	"magnolia.jpeg",
+	"zloy_zhora.jpeg",
+];
+
+const names = ["москва", "casino", "magnolia", "злой жора"];
+
+const likedTracks = [];
