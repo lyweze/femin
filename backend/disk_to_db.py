@@ -1,50 +1,35 @@
-from config import DB_NAME, DB_USER
-from datetime import datetime, timedelta
-import psycopg2
+from supabase import create_client, Client
+import config
 
+supabase: Client = create_client(config.SUPABASE_URL, config.SUPABASE_KEY)
 
-def init_db():
-    conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER)
-    return conn
+def save_track_to_db(title, signed_url):
 
+    result = supabase.table("tracks").select("track_id").eq("title", title).execute()
 
-# сохранение трека в бд по колонкам
-def save_track_to_db(title, signed_url, expires_in, conn, cursor):
-    now = datetime.now()
-    expires_time = now + timedelta(hours=expires_in)
-
-    cursor.execute(
-        """
-        SELECT track_id, url_expires
-        FROM tracks
-        WHERE title = %s
-        """,
-        (title,)
-    )
-    result = cursor.fetchone()
-
-    if result:
-        track_id, url_expires = result
-        if url_expires and url_expires <= now:
-            cursor.execute(
-                """
-                UPDATE tracks
-                SET file_path = %s, url_expires = %s
-                WHERE track_id = %s
-                """,
-                (signed_url, expires_time, track_id)
-            )
-            conn.commit()
+    if result.data:
+        track_id = result.data[0]["track_id"]
         return track_id
     else:
-        cursor.execute(
-            """
-            INSERT INTO tracks (title, file_path, url_expires)
-            VALUES (%s, %s, %s)
-            RETURNING track_id
-            """,
-            (title, signed_url, expires_time)
-        )
-        track_id = cursor.fetchone()[0]
-        conn.commit()
+        insert_result = supabase.table("tracks").insert({
+            "title": title,
+            "file_path": signed_url,
+        }).execute()
+
+        track_id = insert_result.data[0]["track_id"]
+
         return track_id
+
+def save_cover_to_db(solo_track_id, public_cover_url):
+    result = supabase.table("covers").select("cover_id").eq("track_id", solo_track_id).execute()
+
+    if result.data:
+        cover_id = result.data[0]["cover_id"]
+        return cover_id
+    else:
+        insert_result = supabase.table("covers").insert({
+            "track_id": solo_track_id,
+            "image_path": public_cover_url,
+        }).execute()
+        cover_id = insert_result.data[0]["cover_id"]
+        return cover_id
