@@ -9,9 +9,9 @@ from requests import RequestException
 from sclib import SoundcloudAPI, Track, Playlist
 from storage3.exceptions import StorageApiError
 
-from config import SUPABASE_URL, SUPABASE_KEY, DEFAULT_COVER
-from disk_to_db import save_track_to_db, save_cover_to_db
-from tenacity import retry, stop_after_attempt, wait_fixed, retry_if_exception_type, before_sleep_log
+import config
+import disk_to_db
+import tenacity
 import time
 from supabase import Client, create_client
 
@@ -42,11 +42,11 @@ def get_url(bucket_name, file_path):
 
 
 ## сохранение обложки
-@retry(stop=stop_after_attempt(5),
-                       wait=wait_fixed(3),
-                   retry=retry_if_exception_type((RequestException, StorageApiError, HTTPError, ConnectionResetError)),
-                       before_sleep=before_sleep_log(logger, logging.WARNING)
-                    )
+@tenacity.retry(stop=tenacity.stop_after_attempt(5),
+                wait=tenacity.wait_fixed(3),
+                retry=tenacity.retry_if_exception_type((RequestException, StorageApiError, HTTPError, ConnectionResetError)),
+                before_sleep=tenacity.before_sleep_log(logger, logging.WARNING)
+                )
 def save_cover(solo_track_id: str, artwork_url: str, solo_cover_path: str) -> str:
     try:
         response = requests.get(artwork_url)
@@ -57,18 +57,18 @@ def save_cover(solo_track_id: str, artwork_url: str, solo_cover_path: str) -> st
             file=response.content
         )
         public_url = supabase.storage.from_("covers").get_public_url(solo_cover_path)
-        cover_id = save_cover_to_db(solo_track_id, public_url)
+        cover_id = disk_to_db.save_cover_to_db(solo_track_id, public_url)
         return cover_id
     except Exception as e:
         print(f"Error saving cover for track {solo_track_id}: {e}")
         raise
 
 # сохранение трека в backblaze
-@retry(stop=stop_after_attempt(5),
-                       wait=wait_fixed(3),
-                   retry=retry_if_exception_type((RequestException, StorageApiError, HTTPError, ConnectionResetError)),
-                       before_sleep=before_sleep_log(logger, logging.WARNING)
-                    )
+@tenacity.retry(stop=tenacity.stop_after_attempt(5),
+                wait=tenacity.wait_fixed(3),
+                retry=tenacity.retry_if_exception_type((RequestException, StorageApiError, HTTPError, ConnectionResetError)),
+                before_sleep=tenacity.before_sleep_log(logger, logging.WARNING)
+                )
 def save_track(url, soundcloud_api):
     try:
         time.sleep(1)
@@ -101,7 +101,7 @@ def save_track(url, soundcloud_api):
         os.remove(temp_mp3_path)
 
         download_url = get_url(track_bucket, supabase_path)
-        track_id = save_track_to_db(track.title, download_url)
+        track_id = disk_to_db.save_track_to_db(track.title, download_url)
         mp3_data.close()
 
         return track_id
@@ -135,11 +135,11 @@ def save_album(url, soundcloud_api):
         for track in playlist.tracks:
             time.sleep(1)
 
-            @retry(stop=stop_after_attempt(5),
-                       wait=wait_fixed(3),
-                   retry=retry_if_exception_type((RequestException, StorageApiError, HTTPError, ConnectionResetError)),
-                       before_sleep=before_sleep_log(logger, logging.WARNING)
-                    )
+            @tenacity.retry(stop=tenacity.stop_after_attempt(5),
+                            wait=tenacity.wait_fixed(3),
+                            retry=tenacity.retry_if_exception_type((RequestException, StorageApiError, HTTPError, ConnectionResetError)),
+                            before_sleep=tenacity.before_sleep_log(logger, logging.WARNING)
+                            )
             def single_track():
 
                 with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as tmp_file:
@@ -164,7 +164,7 @@ def save_album(url, soundcloud_api):
 
                 solo_download_url = get_url(album_bucket, supabase_path)
 
-                solo_track_id = save_track_to_db(track.title, solo_download_url)
+                solo_track_id = disk_to_db.save_track_to_db(track.title, solo_download_url)
 
                 solo_cover_path = f"{playlist.title}/{track.artist}_{track.title}.jpg"
                 solo_cover_path = sanitize_path(solo_cover_path)
@@ -185,7 +185,7 @@ def save_album(url, soundcloud_api):
     return track_ids
 
 if __name__ == "__main__":
-    supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+    supabase: Client = create_client(config.SUPABASE_URL, config.SUPABASE_KEY)
 
     sc_api = SoundcloudAPI()
     urls = ["https://soundcloud.com/elizaveta-lavrova-108256826/sets/morgenshtern-golden-edition"]
