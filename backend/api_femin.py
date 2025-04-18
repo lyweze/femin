@@ -5,8 +5,7 @@ import uvicorn
 from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
 from supabase import create_client, Client
-import config as cfg
-
+from backend.config import SUPABASE_URL, SUPABASE_KEY
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 app = FastAPI(title="Femin tracks API")
@@ -20,7 +19,7 @@ class TrackResponse(BaseModel):
 
 
 def get_supabase() -> Client:
-    supabase: Client = create_client(cfg.SUPABASE_URL, cfg.SUPABASE_KEY)
+    supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
     return supabase
 
 
