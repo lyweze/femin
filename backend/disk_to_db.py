@@ -1,7 +1,7 @@
 from supabase import create_client, Client
-from config import SUPABASE_URL, SUPABASE_KEY
+import config
 
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+supabase: Client = create_client(config.SUPABASE_URL, config.SUPABASE_KEY)
 
 def save_track_to_db(title, signed_url):
 
