@@ -54,7 +54,7 @@ async def get_tracks(supabase: Client = Depends(get_supabase)):
 async def root():
 
     return {"message": "Welcome to Femin tracks API",
-            "tracks": "http://localhost:8000/tracks"}
+            "tracks": "feimn.onrender.com/tracks"}
 
 
 if __name__ == "__main__":
