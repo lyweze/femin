@@ -68,3 +68,7 @@ function openLiked() {
 			"margin-top: 1000px; filter: blur(30px); transform: scale(0.8)";
 	}
 }
+
+function moveToLike(){
+	console.log('liked ' + currenttrack);
+}

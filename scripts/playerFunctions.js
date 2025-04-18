@@ -72,6 +72,8 @@ function changeTrack(pressedBtn, k) {
 		} else {
 			audio.currentTime = 0;
 		}
+
+		progressBar.setAttribute("value", audio.currentTime.toString());
 	}
 
 	if (k != null) {

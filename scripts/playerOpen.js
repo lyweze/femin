@@ -1,5 +1,5 @@
 playList.style.opacity = "0";
-playList.style.transform = "scale(0.3)";
+// playList.style.transform = "scale(0.3)";
 
 for (let i = 0; i < tracks.length; i++) {
 	if (i == currenttrack) {
@@ -65,9 +65,9 @@ function openPlayer() {
 		isOpened = true;
 	} else {
 		playList.style.opacity = "0";
-		playList.style.transform = "scale(0.1)";
+		// playList.style.transform = "scale(0.1)";
 		playList.style.filter = "blur(30px)";
-		playList.style.height = "0";
+		// playList.style.height = "0";
 		footer.style.height = "85px";
 
 		if (lk === true) {

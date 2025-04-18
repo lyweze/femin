@@ -177,10 +177,13 @@ footer {
 	}
 
 	#footer-div {
+		z-index: 200;
 		position: absolute;
 		bottom: 0;
 		height: 85px;
 		width: 1240px;
+		border-top-left-radius: 12px;
+		border-top-right-radius: 12px;
 		display: flex;
 		align-items: center;
 		background-color: #38004f;
@@ -346,7 +349,7 @@ footer {
 			.nav-top {
 				margin-right: 20px;
 			}
-	
+
 			.nav-popular {
 				margin-right: 10px;
 			}
