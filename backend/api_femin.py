@@ -17,6 +17,12 @@ class TrackResponse(BaseModel):
     mp3_url: str
     cover_url: str
 
+class PlaylistTrackResponse(BaseModel):
+    playlist_id: int
+    track_id: int
+    title: str
+    mp3_url: str
+    cover_url: str
 
 def get_supabase() -> Client:
     supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
@@ -50,11 +56,38 @@ async def get_tracks(supabase: Client = Depends(get_supabase)):
         logger.error(e)
         raise HTTPException(status_code=500, detail="Something went wrong")
 
+@app.get("/playlists", response_model=List[TrackResponse])
+async def get_playlists(supabase: Client = Depends(get_supabase)):
+    try:
+        response = supabase.table("playlists").select(
+            'playlist_id',
+            'title',
+            'file_path',
+            'covers(image_path)',
+        ).execute()
+        playlists = response.data
+        track_response = []
+        for playlist in playlists:
+            for track in playlist['tracks']:
+                cover_url = track['covers'][0]['image_path'] if track['covers'] else ""
+                track_response.append(PlaylistTrackResponse(
+                    playlist_id=playlist['playlist_id'],
+                    track_id=track['track_id'],
+                    title=track['title'],
+                    mp3_url=track['file_path'],
+                    cover_url=cover_url,
+                ))
+                logger.info(f"Got {len(track_response)} tracks")
+                return track_response
+    except Exception as e:
+        logger.error(e)
+        raise HTTPException(status_code=500, detail="Something went wrong")
 @app.get("/")
 async def root():
 
     return {"message": "Welcome to Femin tracks API",
-            "tracks": "femin.onrender.com/tracks"}
+            "tracks": "femin.onrender.com/tracks",
+            "playlists": "femin.onrender.com/playlists"}
 
 
 if __name__ == "__main__":
