@@ -118,6 +118,8 @@ def save_track(url, soundcloud_api):
     except HTTPError as e:
         print(f"Error: url isn't a track: {e}")
         return None
+
+
 # сохранение альбома в baclblazr
 
 def save_album(url, soundcloud_api):
@@ -188,7 +190,7 @@ if __name__ == "__main__":
     supabase: Client = create_client(config.SUPABASE_URL, config.SUPABASE_KEY)
 
     sc_api = SoundcloudAPI()
-    urls = ["https://soundcloud.com/elizaveta-lavrova-108256826/sets/morgenshtern-golden-edition"]
+    urls = ["https://soundcloud.com/2hollis/sets/star-547478343n"]
 
     for one_url in urls:
         track_ids = save_album(one_url, sc_api)
