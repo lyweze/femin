@@ -19,6 +19,7 @@ class TrackResponse(BaseModel):
 
 class PlaylistTrackResponse(BaseModel):
     playlist_id: int
+    playlist_name: str
     track_id: int
     title: str
     mp3_url: str
@@ -39,7 +40,7 @@ async def get_tracks(supabase: Client = Depends(get_supabase)):
             'title',
             'file_path',
             'covers(image_path)',
-        ).execute()
+        ).is_("playlist_id", None).execute()
         tracks = response.data
         track_response = []
         for track in tracks:
@@ -56,29 +57,34 @@ async def get_tracks(supabase: Client = Depends(get_supabase)):
         logger.error(e)
         raise HTTPException(status_code=500, detail="Something went wrong")
 
-@app.get("/playlists", response_model=List[TrackResponse])
+@app.get("/playlists", response_model=List[PlaylistTrackResponse])
 async def get_playlists(supabase: Client = Depends(get_supabase)):
     try:
-        response = supabase.table("playlists").select(
+        response = supabase.table("tracks").select(
             'playlist_id',
+            'playlists(title)',
+            'track_id',
             'title',
             'file_path',
             'covers(image_path)',
-        ).execute()
-        playlists = response.data
-        track_response = []
-        for playlist in playlists:
-            for track in playlist['tracks']:
-                cover_url = track['covers'][0]['image_path'] if track['covers'] else ""
-                track_response.append(PlaylistTrackResponse(
-                    playlist_id=playlist['playlist_id'],
-                    track_id=track['track_id'],
-                    title=track['title'],
-                    mp3_url=track['file_path'],
-                    cover_url=cover_url,
-                ))
-                logger.info(f"Got {len(track_response)} tracks")
-                return track_response
+        ).not_.is_("playlist_id", None).execute()
+
+        tracks = response.data
+        playlist_response = []
+
+        for track in tracks:
+            cover_url = track['covers'][0]['image_path'] if track['covers'] else ""
+            playlist_name = track['playlists']['title'] if track['playlists'] else "Unknown Playlist"
+            playlist_response.append(PlaylistTrackResponse(
+                playlist_id=track['playlist_id'],
+                playlist_name = playlist_name,
+                track_id=track['track_id'],
+                title=track['title'],
+                mp3_url=track['file_path'],
+                cover_url=cover_url
+            ))
+        logger.info(f"Got {len(playlist_response)} playlists")
+        return playlist_response
     except Exception as e:
         logger.error(e)
         raise HTTPException(status_code=500, detail="Something went wrong")
