@@ -48,11 +48,14 @@ def get_url(bucket_name, file_path):
                 before_sleep=tenacity.before_sleep_log(logger, logging.WARNING)
                 )
 def save_cover(solo_track_id: str, artwork_url: str, solo_cover_path: str) -> str:
+    if not artwork_url:
+        cover_id = config.DEFAULT_COVER
+        return cover_id
     try:
         response = requests.get(artwork_url)
         response.raise_for_status()
 
-        upload_response = supabase.storage.from_("covers").upload(
+        supabase.storage.from_("covers").upload(
             path=solo_cover_path,
             file=response.content
         )
@@ -73,38 +76,43 @@ def save_track(url, soundcloud_api):
     try:
         time.sleep(1)
         track = soundcloud_api.resolve(url)
-        assert isinstance(track, Track), "URL is not managed to be a playlist"
+        assert isinstance(track, Track), "URL is not managed to be a track"
 
         mp3_data = io.BytesIO()
         track.write_mp3_to(mp3_data)
         mp3_data.seek(0)
 
-        with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as mp3_data_file:
-            track.write_mp3_to(mp3_data_file)
-            mp3_data_file.flush()
-            temp_mp3_path = mp3_data_file.name
+        with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as tmp_file:
+            track.write_mp3_to(tmp_file)
+            tmp_file.flush()
+            temp_file_path = tmp_file.name
 
             track_artist_path = sanitize_path(track.artist)
             track_title_path = sanitize_path(track.title)
+            supabase_path = f"{track_artist_path}_{track_title_path}.mp3"
 
-        with open(temp_mp3_path, "rb") as mp3_file:
+        with open(temp_file_path, "rb") as mp3_file:
             mp3_data = mp3_file.read()
 
-
-        supabase_path = f"{track_artist_path}_{track_title_path}.mp3"
-        track_bucket = "covers"
+        track_bucket = "tracks"
         supabase.storage.from_(track_bucket).upload(
             path=supabase_path,
             file=mp3_data,
             file_options={"content-type": "audio/mp3"}
         )
-        os.remove(temp_mp3_path)
+        os.remove(temp_file_path)
 
         download_url = get_url(track_bucket, supabase_path)
         track_id = disk_to_db.save_track_to_db(track.title, download_url)
-        mp3_data.close()
 
-        return track_id
+        cover_path = f"{track_artist_path}_{track_title_path}.jpg"
+        cover_path = sanitize_path(cover_path)
+        cover_id = save_cover(track_id, track.artwork_url, cover_path)
+        time.sleep(1)
+
+        return track_id, cover_id
+
+
 
     except AssertionError as e:
         print(f"Error: url isnt a track: {e}")
@@ -131,6 +139,7 @@ def save_album(url, soundcloud_api):
         playlist = soundcloud_api.resolve(url)
         assert isinstance(playlist, Playlist), "URL is not managed to be a playlist"
 
+        playlist_id = disk_to_db.save_playlist_to_db(playlist.title)
         track_ids = []
         album_bucket = "tracks"
 
@@ -166,7 +175,7 @@ def save_album(url, soundcloud_api):
 
                 solo_download_url = get_url(album_bucket, supabase_path)
 
-                solo_track_id = disk_to_db.save_track_to_db(track.title, solo_download_url)
+                solo_track_id = disk_to_db.save_track_to_db(track.title, solo_download_url, playlist_id)
 
                 solo_cover_path = f"{playlist.title}/{track.artist}_{track.title}.jpg"
                 solo_cover_path = sanitize_path(solo_cover_path)
@@ -174,7 +183,7 @@ def save_album(url, soundcloud_api):
                 solo_cover_id = save_cover(solo_track_id, track.artwork_url, solo_cover_path)
 
                 return solo_track_id, solo_cover_id
-            track_id = single_track()
+            track_id, _ = single_track()
             track_ids.append(track_id)
 
     except StorageApiError as e:
@@ -190,11 +199,13 @@ if __name__ == "__main__":
     supabase: Client = create_client(config.SUPABASE_URL, config.SUPABASE_KEY)
 
     sc_api = SoundcloudAPI()
-    urls = ["https://soundcloud.com/2hollis/sets/star-547478343n"]
-
+    # urls = ["https://soundcloud.com/anti-kringe/sets/2hollis-star"]
+    '''
     for one_url in urls:
         track_ids = save_album(one_url, sc_api)
         if track_ids:
             logging.info(f"saved {len(track_ids)} tracks")
         else:
-            logging.warning(f"no tracks saved for {one_url}")
+            logging.warning(f"no tracks saved for {one_url}")'''
+    url = "https://soundcloud.com/pochemuzakat/lizer-flesh-prod-by-od-slash"
+    save_track(url, sc_api)

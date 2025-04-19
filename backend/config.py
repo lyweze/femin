@@ -5,7 +5,7 @@ B2_BUCKET_NAME ="femin-musi'''
 
 SUPABASE_DB = "postgres"
 SUPABASE_USER = "postgres.arolhajzgbbvglokemwf"
-DEFAULT_COVER = "https://www.figma.com/design/aE3xlb4DeLcyroNqi6Aspi/Untitled?node-id=14-2&t=FtVyTqMfUACcPjHj-4"
+DEFAULT_COVER: str = "https://www.figma.com/design/aE3xlb4DeLcyroNqi6Aspi/Untitled?node-id=14-2&t=FtVyTqMfUACcPjHj-4"
 SUPABASE_URL = "https://arolhajzgbbvglokemwf.supabase.co"
 SUPABASE_HOST = "aws-0-eu-north-1.pooler.supabase.com"
 SUPABASE_PASSWORD = "12345_femin_hui225"
