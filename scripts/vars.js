@@ -19,8 +19,10 @@ let playList = document.getElementById("playList"); //Текущий плейл�
 let playlists = document.getElementById("article1"); //Плейлисты
 let liked = document.getElementById("article2"); //Плейлисты
 let playlist = document.getElementById("playlist"); //Плейлисты (блоки)
+let likedPlayList = document.getElementById("likedPlayList"); //Плейлист избранное
 let pageWidth = document.documentElement.scrollWidth;
 let isOpened = false;
+let isInput = false;
 
 const tracks = ["moskva.mp3", "casino.mp3", "magnolia.mp3", "zloy_zhora.mp3"];
 

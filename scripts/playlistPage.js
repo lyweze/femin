@@ -1,4 +1,4 @@
-window.addEventListener("wheel", (event) => {
+/*window.addEventListener("wheel", (event) => {
 	const delta = event.deltaY;
 
 	let lk;
@@ -22,7 +22,7 @@ window.addEventListener("wheel", (event) => {
         playlists.style =
 		"margin-top: 1000px; filter: blur(30px); transform: scale(0.8)";
 	}
-});
+});*/
 
 function collapseAll() {
 	main.style = "";
@@ -70,5 +70,18 @@ function openLiked() {
 }
 
 function moveToLike(){
-	console.log('liked ' + currenttrack);
+	likedTracks.push(currenttrack);
+	console.log(likedTracks);
+
+	likedPlayList.innerHTML +=
+			'<li onclick="goToTrack(' +
+			"'" +
+			currenttrack +
+			"')" +
+			'"' +
+			'><img style="width: 10vh" src="./music/covers/' +
+			covers[currenttrack] +
+			'"</img><p>' +
+			names[currenttrack] +
+			"</p></li>";
 }
