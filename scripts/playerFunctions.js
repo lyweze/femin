@@ -136,3 +136,11 @@ function goToTrack(name) {
 		}
 	}
 }
+
+fetch("https://femin.onrender.com/tracks")
+	.then((response) => {
+		return response.json();
+	})
+	.then((data) => {
+		console.log(data);
+	});
