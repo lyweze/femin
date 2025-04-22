@@ -1,7 +1,7 @@
 playList.style.opacity = "0";
 
 playList.innerHTML = "";
-fetch("./music/tracks.json")
+fetch("https://femin.onrender.com/tracks")
 	.then((response) => {
 		return response.json();
 	})

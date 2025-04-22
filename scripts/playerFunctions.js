@@ -27,7 +27,7 @@ function playOnClick() {
 
 //Смена аудиофайла
 function settrack(key, n) {
-	fetch("./music/tracks.json")
+	fetch("https://femin.onrender.com/tracks")
 		.then((response) => {
 			return response.json();
 		})
