@@ -90,7 +90,8 @@ main {
 
 	> p {
 		position: relative;
-		right: 160px;
+		right: 130px;
+		/* left: 0; */
 		color: #fff;
 		font-family: "Koulen";
 		font-size: 56px;
@@ -100,6 +101,19 @@ main {
 		text-align: end;
 
 		width: 500px;
+	}
+
+	> button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		position: absolute;
+		color: #ffffff;
+		background: none;
+		border: none;
+		transform: scale(2);
+		right: calc((100vw - 1240px)/2 + 30px);
 	}
 }
 
@@ -357,8 +371,6 @@ footer {
 
 		font-family: "Koulen";
 		color: #ffffff7a;
-		font-size: 40px;
-		font-weight: 800;
 		padding: 0;
 		transition: all 0.4s ease-out;
 	}

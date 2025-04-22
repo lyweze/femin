@@ -29,9 +29,45 @@ function workingProgressBar() {
 	}
 
 	if (audio.duration === audio.currentTime && !isInput) {
+		audio.volume = 0;
+
 		playOnClick();
 
-		settrack('next');
+		fetch("https://femin.onrender.com/tracks")
+		.then((response) => {
+			return response.json();
+		})
+
+		.then((json) => {
+			let isPaused = true;
+
+			if (!audio.paused) {
+				isPaused = false;
+				playOnClick();
+			}
+
+			if (currenttrack + 1 >= json.length) {
+				currenttrack = 0;
+			} else {
+				currenttrack++;
+			}
+
+			let track = new currentTrack(json[currenttrack]);
+
+			cover.setAttribute("src", track.cover_url);
+			audio.setAttribute("src", track.mp3_url);
+			miniCover.setAttribute("src", track.cover_url);
+			trackName.innerHTML = track.title;
+			playerTrackName.innerHTML = track.title;
+
+			audio.volume = 1;
+
+			if (!isPaused) {
+				playOnClick();
+			}
+		})
+
+		.catch((error) => console.error("Ошибка при исполнении запроса: ", error));
 	}
 
 	if (minutes === false) {

@@ -17,7 +17,8 @@ let footer = document.getElementById("footer"); //Весь футер
 let main = document.getElementById("main"); //Main блок
 let playList = document.getElementById("playList"); //Текущий плейлист
 let playlists = document.getElementById("article1"); //Плейлисты
-let liked = document.getElementById("article2"); //Плейлисты
+let liked = document.getElementById("article2"); //Плейлисты избранное
+let addToLike = document.getElementById("addToLike");
 let playlist = document.getElementById("playlist"); //Плейлисты (блоки)
 let likedPlayList = document.getElementById("likedPlayList"); //Плейлист избранное
 let playlistElement = document.getElementById("playlistElement");
@@ -35,4 +36,4 @@ class currentTrack {
 	}
 }
 
-const likedTracks = [];
+let likedTracks = [];
