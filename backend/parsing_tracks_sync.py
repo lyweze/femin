@@ -207,5 +207,5 @@ if __name__ == "__main__":
             logging.info(f"saved {len(track_ids)} tracks")
         else:
             logging.warning(f"no tracks saved for {one_url}")'''
-    url = "https://soundcloud.com/pochemuzakat/lizer-flesh-prod-by-od-slash"
+    url = "https://on.soundcloud.com/ywaa1B25YVVMY7PQA"
     save_track(url, sc_api)

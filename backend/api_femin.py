@@ -9,7 +9,20 @@ from backend.config import SUPABASE_URL, SUPABASE_KEY
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 app = FastAPI(title="Femin tracks API")
+from flask import Flask
+from flask_cors import CORS  # Установите: pip install flask-cors
 
+app = Flask(__name__)
+
+# Разрешить все домены
+CORS(app)
+
+@app.route('/')
+def home():
+    return "CORS разрешён!"
+
+if __name__ == '__main__':
+    app.run()
 
 class TrackResponse(BaseModel):
     track_id: int
