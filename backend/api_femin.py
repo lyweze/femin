@@ -3,26 +3,27 @@ from typing import List
 
 import uvicorn
 from fastapi import FastAPI, HTTPException, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from supabase import create_client, Client
 from backend.config import SUPABASE_URL, SUPABASE_KEY
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 app = FastAPI(title="Femin tracks API")
-from flask import Flask
-from flask_cors import CORS  # Установите: pip install flask-cors
 
-app = Flask(__name__)
 
-# Разрешить все домены
-CORS(app)
+# Настройка CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Разрешить все домены (небезопасно для продакшена!)
+    allow_credentials=True,
+    allow_methods=["*"],  # Разрешить все методы (GET, POST, PUT и т. д.)
+    allow_headers=["*"],  # Разрешить все заголовки
+)
 
-@app.route('/')
-def home():
-    return "CORS разрешён!"
-
-if __name__ == '__main__':
-    app.run()
+@app.get("/")
+async def main():
+    return {"message": "CORS разрешён!"}
 
 class TrackResponse(BaseModel):
     track_id: int
