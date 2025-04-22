@@ -97,6 +97,7 @@ main {
 		letter-spacing: 5px;
 		overflow-wrap: break-word;
 		overflow-x: wrap;
+		text-align: end;
 
 		width: 500px;
 	}
@@ -328,13 +329,16 @@ footer {
 	#volume::-webkit-progress-bar {
 		background-color: #d9d9d9;
 		color: #230030;
+		transition: all 0.2s ease-out;
 	}
 	#volume::-webkit-progress-value {
 		background-color: #230030;
+		transition: all 0.2s ease-out;
 	}
 	#volume::-moz-progress-bar {
 		background-color: #230030;
 		color: #230030;
+		transition: all 0.2s ease-out;
 	}
 
 	.playButton,

@@ -46,5 +46,29 @@
 		"title": "Дорадура",
 		"mp3_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/tracks/dora_doradura.mp3?",
 		"cover_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/covers/dora_doradura.jpg?"
+	},
+	{
+		"track_id": 25,
+		"title": "Evil Jordan (Popular Intro)",
+		"mp3_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/tracks/playboi carti_evil jordan (popular intro).mp3?",
+		"cover_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/covers/playboi carti_evil jordan (popular intro).jpg?"
+	},
+	{
+		"track_id": 26,
+		"title": "Legit Check (feat. Big Baby Tape)",
+		"mp3_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/tracks/friendly thug 52 ngg_legit check (feat. big baby tape).mp3?",
+		"cover_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/covers/friendly thug 52 ngg_legit check (feat. big baby tape).jpg?"
+	},
+	{
+		"track_id": 27,
+		"title": "Андеграунд (feat. Вектор А)",
+		"mp3_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/tracks/metan_andegraund (feat. vektor a).mp3?",
+		"cover_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/covers/metan_andegraund (feat. vektor a).jpg?"
+	},
+	{
+		"track_id": 28,
+		"title": "Chuchuka",
+		"mp3_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/tracks/big baby tape_chuchuka.mp3?",
+		"cover_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/covers/big baby tape_chuchuka.jpg?"
 	}
 ]

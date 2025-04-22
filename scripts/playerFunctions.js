@@ -21,7 +21,6 @@ function playOnClick() {
 	}
 
 	playlistElement.innerText = '#playList {li:nth-child(' + parseInt(currenttrack + 1) + '){background-color: #ffffff52;}}';
-	console.log(playlistElement);
 
 	playButton.blur();
 }
