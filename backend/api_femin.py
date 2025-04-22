@@ -21,10 +21,6 @@ app.add_middleware(
     allow_headers=["*"],  # Разрешить все заголовки
 )
 
-@app.get("/")
-async def main():
-    return {"message": "CORS разрешён!"}
-
 class TrackResponse(BaseModel):
     track_id: int
     title: str
