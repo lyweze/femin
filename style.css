@@ -95,6 +95,10 @@ main {
 		font-family: "Koulen";
 		font-size: 56px;
 		letter-spacing: 5px;
+		overflow-wrap: break-word;
+		overflow-x: wrap;
+
+		width: 500px;
 	}
 }
 
@@ -212,7 +216,7 @@ footer {
 
 			> p {
 				margin-left: 20px;
-				color: #fff;
+				color: #ffffff;
 				font-family: "Koulen";
 				font-size: 3vh;
 				letter-spacing: 10%;
@@ -244,6 +248,13 @@ footer {
 		font-size: 24px;
 		letter-spacing: 10%;
 		transition: all 0.3s cubic-bezier(0.45, 0.06, 0.19, 0.97);
+		width: 210px;
+		overflow-wrap: normal;
+		white-space: nowrap;
+		overflow: scroll;
+	}
+	#playerTrackName::-webkit-scrollbar {
+		display: none;
 	}
 
 	#trackTime {
@@ -467,9 +478,13 @@ footer {
 		> img {
 			width: 80vw;
 		}
+		> p {
+			width: 90vw;
+		}
 	}
 
 	#playerTrackName {
+		/* opacity: 0; */
 		display: none;
 	}
 }
@@ -489,8 +504,7 @@ footer {
 		}
 
 		#trackName {
-			margin-top: 20px;
-			margin-bottom: 0;
+			display: none;
 		}
 	}
 	footer {

@@ -1,0 +1,50 @@
+[
+	{
+		"track_id": 17,
+		"title": "Я Вчера Проснулся (Prod. by OD SLASH)",
+		"mp3_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/tracks/lizer & flesh_ya vchera prosnulsya (prod. by od slash).mp3?",
+		"cover_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/covers/lizer & flesh_ya vchera prosnulsya (prod. by od slash).jpg?"
+	},
+	{
+		"track_id": 18,
+		"title": "Erase Your Social (Remix)",
+		"mp3_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/tracks/lil uzi vert_erase your social (remix).mp3?",
+		"cover_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/covers/lil uzi vert_erase your social (remix).jpg?"
+	},
+	{
+		"track_id": 19,
+		"title": "ASPHALT 8",
+		"mp3_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/tracks/macan_asphalt 8.mp3?",
+		"cover_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/covers/macan_asphalt 8.jpg?"
+	},
+	{
+		"track_id": 20,
+		"title": "Ver$ace x Original pidors",
+		"mp3_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/tracks/na bolshom vozdushnom chlene_ver$ace x original pidors.mp3?",
+		"cover_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/covers/na bolshom vozdushnom chlene_ver$ace x original pidors.jpg?"
+	},
+	{
+		"track_id": 21,
+		"title": "ЗАХВАТИЛ",
+		"mp3_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/tracks/bulbulyator x ev4xee_zahvatil.mp3?",
+		"cover_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/covers/bulbulyator x ev4xee_zahvatil.jpg?"
+	},
+	{
+		"track_id": 22,
+		"title": "Гойда HardStyle",
+		"mp3_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/tracks/ohlabystin_goyda hardstyle.mp3?",
+		"cover_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/covers/ohlabystin_goyda hardstyle.jpg?"
+	},
+	{
+		"track_id": 23,
+		"title": "ЛЕТО И АРБАЛЕТЫ (PHONK  REMIX)",
+		"mp3_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/tracks/glxry_leto i arbalety (phonk  remix).mp3?",
+		"cover_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/covers/glxry_leto i arbalety (phonk  remix).jpg?"
+	},
+	{
+		"track_id": 24,
+		"title": "Дорадура",
+		"mp3_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/tracks/dora_doradura.mp3?",
+		"cover_url": "https://arolhajzgbbvglokemwf.supabase.co/storage/v1/object/public/covers/dora_doradura.jpg?"
+	}
+]

@@ -1,33 +1,47 @@
 playList.style.opacity = "0";
-// playList.style.transform = "scale(0.3)";
 
-for (let i = 0; i < tracks.length; i++) {
-	if (i == currenttrack) {
-		playList.innerHTML +=
-			'<li style="background-color: #ffffff52" onclick="goToTrack(' +
-			"'" +
-			i +
-			"')" +
-			'"' +
-			'><img src="./music/covers/' +
-			covers[i] +
-			'"</img><p>' +
-			names[i] +
-			"</p></li>";
-	} else {
-		playList.innerHTML +=
-			'<li onclick="goToTrack(' +
-			"'" +
-			i +
-			"')" +
-			'"' +
-			'><img src="./music/covers/' +
-			covers[i] +
-			'"</img><p>' +
-			names[i] +
-			"</p></li>";
-	}
-}
+playList.innerHTML = "";
+fetch("./music/tracks.json")
+	.then((response) => {
+		return response.json();
+	})
+
+	.then((json) => {
+		for (let i = 0; i < json.length; i++) {
+			if (i == currenttrack) {
+				playList.innerHTML +=
+					'<li onclick="goToTrack(' +
+					"'" +
+					i +
+					"')" +
+					'"' +
+					'><img src="' +
+					json[i].cover_url +
+					'"</img><p>' +
+					json[i].title +
+					"</p></li>";
+			} else {
+				playList.innerHTML +=
+					'<li onclick="goToTrack(' +
+					"'" +
+					i +
+					"')" +
+					'"' +
+					'><img src="' +
+					json[i].cover_url +
+					'"</img><p>' +
+					json[i].title +
+					"</p></li>";
+			}
+		}
+
+		playlistElement.innerText =
+			"#playList {li:nth-child(" +
+			parseInt(currenttrack + 1) +
+			"){background-color: #ffffff52;}}";
+	})
+
+	.catch((error) => console.error("Ошибка при исполнении запроса: ", error));
 
 function openPlayer() {
 	let lk;
@@ -65,9 +79,7 @@ function openPlayer() {
 		isOpened = true;
 	} else {
 		playList.style.opacity = "0";
-		// playList.style.transform = "scale(0.1)";
 		playList.style.filter = "blur(30px)";
-		// playList.style.height = "0";
 		footer.style.height = "85px";
 
 		if (lk === true) {

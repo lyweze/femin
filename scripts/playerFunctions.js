@@ -17,130 +17,72 @@ function playOnClick() {
 			"animation: rotate 10s linear infinite; animation-play-state: running;";
 		playButton.innerHTML =
 			'<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-pause-fill" viewBox="0 0 16 16"><path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/></svg>';
-		playerTrackName.style.letterSpacing = "5px";
+		playerTrackName.style.letterSpacing = "3px";
 	}
 
-	playList.innerHTML = "";
-	for (let i = 0; i < tracks.length; i++) {
-		if (i == currenttrack) {
-			playList.innerHTML +=
-				'<li style="background-color: #ffffff52" onclick="goToTrack(' +
-				"'" +
-				i +
-				"')" +
-				'"' +
-				'><img src="./music/covers/' +
-				covers[i] +
-				'"</img><p>' +
-				names[i] +
-				"</p></li>";
-		} else {
-			playList.innerHTML +=
-				'<li onclick="goToTrack(' +
-				"'" +
-				i +
-				"')" +
-				'"' +
-				'><img src="./music/covers/' +
-				covers[i] +
-				'"</img><p>' +
-				names[i] +
-				"</p></li>";
-		}
-	}
+	playlistElement.innerText = '#playList {li:nth-child(' + parseInt(currenttrack + 1) + '){background-color: #ffffff52;}}';
+	console.log(playlistElement);
 
 	playButton.blur();
 }
 
 //Смена аудиофайла
-function changeTrack(pressedBtn, k) {
-	let isPaused = true;
+function settrack(key, n) {
+	fetch("./music/tracks.json")
+		.then((response) => {
+			return response.json();
+		})
 
-	if (pressedBtn == "next") {
-		if (currenttrack + 1 >= tracks.length) {
-			currenttrack = 0;
-		} else {
-			currenttrack++;
-		}
-	} else {
-		if (audio.currentTime < 3) {
-			if (currenttrack - 1 < 0) {
-				currenttrack = tracks.length - 1;
-			} else {
-				currenttrack--;
+		.then((json) => {
+			let isPaused = true;
+
+			if (!audio.paused) {
+				isPaused = false;
+				playOnClick();
 			}
-		} else {
-			audio.currentTime = 0;
-		}
 
-		progressBar.setAttribute("value", audio.currentTime.toString());
-	}
+			if (key === "next") {
+				if (currenttrack + 1 >= json.length) {
+					currenttrack = 0;
+				} else {
+					currenttrack++;
+				}
+			} else if (key === "previous") {
+				if (audio.currentTime < 3) {
+					if (currenttrack - 1 < 0) {
+						currenttrack = json.length - 1;
+					} else {
+						currenttrack--;
+					}
+				} else {
+					audio.currentTime = 0;
+				}
+			}
 
-	if (k != null) {
-		currenttrack = k;
-	}
+			if (n != undefined) {
+				currenttrack = +n;
+			}
 
-	if (!audio.paused) {
-		isPaused = false;
-		playOnClick();
-	}
+			let track = new currentTrack(json[currenttrack]);
 
-	audio.setAttribute("src", ("./music/" + tracks[currenttrack]).toString());
-	cover.setAttribute(
-		"src",
-		("./music/covers/" + covers[currenttrack]).toString()
-	);
-	miniCover.setAttribute(
-		"src",
-		("./music/covers/" + covers[currenttrack]).toString()
-	);
-	trackName.innerHTML = names[currenttrack].toUpperCase();
-	playerTrackName.innerHTML = names[currenttrack].toUpperCase();
+			cover.setAttribute("src", track.cover_url);
+			audio.setAttribute("src", track.mp3_url);
+			miniCover.setAttribute("src", track.cover_url);
+			trackName.innerHTML = track.title;
+			playerTrackName.innerHTML = track.title;
 
-	if (!isPaused) {
-		playOnClick();
-	}
+			if (!isPaused) {
+				playOnClick();
+			}
+		})
+
+		.catch((error) => console.error("Ошибка при исполнении запроса: ", error));
 }
+settrack();
 
 function goToTrack(name) {
 	currenttrack = +name;
 
-	changeTrack("", currenttrack);
-
-	playList.innerHTML = "";
-	for (let i = 0; i < tracks.length; i++) {
-		if (i == currenttrack) {
-			playList.innerHTML +=
-				'<li style="background-color: #ffffff52" onclick="goToTrack(' +
-				"'" +
-				i +
-				"')" +
-				'"' +
-				'><img src="./music/covers/' +
-				covers[i] +
-				'"</img><p>' +
-				names[i] +
-				"</p></li>";
-		} else {
-			playList.innerHTML +=
-				'<li onclick="goToTrack(' +
-				"'" +
-				i +
-				"')" +
-				'"' +
-				'><img src="./music/covers/' +
-				covers[i] +
-				'"</img><p>' +
-				names[i] +
-				"</p></li>";
-		}
-	}
+	settrack("", currenttrack);
+	playlistElement.innerText = '#playList {li:nth-child(' + parseInt(currenttrack + 1) + '){background-color: #ffffff52;}}';
 }
-
-fetch("https://femin.onrender.com/tracks")
-	.then((response) => {
-		return response.json();
-	})
-	.then((data) => {
-		console.log(data);
-	});

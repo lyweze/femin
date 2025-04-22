@@ -85,7 +85,3 @@ function moveToLike() {
 		names[currenttrack] +
 		"</p></li>";
 }
-
-fetch("https://cors-anywhere.herokuapp.com/https://femin.onrender.com/tracks")
-	.then((response) => response.json())
-	.then((data) => console.log(data));

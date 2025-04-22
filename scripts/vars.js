@@ -20,19 +20,19 @@ let playlists = document.getElementById("article1"); //Плейлисты
 let liked = document.getElementById("article2"); //Плейлисты
 let playlist = document.getElementById("playlist"); //Плейлисты (блоки)
 let likedPlayList = document.getElementById("likedPlayList"); //Плейлист избранное
+let playlistElement = document.getElementById("playlistElement");
+
 let pageWidth = document.documentElement.scrollWidth;
 let isOpened = false;
 let isInput = false;
 
-const tracks = ["moskva.mp3", "casino.mp3", "magnolia.mp3", "zloy_zhora.mp3"];
-
-const covers = [
-	"moskva.jpeg",
-	"casino.jpeg",
-	"magnolia.jpeg",
-	"zloy_zhora.jpeg",
-];
-
-const names = ["москва", "casino", "magnolia", "злой жора"];
+class currentTrack {
+	constructor(json) {
+		this.track_id = json.track_id;
+		this.title = json.title;
+		this.mp3_url = json.mp3_url;
+		this.cover_url = json.cover_url;
+	}
+}
 
 const likedTracks = [];
