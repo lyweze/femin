@@ -29,27 +29,9 @@ function workingProgressBar() {
 	}
 
 	if (audio.duration === audio.currentTime && !isInput) {
-		if (currenttrack + 1 >= tracks.length) {
-			currenttrack = 0;
-		} else {
-			currenttrack++;
-		}
-
 		playOnClick();
 
-		audio.setAttribute("src", ("./music/" + tracks[currenttrack]).toString());
-		cover.setAttribute(
-			"src",
-			("./music/covers/" + covers[currenttrack]).toString()
-		);
-		miniCover.setAttribute(
-			"src",
-			("./music/covers/" + covers[currenttrack]).toString()
-		);
-		trackName.innerHTML = names[currenttrack].toUpperCase();
-		playerTrackName.innerHTML = names[currenttrack].toUpperCase();
-
-		playOnClick();
+		settrack('next');
 	}
 
 	if (minutes === false) {
