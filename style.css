@@ -95,6 +95,11 @@ main {
 		font-family: "Koulen";
 		font-size: 56px;
 		letter-spacing: 5px;
+		overflow-wrap: break-word;
+		overflow-x: wrap;
+		text-align: end;
+
+		width: 500px;
 	}
 }
 
@@ -120,6 +125,53 @@ main {
 	height: 600px;
 	border-radius: 24px;
 	transition: all 0.7s cubic-bezier(0.45, 0.06, 0.19, 0.97);
+
+	> ul {
+		width: calc(100% - 20px);
+		padding: 0;
+		margin: 0;
+		margin-left: 10px;
+		margin-top: 10px;
+		list-style-type: none;
+		transition: all 0.6s cubic-bezier(0.45, 0.06, 0.19, 0.97);
+		overflow-y: scroll;
+		border-radius: 16px;
+		height: calc(100% - 20px);
+
+		> li:nth-child(1) {
+			margin-top: 0px;
+		}
+
+		> li {
+			cursor: pointer;
+			background-color: #ffffff1e;
+			border-radius: 16px;
+			width: 100%;
+			height: 12vh;
+			display: flex;
+			align-items: center;
+			margin-top: 10px;
+
+			padding: 0;
+
+			> img {
+				margin-left: 1vh;
+				width: 10vh;
+				border-radius: 8px;
+			}
+
+			> p {
+				margin-left: 20px;
+				color: #fff;
+				font-family: "Koulen";
+				font-size: 3vh;
+				letter-spacing: 10%;
+			}
+		}
+	}
+	> ul::-webkit-scrollbar {
+		width: 0;
+	}
 }
 
 /* Мини-плеер */
@@ -165,7 +217,7 @@ footer {
 
 			> p {
 				margin-left: 20px;
-				color: #fff;
+				color: #ffffff;
 				font-family: "Koulen";
 				font-size: 3vh;
 				letter-spacing: 10%;
@@ -177,10 +229,13 @@ footer {
 	}
 
 	#footer-div {
+		z-index: 200;
 		position: absolute;
 		bottom: 0;
 		height: 85px;
 		width: 1240px;
+		border-top-left-radius: 12px;
+		border-top-right-radius: 12px;
 		display: flex;
 		align-items: center;
 		background-color: #38004f;
@@ -194,6 +249,13 @@ footer {
 		font-size: 24px;
 		letter-spacing: 10%;
 		transition: all 0.3s cubic-bezier(0.45, 0.06, 0.19, 0.97);
+		width: 210px;
+		overflow-wrap: normal;
+		white-space: nowrap;
+		overflow: scroll;
+	}
+	#playerTrackName::-webkit-scrollbar {
+		display: none;
 	}
 
 	#trackTime {
@@ -267,13 +329,16 @@ footer {
 	#volume::-webkit-progress-bar {
 		background-color: #d9d9d9;
 		color: #230030;
+		transition: all 0.2s ease-out;
 	}
 	#volume::-webkit-progress-value {
 		background-color: #230030;
+		transition: all 0.2s ease-out;
 	}
 	#volume::-moz-progress-bar {
 		background-color: #230030;
 		color: #230030;
+		transition: all 0.2s ease-out;
 	}
 
 	.playButton,
@@ -346,7 +411,7 @@ footer {
 			.nav-top {
 				margin-right: 20px;
 			}
-	
+
 			.nav-popular {
 				margin-right: 10px;
 			}
@@ -417,9 +482,13 @@ footer {
 		> img {
 			width: 80vw;
 		}
+		> p {
+			width: 90vw;
+		}
 	}
 
 	#playerTrackName {
+		/* opacity: 0; */
 		display: none;
 	}
 }
@@ -439,8 +508,7 @@ footer {
 		}
 
 		#trackName {
-			margin-top: 20px;
-			margin-bottom: 0;
+			display: none;
 		}
 	}
 	footer {
