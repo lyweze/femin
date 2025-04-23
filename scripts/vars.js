@@ -47,24 +47,6 @@ fetch("https://femin.onrender.com/tracks")
 
 	.then((json) => {
 		jsonParsed = json;
-
-		// for (let i = 0; i < json.length; i++) {
-		// 	fetch(jsonParsed[i].mp3_url)
-		// 		.then((response) => {
-		// 			return response.blob();
-		// 		})
-
-		// 		.then((blob) => {
-		// 			tracks.push(URL.createObjectURL(blob));
-		// 		});
-		// }
 	})
 
 	.catch((error) => console.error("Ошибка при исполнении запроса: ", error));
-
-setTimeout(() => {
-	// console.log(jsonParsed);
-
-	// audio.src = tracks[0];
-	// audio.play();
-}, 1000);

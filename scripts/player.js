@@ -1,6 +1,9 @@
 //Перелистывание времени аудиофайла
 rangeProgress.addEventListener("input", () => {
 	isInput = true;
+	audio.pause();
+	cover.style.cssText =
+		"animation: rotate 10s linear infinite; animation-play-state: paused;";
 	audio.currentTime = (audio.duration - 0.2) * (rangeProgress.value / 100);
 	progressBar.setAttribute("max", audio.duration.toString());
 	progressBar.setAttribute("value", audio.currentTime.toString());
@@ -9,6 +12,9 @@ rangeProgress.addEventListener("input", () => {
 });
 rangeProgress.addEventListener("mouseup", () => {
 	isInput = false;
+	audio.play();
+	cover.style.cssText =
+		"animation: rotate 10s linear infinite; animation-play-state: running;";
 	progressBar.style.scale = "1";
 	progressBar.style.boxShadow = "";
 	rangeProgress.blur();
