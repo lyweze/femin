@@ -22,6 +22,7 @@ let addToLike = document.getElementById("addToLike");
 let playlist = document.getElementById("playlist"); //Плейлисты (блоки)
 let likedPlayList = document.getElementById("likedPlayList"); //Плейлист избранное
 let playlistElement = document.getElementById("playlistElement");
+let jsonParsed;
 
 let pageWidth = document.documentElement.scrollWidth;
 let isOpened = false;
@@ -37,3 +38,33 @@ class currentTrack {
 }
 
 let likedTracks = [];
+let cachedTracks = [];
+
+fetch("https://femin.onrender.com/tracks")
+	.then((response) => {
+		return response.json();
+	})
+
+	.then((json) => {
+		jsonParsed = json;
+
+		// for (let i = 0; i < json.length; i++) {
+		// 	fetch(jsonParsed[i].mp3_url)
+		// 		.then((response) => {
+		// 			return response.blob();
+		// 		})
+
+		// 		.then((blob) => {
+		// 			tracks.push(URL.createObjectURL(blob));
+		// 		});
+		// }
+	})
+
+	.catch((error) => console.error("Ошибка при исполнении запроса: ", error));
+
+setTimeout(() => {
+	// console.log(jsonParsed);
+
+	// audio.src = tracks[0];
+	// audio.play();
+}, 1000);

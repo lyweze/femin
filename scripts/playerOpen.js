@@ -1,47 +1,82 @@
 playList.style.opacity = "0";
 
 playList.innerHTML = "";
-fetch("https://femin.onrender.com/tracks")
-	.then((response) => {
-		return response.json();
-	})
-
-	.then((json) => {
-		for (let i = 0; i < json.length; i++) {
-			if (i == currenttrack) {
-				playList.innerHTML +=
-					'<li onclick="goToTrack(' +
-					"'" +
-					i +
-					"')" +
-					'"' +
-					'><img src="' +
-					json[i].cover_url +
-					'"</img><p>' +
-					json[i].title +
-					"</p></li>";
-			} else {
-				playList.innerHTML +=
-					'<li onclick="goToTrack(' +
-					"'" +
-					i +
-					"')" +
-					'"' +
-					'><img src="' +
-					json[i].cover_url +
-					'"</img><p>' +
-					json[i].title +
-					"</p></li>";
-			}
+if (jsonParsed != null) {
+	for (let i = 0; i < jsonParsed.length; i++) {
+		if (i == currenttrack) {
+			playList.innerHTML +=
+				'<li onclick="goToTrack(' +
+				"'" +
+				i +
+				"')" +
+				'"' +
+				'><img src="' +
+				json[i].cover_url +
+				'"</img><p>' +
+				json[i].title +
+				"</p></li>";
+		} else {
+			playList.innerHTML +=
+				'<li onclick="goToTrack(' +
+				"'" +
+				i +
+				"')" +
+				'"' +
+				'><img src="' +
+				json[i].cover_url +
+				'"</img><p>' +
+				json[i].title +
+				"</p></li>";
 		}
+	}
 
-		playlistElement.innerText =
-			"#playList {li:nth-child(" +
-			parseInt(currenttrack + 1) +
-			"){background-color: #ffffff52;}}";
-	})
+	playlistElement.innerText =
+		"#playList {li:nth-child(" +
+		parseInt(currenttrack + 1) +
+		"){background-color: #ffffff52;}}";
+} else {
+	fetch("https://femin.onrender.com/tracks")
+		.then((response) => {
+			return response.json();
+		})
 
-	.catch((error) => console.error("Ошибка при исполнении запроса: ", error));
+		.then((json) => {
+			for (let i = 0; i < json.length; i++) {
+				if (i == currenttrack) {
+					playList.innerHTML +=
+						'<li onclick="goToTrack(' +
+						"'" +
+						i +
+						"')" +
+						'"' +
+						'><img src="' +
+						json[i].cover_url +
+						'"</img><p>' +
+						json[i].title +
+						"</p></li>";
+				} else {
+					playList.innerHTML +=
+						'<li onclick="goToTrack(' +
+						"'" +
+						i +
+						"')" +
+						'"' +
+						'><img src="' +
+						json[i].cover_url +
+						'"</img><p>' +
+						json[i].title +
+						"</p></li>";
+				}
+			}
+
+			playlistElement.innerText =
+				"#playList {li:nth-child(" +
+				parseInt(currenttrack + 1) +
+				"){background-color: #ffffff52;}}";
+		})
+
+		.catch((error) => console.error("Ошибка при исполнении запроса: ", error));
+}
 
 function openPlayer() {
 	let lk;
