@@ -30,15 +30,73 @@ function workingProgressBar() {
 
 	if (audio.duration === audio.currentTime && !isInput) {
 		audio.volume = 0;
-
 		playOnClick();
 
-		fetch("https://femin.onrender.com/tracks")
-		.then((response) => {
-			return response.json();
-		})
+		if (jsonParsed === null) {
+			fetch("https://femin.onrender.com/tracks")
+				.then((response) => {
+					return response.json();
+				})
 
-		.then((json) => {
+				.then((json) => {
+					let isPaused = true;
+
+					if (!audio.paused) {
+						isPaused = false;
+						playOnClick();
+					}
+
+					if (currenttrack + 1 >= json.length) {
+						currenttrack = 0;
+					} else {
+						currenttrack++;
+					}
+
+					let track = new currentTrack(json[currenttrack]);
+					let currenttrack_exists = saveTrack(json, track, currenttrack);
+
+					if (currenttrack_exists === true) {
+						let currenttrack_id = 0;
+
+						for (let i = 0; i < cachedTracks.length; i++) {
+							if (track.track_id === cachedTracks[i].track_id) {
+								currenttrack_id = i;
+							}
+						}
+
+						cover.setAttribute("src", cachedTracks[currenttrack_id].cover_url);
+						audio.setAttribute("src", cachedTracks[currenttrack_id].mp3_url);
+						miniCover.setAttribute(
+							"src",
+							cachedTracks[currenttrack_id].cover_url
+						);
+						trackName.innerHTML = cachedTracks[currenttrack_id].title;
+						playerTrackName.innerHTML = cachedTracks[currenttrack_id].title;
+					} else {
+						cover.setAttribute("src", track.cover_url);
+						audio.setAttribute("src", track.mp3_url);
+						miniCover.setAttribute("src", track.cover_url);
+						trackName.innerHTML = track.title;
+						playerTrackName.innerHTML = track.title;
+					}
+
+					audio.volume = 1;
+
+					if (!isPaused) {
+						playOnClick();
+					}
+
+					if (minutes === false) {
+						if (timeOfTrack <= 9) {
+							trackTime.innerHTML = "0:0" + timeOfTrack.toString();
+						} else {
+							trackTime.innerHTML = "0:" + timeOfTrack.toString();
+						}
+					} else {
+						trackTime.innerHTML = timeOfTrack.toString();
+					}
+				});
+		} else {
 			let isPaused = true;
 
 			if (!audio.paused) {
@@ -46,28 +104,43 @@ function workingProgressBar() {
 				playOnClick();
 			}
 
-			if (currenttrack + 1 >= json.length) {
+			if (currenttrack + 1 >= jsonParsed.length) {
 				currenttrack = 0;
 			} else {
 				currenttrack++;
 			}
 
-			let track = new currentTrack(json[currenttrack]);
+			let track = new currentTrack(jsonParsed[currenttrack]);
+			let currenttrack_exists = saveTrack(jsonParsed, track, currenttrack);
 
-			cover.setAttribute("src", track.cover_url);
-			audio.setAttribute("src", track.mp3_url);
-			miniCover.setAttribute("src", track.cover_url);
-			trackName.innerHTML = track.title;
-			playerTrackName.innerHTML = track.title;
+			if (currenttrack_exists === true) {
+				let currenttrack_id = 0;
+
+				for (let i = 0; i < cachedTracks.length; i++) {
+					if (track.track_id === cachedTracks[i].track_id) {
+						currenttrack_id = i;
+					}
+				}
+
+				cover.setAttribute("src", cachedTracks[currenttrack_id].cover_url);
+				audio.setAttribute("src", cachedTracks[currenttrack_id].mp3_url);
+				miniCover.setAttribute("src", cachedTracks[currenttrack_id].cover_url);
+				trackName.innerHTML = cachedTracks[currenttrack_id].title;
+				playerTrackName.innerHTML = cachedTracks[currenttrack_id].title;
+			} else {
+				cover.setAttribute("src", track.cover_url);
+				audio.setAttribute("src", track.mp3_url);
+				miniCover.setAttribute("src", track.cover_url);
+				trackName.innerHTML = track.title;
+				playerTrackName.innerHTML = track.title;
+			}
 
 			audio.volume = 1;
 
 			if (!isPaused) {
 				playOnClick();
 			}
-		})
-
-		.catch((error) => console.error("Ошибка при исполнении запроса: ", error));
+		}
 	}
 
 	if (minutes === false) {

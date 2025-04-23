@@ -212,7 +212,6 @@ function saveTrack(json_, track, i) {
 				track.cover_url = URL.createObjectURL(blob);
 
 				cachedTracks.push(track);
-				console.log(cachedTracks);
 			});
 	}
 
