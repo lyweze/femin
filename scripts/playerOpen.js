@@ -1,8 +1,7 @@
-playList.style.opacity = "0";
-
+// Отрисовываю текущий плейлист
 playList.innerHTML = "";
-if (jsonParsed != null) {
-	for (let i = 0; i < jsonParsed.length; i++) {
+function createCurrentPlaylist(json) {
+	for (let i = 0; i < json.length; i++) {
 		if (i == currenttrack) {
 			playList.innerHTML +=
 				'<li onclick="goToTrack(' +
@@ -34,6 +33,9 @@ if (jsonParsed != null) {
 		"#playList {li:nth-child(" +
 		parseInt(currenttrack + 1) +
 		"){background-color: #ffffff52;}}";
+}
+if (jsonParsed != null) {
+	createCurrentPlaylist(jsonParsed);
 } else {
 	fetch("https://femin.onrender.com/tracks")
 		.then((response) => {
@@ -41,43 +43,14 @@ if (jsonParsed != null) {
 		})
 
 		.then((json) => {
-			for (let i = 0; i < json.length; i++) {
-				if (i == currenttrack) {
-					playList.innerHTML +=
-						'<li onclick="goToTrack(' +
-						"'" +
-						i +
-						"')" +
-						'"' +
-						'><img src="' +
-						json[i].cover_url +
-						'"</img><p>' +
-						json[i].title +
-						"</p></li>";
-				} else {
-					playList.innerHTML +=
-						'<li onclick="goToTrack(' +
-						"'" +
-						i +
-						"')" +
-						'"' +
-						'><img src="' +
-						json[i].cover_url +
-						'"</img><p>' +
-						json[i].title +
-						"</p></li>";
-				}
-			}
-
-			playlistElement.innerText =
-				"#playList {li:nth-child(" +
-				parseInt(currenttrack + 1) +
-				"){background-color: #ffffff52;}}";
+			createCurrentPlaylist(json);
 		})
 
 		.catch((error) => console.error("Ошибка при исполнении запроса: ", error));
 }
 
+
+// Раскрытие плеера
 function openPlayer() {
 	let lk;
 	let pl;
