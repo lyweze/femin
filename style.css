@@ -90,8 +90,7 @@ main {
 
 	> p {
 		position: relative;
-		right: 130px;
-		/* left: 0; */
+		right: 0px;
 		color: #fff;
 		font-family: "Koulen";
 		font-size: 56px;
@@ -108,12 +107,11 @@ main {
 		align-items: center;
 		justify-content: center;
 		cursor: pointer;
-		position: absolute;
+		margin-right: 20px;
 		color: #ffffff;
 		background: none;
 		border: none;
-		transform: scale(2);
-		right: calc((100vw - 1240px)/2 + 30px);
+		transition: all 0.4s cubic-bezier(0.45, 0.06, 0.19, 0.97);
 	}
 }
 
@@ -150,7 +148,7 @@ main {
 		transition: all 0.6s cubic-bezier(0.45, 0.06, 0.19, 0.97);
 		overflow-y: scroll;
 		border-radius: 16px;
-		height: calc(100% - 20px);
+		height: calc(100% - 20px - 5vh);
 
 		> li:nth-child(1) {
 			margin-top: 0px;
@@ -185,6 +183,18 @@ main {
 	}
 	> ul::-webkit-scrollbar {
 		width: 0;
+	}
+
+	> p {
+		width: 100%;
+		text-align: center;
+		padding: 0;
+		margin: 0;
+		height: 5vh;
+		color: #fff;
+		font-family: "Koulen";
+		font-size: 5vh;
+		letter-spacing: 20%;
 	}
 }
 

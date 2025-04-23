@@ -2,35 +2,24 @@
 playList.innerHTML = "";
 function createCurrentPlaylist(json) {
 	for (let i = 0; i < json.length; i++) {
-		if (i == currenttrack) {
-			playList.innerHTML +=
-				'<li onclick="goToTrack(' +
-				"'" +
-				i +
-				"')" +
-				'"' +
-				'><img src="' +
-				json[i].cover_url +
-				'"</img><p>' +
-				json[i].title +
-				"</p></li>";
-		} else {
-			playList.innerHTML +=
-				'<li onclick="goToTrack(' +
-				"'" +
-				i +
-				"')" +
-				'"' +
-				'><img src="' +
-				json[i].cover_url +
-				'"</img><p>' +
-				json[i].title +
-				"</p></li>";
-		}
+		playList.innerHTML +=
+			'<li onclick="goToTrack(' +
+			"'" +
+			i +
+			"')" +
+			'"' +
+			'><img src="' +
+			json[i].cover_url +
+			'"</img><p>' +
+			json[i].title +
+			"</p></li>";
 	}
 
 	playlistElement.innerText =
 		"#playList {li:nth-child(" +
+		parseInt(currenttrack + 1) +
+		"){background-color: #ffffff52;}}" +
+		"#likedPlayList {li:nth-child(" +
 		parseInt(currenttrack + 1) +
 		"){background-color: #ffffff52;}}";
 }
@@ -49,17 +38,18 @@ if (jsonParsed != null) {
 		.catch((error) => console.error("Ошибка при исполнении запроса: ", error));
 }
 
-
 // Раскрытие плеера
 function openPlayer() {
 	let lk;
 	let pl;
 
-	if (main.style.marginTop === "130vh") {
+	if (main.style.marginTop === "150vh") {
 		lk = true;
+		console.log(1);
 	}
-	if (main.style.marginTop === "-80vh") {
+	if (main.style.marginTop === "-100vh") {
 		pl = true;
+		console.log(2);
 	}
 
 	if (isOpened === false) {
@@ -69,8 +59,16 @@ function openPlayer() {
 		playList.style.filter = "";
 		playList.style.height = "calc(100% - 105px)";
 
-		main.style.transform = "scale(0.6)";
-		main.style.filter = "blur(20px)";
+		if (lk === true) {
+			liked.style.transform = "scale(0.6)";
+			liked.style.filter = "blur(20px)";
+		} else if (pl === true) {
+			playlists.style.transform = "scale(0.6)";
+			playlists.style.filter = "blur(20px)";
+		} else {
+			main.style.transform = "scale(0.6)";
+			main.style.filter = "blur(20px)";
+		}
 
 		isOpened = true;
 	} else {
@@ -78,8 +76,16 @@ function openPlayer() {
 		playList.style.filter = "blur(30px)";
 		footer.style.height = "85px";
 
-		main.style.transform = "";
-		main.style.filter = "";
+		if (lk === true) {
+			liked.style.transform = "";
+			liked.style.filter = "";
+		} else if (pl === true) {
+			playlists.style.transform = "";
+			playlists.style.filter = "";
+		} else {
+			main.style.transform = "";
+			main.style.filter = "";
+		}
 
 		isOpened = false;
 	}
