@@ -40,6 +40,8 @@ function playOnClick() {
 
 //Смена аудиофайла
 function settrack(key, n) {
+	progressBar.setAttribute("value", "0");
+
 	function moveTrack(json) {
 		let isPaused = true;
 
@@ -175,7 +177,6 @@ function goToTrack(name) {
 		for (let i = 0; i < likedTracks.length; i++) {
 			if (likedTracks[i] === jsonParsed[currenttrack].track_id) {
 				currenttrackLIKED = i;
-				console.log(i);
 			}
 		}
 
@@ -251,6 +252,4 @@ function moveToLike() {
 	} else {
 		likedSectionText.innerHTML = "избранное";
 	}
-
-	console.log(likedTracks);
 }
