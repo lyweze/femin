@@ -181,24 +181,6 @@ main {
 	}
 }
 
-#govno {
-	z-index: 0;
-	position: absolute;
-	width: 70vw;
-	top: 0;
-	left: 15vw;
-	opacity: 0;
-}
-
-@keyframes govno {
-	0% {
-		filter: contrast(1);
-	}
-	100% {
-		filter: contrast(20) brightness(10000000) hue-rotate(120deg);
-	}
-}
-
 /* Мини-плеер */
 footer {
 	z-index: 500;

@@ -15,16 +15,8 @@ function workingProgressBar() {
 			trackName.innerHTML = "☠️💀💀💀☠️☠️☠️☠️☠️💀💀💀💀";
 			playerTrackName.innerHTML = "☠️💀💀💀☠️☠️☠️☠️☠️💀💀💀💀";
 			document.querySelector(".logo").innerHTML = "💀💀💀💀💀";
-			govno.style.opacity = "1";
-			govno.style.zIndex = "1000";
-			// govno.style.cssText = 'animation: govno 0.1s linear infinite;'
-			govno.style.animation = 'govno'
-			govno.style.animationDuration = '0.1s'
-			govno.style.animationIterationCount = 'infinite'
-			govno.style.animationTimingFunction = 'linear'
 		} else {
 			document.querySelector(".logo").innerHTML = "femin";
-			govno.style = "";
 		}
 	}
 

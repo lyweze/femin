@@ -86,5 +86,3 @@ const likedSectionText = document.getElementById("likedSectionText"); //Текс
 const likedPlayList = document.getElementById("likedPlayList"); //Плейлист избранное
 /* ------------------------------------------------------------ */
 /* ENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDEND */
-
-const govno = document.getElementById("govno");
