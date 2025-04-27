@@ -446,8 +446,10 @@ footer {
 	}
 
 	#likedSection {
+		top: 100px;
 		left: 5vw;
 		width: 90vw;
+		height: calc(100vh - 260px);
 	}
 
 	footer {
