@@ -2,17 +2,15 @@ import io
 import logging
 import os
 from urllib.error import HTTPError
-
+import time
 import requests
 import tempfile
 from requests import RequestException
 from sclib import SoundcloudAPI, Track, Playlist
 from storage3.exceptions import StorageApiError
-
 import config
 import disk_to_db
 import tenacity
-import time
 from supabase import Client, create_client
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s -- %(levelname)s -- %(message)s')
@@ -47,12 +45,19 @@ def get_url(bucket_name, file_path):
                 retry=tenacity.retry_if_exception_type((RequestException, StorageApiError, HTTPError, ConnectionResetError)),
                 before_sleep=tenacity.before_sleep_log(logger, logging.WARNING)
                 )
+# get high_quality
+#pass
+
 def save_cover(solo_track_id: str, artwork_url: str, solo_cover_path: str) -> str:
     if not artwork_url:
         cover_id = config.DEFAULT_COVER
         return cover_id
+
     try:
-        response = requests.get(artwork_url)
+
+        high_quality_url = artwork_url.replace("large", "t500x500")
+
+        response = requests.get(high_quality_url)
         response.raise_for_status()
 
         supabase.storage.from_("covers").upload(
@@ -128,8 +133,7 @@ def save_track(url, soundcloud_api):
         return None
 
 
-# сохранение альбома в baclblazr
-
+# сохранение альбома с sk в supabase
 def save_album(url, soundcloud_api):
     """
 
@@ -197,15 +201,40 @@ def save_album(url, soundcloud_api):
 
 if __name__ == "__main__":
     supabase: Client = create_client(config.SUPABASE_URL, config.SUPABASE_KEY)
-
     sc_api = SoundcloudAPI()
-    # urls = ["https://soundcloud.com/anti-kringe/sets/2hollis-star"]
-    '''
-    for one_url in urls:
-        track_ids = save_album(one_url, sc_api)
-        if track_ids:
-            logging.info(f"saved {len(track_ids)} tracks")
-        else:
-            logging.warning(f"no tracks saved for {one_url}")'''
-    url = "https://on.soundcloud.com/ywaa1B25YVVMY7PQA"
-    save_track(url, sc_api)
+
+    n = input("Input what do you want to download? (1 - single track, 2 - album of  tracks, 3 - multiple of single tracks, 4 - multiple of albums):\n")
+    match n:
+        case '1':
+            print("Single track")
+            url = input("Input url: ")
+            save_track(url, sc_api)
+        case '2':
+            print("Album of tracks")
+            url = input("Input url: ")
+            save_album(url, sc_api)
+        case '3':
+            print("Multiple tracks")
+            num = int(input("Input number of tracks: "))
+            urls = []
+
+            for i in range(num):
+                url = input(f"{i}: Input url: ")
+                urls.append(url)
+
+            for url in urls:
+                save_track(url, sc_api)
+        case '4':
+            print("Multiple albums")
+            num = int(input("Input number of albums: "))
+            urls = []
+
+            for i in range(num):
+                url = input(f"{i}: Input url: ")
+                urls.append(url)
+
+            for url in urls:
+                save_album(url, sc_api)
+
+
+
