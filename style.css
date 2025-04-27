@@ -1,6 +1,6 @@
 /* Шапка */
 header {
-	z-index: 500;
+	z-index: 400;
 	position: absolute;
 	top: 0;
 	width: calc(100% - 80px);
@@ -183,6 +183,7 @@ main {
 
 /* Мини-плеер */
 footer {
+	z-index: 500;
 	display: flex;
 	position: fixed;
 	bottom: 0;
