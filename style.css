@@ -141,6 +141,7 @@ main {
 			display: flex;
 			align-items: center;
 			margin-top: 10px;
+			transition: all 0.2s ease-in-out;
 
 			padding: 0;
 
@@ -157,6 +158,10 @@ main {
 				font-size: 3vh;
 				letter-spacing: 10%;
 			}
+		}
+		> li:hover {
+			transition: all 0.2s ease-in-out;
+			filter: drop-shadow(0 0 10px #ffffff4f);
 		}
 	}
 	> ul::-webkit-scrollbar {
@@ -210,6 +215,7 @@ footer {
 			align-items: center;
 			margin-top: 10px;
 			padding: 0;
+			transition: all 0.2s ease-in-out;
 
 			> img {
 				margin-left: 1vh;
@@ -230,6 +236,10 @@ footer {
 				text-transform: uppercase;
 				overflow: hidden;
 			}
+		}
+		> li:hover {
+			transition: all 0.2s ease-in-out;
+			filter: drop-shadow(0 0 10px #ffffff4f);
 		}
 	}
 	> ul::-webkit-scrollbar {
@@ -491,6 +501,19 @@ footer {
 
 /* Адаптация ширина 600px*/
 @media screen and (max-width: 600px) {
+	header {
+		.logo:hover {
+			transition: all 0.4s ease-out;
+			letter-spacing: 5px;
+		}
+		.nav {
+			.nav-liked:hover {
+				transition: all 0.4s ease-out;
+				letter-spacing: 5px;
+			}
+		}
+	}
+
 	main {
 		> img {
 			width: 30vh;
@@ -507,6 +530,12 @@ footer {
 	footer {
 		> ul > li > p {
 			font-size: 5vw;
+		}
+		> ul {
+			> li:hover {
+				transition: all 0.2s ease-in-out;
+				filter: none;
+			}
 		}
 	}
 
@@ -532,6 +561,19 @@ footer {
 
 /* Адаптация высота 600px*/
 @media screen and (max-height: 600px) {
+	header {
+		.logo:hover {
+			transition: all 0.4s ease-out;
+			letter-spacing: 5px;
+		}
+		.nav {
+			.nav-liked:hover {
+				transition: all 0.4s ease-out;
+				letter-spacing: 5px;
+			}
+		}
+	}
+
 	main {
 		margin-left: 0;
 		margin-right: 0;
@@ -572,6 +614,13 @@ footer {
 			width: 20vw;
 			left: auto;
 			right: 270px;
+		}
+
+		> ul {
+			> li:hover {
+				transition: all 0.2s ease-in-out;
+				filter: none;
+			}
 		}
 	}
 }
