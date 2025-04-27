@@ -210,19 +210,21 @@ function moveToLike() {
 
 	function createLikedPlaylist(json) {
 		likedPlayList.innerHTML = "";
-		for (let i = 0; i < json.length; i++) {
-			if (likedTracks.includes(json[i].track_id)) {
-				likedPlayList.innerHTML +=
-					'<li onclick="goToTrack(' +
-					"'" +
-					i +
-					"')" +
-					'"' +
-					'><img src="' +
-					json[i].cover_url +
-					'"</img><p>' +
-					json[i].title +
-					"</p></li>";
+		for (let i = 0; i < likedTracks.length; i++) {
+			for (let j = 0; j < json.length; j++) {
+				if (json[j].track_id === likedTracks[i]) {
+					likedPlayList.innerHTML +=
+						'<li onclick="goToTrack(' +
+						"'" +
+						j +
+						"')" +
+						'"' +
+						'><img src="' +
+						json[j].cover_url +
+						'"</img><p>' +
+						json[j].title +
+						"</p></li>";
+				}
 			}
 		}
 
@@ -249,4 +251,6 @@ function moveToLike() {
 	} else {
 		likedSectionText.innerHTML = "избранное";
 	}
+
+	console.log(likedTracks);
 }
