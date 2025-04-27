@@ -1,12 +1,12 @@
 import logging
 from typing import List
-
 import uvicorn
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from supabase import create_client, Client
 from backend.config import SUPABASE_URL, SUPABASE_KEY
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 app = FastAPI(title="Femin tracks API")
@@ -21,12 +21,15 @@ app.add_middleware(
     allow_headers=["*"],  # Разрешить все заголовки
 )
 
+# модель ответа апи по сингл треку
 class TrackResponse(BaseModel):
     track_id: int
     title: str
     mp3_url: str
     cover_url: str
 
+
+# модель ответа апи по треку из альбома
 class PlaylistTrackResponse(BaseModel):
     playlist_id: int
     playlist_name: str
@@ -35,11 +38,11 @@ class PlaylistTrackResponse(BaseModel):
     mp3_url: str
     cover_url: str
 
+
+# подклююченте к supabase
 def get_supabase() -> Client:
     supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
     return supabase
-
-
 
 
 @app.get("/tracks", response_model=List[TrackResponse])
@@ -67,6 +70,7 @@ async def get_tracks(supabase: Client = Depends(get_supabase)):
         logger.error(e)
         raise HTTPException(status_code=500, detail="Something went wrong")
 
+
 @app.get("/playlists", response_model=List[PlaylistTrackResponse])
 async def get_playlists(supabase: Client = Depends(get_supabase)):
     try:
@@ -87,7 +91,7 @@ async def get_playlists(supabase: Client = Depends(get_supabase)):
             playlist_name = track['playlists']['title'] if track['playlists'] else "Unknown Playlist"
             playlist_response.append(PlaylistTrackResponse(
                 playlist_id=track['playlist_id'],
-                playlist_name = playlist_name,
+                playlist_name=playlist_name,
                 track_id=track['track_id'],
                 title=track['title'],
                 mp3_url=track['file_path'],
@@ -98,9 +102,10 @@ async def get_playlists(supabase: Client = Depends(get_supabase)):
     except Exception as e:
         logger.error(e)
         raise HTTPException(status_code=500, detail="Something went wrong")
+
+
 @app.get("/")
 async def root():
-
     return {"message": "Welcome to Femin tracks API",
             "tracks": "femin.onrender.com/tracks",
             "playlists": "femin.onrender.com/playlists"}
