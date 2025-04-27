@@ -1,11 +1,22 @@
 //Функция обновления прогрессбара
 function workingProgressBar() {
 	if (jsonParsed != null) {
-		if ((jsonParsed[currenttrack].track_id === 40) && (audio.currentTime >= 14.7)) {
+		if (jsonParsed[currenttrack].track_id === 40 && audio.currentTime >= 14.7) {
+			main.style.backgroundImage =
+				"https://i.pinimg.com/736x/73/d9/3b/73d93b467894822c127d6f6a2d785ee5.jpg";
 			cover.setAttribute(
 				"src",
 				"https://i.pinimg.com/736x/73/d9/3b/73d93b467894822c127d6f6a2d785ee5.jpg"
 			);
+			miniCover.setAttribute(
+				"src",
+				"https://i.pinimg.com/736x/73/d9/3b/73d93b467894822c127d6f6a2d785ee5.jpg"
+			);
+			trackName.innerHTML = "☠️💀💀💀☠️☠️☠️☠️☠️💀💀💀💀";
+			playerTrackName.innerHTML = "☠️💀💀💀☠️☠️☠️☠️☠️💀💀💀💀";
+			document.querySelector('.logo').innerHTML = '💀💀💀💀💀';
+		} else {
+			document.querySelector('.logo').innerHTML = 'femin';
 		}
 	}
 
