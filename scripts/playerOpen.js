@@ -15,12 +15,19 @@ function createCurrentPlaylist(json) {
 			"</p></li>";
 	}
 
+	let currenttrackLIKED;
+	for (let i = 0; i < likedTracks.length; i++) {
+		if (likedTracks[i] === json[currenttrack].track_id) {
+			currenttrackLIKED = i;
+		}
+	}
+
 	playlistElement.innerText =
 		"#playList {li:nth-child(" +
 		parseInt(currenttrack + 1) +
 		"){background-color: #ffffff52;}}" +
 		"#likedPlayList {li:nth-child(" +
-		parseInt(currenttrack + 1) +
+		parseInt(currenttrackLIKED + 1) +
 		"){background-color: #ffffff52;}}";
 }
 if (jsonParsed != null) {

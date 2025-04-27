@@ -14,6 +14,7 @@ header {
 	padding-right: 40px;
 
 	.logo {
+		padding: 0;
 		text-decoration: none;
 		cursor: pointer;
 
@@ -32,16 +33,9 @@ header {
 		display: flex;
 		align-items: center;
 
-		.nav-top {
-			margin-right: 15px;
-		}
-
-		.nav-popular {
-			margin-left: 15px;
-		}
-
-		.nav-top,
-		.nav-popular {
+		.nav-liked {
+			padding: 0;
+			margin-right: 10px;
 			text-decoration: none;
 			cursor: pointer;
 
@@ -51,11 +45,7 @@ header {
 			letter-spacing: 5px;
 			transition: all 0.4s ease-out;
 		}
-		.nav-top:hover {
-			transition: all 0.4s ease-out;
-			letter-spacing: 10px;
-		}
-		.nav-popular:hover {
+		.nav-liked:hover {
 			transition: all 0.4s ease-out;
 			letter-spacing: 10px;
 		}
@@ -115,20 +105,8 @@ main {
 	}
 }
 
-/* Плейлисты */
-#article1 {
-	position: absolute;
-	left: calc(50% - 620px);
-	top: calc(50% - 300px);
-	background-color: rgba(255, 255, 255, 0.29);
-	width: 1240px;
-	height: 600px;
-	border-radius: 24px;
-	transition: all 0.7s cubic-bezier(0.45, 0.06, 0.19, 0.97);
-}
-
 /* Избранное */
-#article2 {
+#likedSection {
 	position: absolute;
 	left: calc(50% - 620px);
 	top: calc(50% - 300px);
@@ -240,12 +218,17 @@ footer {
 			}
 
 			> p {
+				width: calc(100% - 13vh - 20px);
+				height: 90%;
+				display: flex;
+				align-items: center;
 				margin-left: 20px;
 				color: #ffffff;
 				font-family: "Koulen";
 				font-size: 3vh;
 				letter-spacing: 10%;
 				text-transform: uppercase;
+				overflow: hidden;
 			}
 		}
 	}
@@ -462,6 +445,11 @@ footer {
 		}
 	}
 
+	#likedSection {
+		left: 5vw;
+		width: 90vw;
+	}
+
 	footer {
 		margin-left: 0px;
 		align-content: center;
@@ -499,20 +487,44 @@ footer {
 	}
 }
 
-/* Адаптация ширина 500px*/
-@media screen and (max-width: 500px) {
+/* Адаптация ширина 600px*/
+@media screen and (max-width: 600px) {
 	main {
 		> img {
-			width: 80vw;
+			width: 30vh;
 		}
 		> p {
 			width: 90vw;
+			overflow: hidden;
+			font-size: 8vw;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	}
+
+	footer {
+		> ul > li > p {
+			font-size: 5vw;
 		}
 	}
 
 	#playerTrackName {
-		/* opacity: 0; */
 		display: none;
+	}
+
+	#likedSection {
+		#likedSectionText {
+			width: 90%;
+			margin: auto;
+			overflow: hidden;
+			font-size: 8vw;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		> ul > li > p {
+			font-size: 5vw;
+		}
 	}
 }
 
@@ -524,8 +536,14 @@ footer {
 		position: absolute;
 		right: 0;
 		padding-right: 20px;
+		flex-direction: row;
+
+		> button {
+			order: 1;
+		}
 
 		> img {
+			order: 2;
 			width: auto;
 			height: calc(100vh - 85px - 85px - 60px);
 		}
@@ -563,6 +581,10 @@ footer {
 		padding-left: 20px;
 		padding-right: 20px;
 		border-bottom-right-radius: 12px;
+
+		.logo {
+			display: none;
+		}
 	}
 
 	main {
@@ -591,6 +613,15 @@ footer {
 		}
 		#rangeProgress {
 			display: none;
+		}
+	}
+}
+
+/* Адаптация высота 800px ширина 500px*/
+@media screen and (max-height: 800px) and (max-width: 500px) {
+	main {
+		> img {
+			width: 30vh;
 		}
 	}
 }

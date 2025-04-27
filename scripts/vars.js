@@ -81,9 +81,8 @@ const playList = document.getElementById("playList"); //Текущий плей�
 /* ------------------------------------------------------------ */
 /* STARTSTARTSTARTSTARTSTARTSTARTSTARTSTARTSTARTSTARTSTARTSTART */
 //Несортированное
-const playlists = document.getElementById("article1"); //Плейлисты
-const liked = document.getElementById("article2"); //Плейлисты избранное
-const playlist = document.getElementById("playlist"); //Плейлисты (блоки)
+const liked = document.getElementById("likedSection"); //Плейлисты избранное
+const likedSectionText = document.getElementById("likedSectionText"); //Текст в блоке избранного
 const likedPlayList = document.getElementById("likedPlayList"); //Плейлист избранное
 /* ------------------------------------------------------------ */
 /* ENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDEND */

@@ -15,8 +15,10 @@
 		/>
 	</head>
 	<body>
+		<!-- Крутой инлайн костыль -->
 		<style id="playlistElement"></style>
 
+		<!-- Шапка -->
 		<header>
 			<button
 				style="background: none; border: none"
@@ -29,15 +31,7 @@
 			<div class="nav">
 				<button
 					style="background: none; border: none"
-					class="nav-top"
-					onclick="openPlaylists()"
-				>
-					ПЛЕЙЛИСТЫ
-				</button>
-				<img class="nav-img" src="./img/1.svg" alt="" />
-				<button
-					style="background: none; border: none"
-					class="nav-popular"
+					class="nav-liked"
 					onclick="openLiked()"
 				>
 					ИЗБРАННОЕ
@@ -45,14 +39,16 @@
 			</div>
 		</header>
 
-		<article
-			id="article2"
+		<!-- Избранное -->
+		<section
+			id="likedSection"
 			style="margin-top: -1000px; filter: blur(30px); transform: scale(0.8)"
 		>
-			<p>ИЗБРАННОЕ</p>
+			<p id="likedSectionText">Добавьте сюда понравившееся!</p>
 			<ul id="likedPlayList"></ul>
-		</article>
+		</section>
 
+		<!-- Основной блок -->
 		<main id="main">
 			<img
 				src="./img/default.svg"
@@ -80,20 +76,7 @@
 			</button>
 		</main>
 
-		<article
-			id="article1"
-			style="margin-top: 1000px; filter: blur(30px); transform: scale(0.8)"
-		>
-			<div id="playlist-div">
-				<ul id="playlist">
-					<li>
-						<img src="" style="width: 30vh" alt="" />
-						<p>ИЗБРАННОЕ</p>
-					</li>
-				</ul>
-			</div>
-		</article>
-
+		<!-- Футер (мини-плеер) -->
 		<footer id="footer">
 			<ul id="playList" style="opacity: 0;"></ul>
 
@@ -210,6 +193,7 @@
 			</div>
 		</footer>
 
+		<!-- Скрипты -->
 		<script src="./scripts/vars.js"></script>
 		<script src="./scripts/playerFunctions.js"></script>
 		<script src="./scripts/progressBars.js"></script>
