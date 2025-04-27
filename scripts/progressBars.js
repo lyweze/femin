@@ -124,7 +124,7 @@ function workingProgressBar() {
 	}
 }
 
-//Обновляю прогрессбар
+//Обновляю прогрессбар каждые 50мс
 setInterval(workingProgressBar, 50);
 
 //Перелистывание прогрессбара
