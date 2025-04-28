@@ -66,6 +66,7 @@ main {
 	transition: all 0.7s cubic-bezier(0.45, 0.06, 0.19, 0.97);
 
 	> img {
+		aspect-ratio: 1;
 		width: 400px;
 		border-radius: 50%;
 		cursor: pointer;
@@ -686,7 +687,7 @@ footer {
 /* Шрифт */
 @font-face {
 	font-family: "Koulen";
-	src: url("../fonts/TT\ Berlinerins\ Trial\ Grotesk.otf");
+	src: url("./fonts/TT\ Berlinerins\ Trial\ Grotesk.otf");
 }
 
 /* Остальные настройки */
