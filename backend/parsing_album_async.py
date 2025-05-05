@@ -4,12 +4,14 @@ from sclib.asyncio import SoundcloudAPI, Playlist
 import yadisk
 from config import TOKEN_YA
 
+
 async def save_track(cover_url) -> bool:
     try:
         if not cover_url:
             pass
     except:
         pass
+
 
 async def save_album(url: str, y: yadisk.YaDisk) -> int:
     api = SoundcloudAPI()
@@ -38,5 +40,7 @@ async def main():
     # url = "https://soundcloud.com/icegergert-685473693/casino"
     url = "https://soundcloud.com/illya-poludnenko/sets/serega-pirat"
     await save_album(url, y)
+
+
 if __name__ == "__main__":
     asyncio.run(main())

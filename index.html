@@ -1,204 +1,51 @@
 <!DOCTYPE html>
-<html lang="ru">
-	<head>
-		<meta charset="UTF-8" />
-		<meta
-			name="viewport"
-			content="width=device-width, initial-scale=1.0, user-scalable=no"
-		/>
-		<title>FEMIN</title>
-		<link rel="shortcut icon" href="./img/favicon.jpeg" type="image/x-icon" />
-		<link rel="stylesheet" href="./style.css" />
-		<link
-			rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-		/>
-	</head>
-	<body>
-		<!-- Крутой инлайн костыль -->
-		<style id="playlistElement"></style>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FEMIN</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <a class="logo" href="#">FEMIN</a>
 
-		<!-- Шапка -->
-		<header>
-			<button
-				style="background: none; border: none"
-				class="logo"
-				onclick="collapseAll()"
-			>
-				FEMIN
-			</button>
+    <div class="nav">
+        <a class="nav-top" href="">TOP 30</a>
+        <img class="nav-img" src="./img/1.svg" alt="">
+        <a class="nav-popular" href="">POPULAR</a>
+    </div>
+</header>
 
-			<div class="nav">
-				<button
-					style="background: none; border: none"
-					class="nav-liked"
-					onclick="openLiked()"
-				>
-					ИЗБРАННОЕ
-				</button>
-			</div>
-		</header>
 
-		<!-- Избранное -->
-		<section
-			id="likedSection"
-			style="margin-top: -1000px; filter: blur(30px); transform: scale(0.8)"
-		>
-			<p id="likedSectionText">Добавьте сюда понравившееся!</p>
-			<ul id="likedPlayList"></ul>
-		</section>
+<main>
+    <img src="./music/covers/moskva.jpeg" id="cover" style="width: 400px; filter: brightness(80%) grayscale(40%);"
+         onclick="playOnClick()" alt="">
 
-		<!-- Основной блок -->
-		<main id="main">
-			<img
-				src="./img/default.svg"
-				id="cover"
-				style="filter: brightness(80%) grayscale(40%)"
-				onclick="playOnClick()"
-				alt=""
-			/>
+    <p id="trackName">МОСКВА</p>
+</main>
 
-			<p id="trackName"></p>
+<footer>
+    <audio id="audioPlayer" src="./music/moskva.mp3"></audio>
 
-			<button id="addToLike" onclick="moveToLike()">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="32"
-					height="32"
-					fill="currentColor"
-					class="bi bi-heart"
-					viewBox="0 0 16 16"
-				>
-					<path
-						d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
-					/>
-				</svg>
-			</button>
-		</main>
+    <img src="./music/covers/moskva.jpeg" id="mini-cover"
+         style="width: 65px; border-radius: 8px; margin-left: 10px; transition: all 0.3s cubic-bezier(.45,.06,.19,.97); transform: scale(0.94); filter: brightness(80%)"
+         alt="">
 
-		<!-- Футер (мини-плеер) -->
-		<footer id="footer">
-			<ul id="playList" style="opacity: 0;"></ul>
+    <p id="playerTrackName">МОСКВА</p>
 
-			<div id="footer-div">
-				<audio id="audioPlayer" src=""></audio>
-				<img
-					onclick="openPlayer()"
-					src="./img/default.svg"
-					id="mini-cover"
-					style="
-						width: 65px;
-						border-radius: 8px;
-						margin-left: 10px;
-						transition: all 0.3s cubic-bezier(0.45, 0.06, 0.19, 0.97);
-						transform: scale(0.94);
-						filter: brightness(80%);
-						cursor: pointer;
-					"
-					alt=""
-				/>
-				<p id="playerTrackName"></p>
+    <progress id="progressBar" value="0" max="100"></progress>
 
-				<!-- Громкость и прогрессбар -->
-				<progress id="progressBar" value="0" max="100"></progress>
-				<input
-					type="range"
-					min="0"
-					max="100"
-					step="0.1"
-					value="0"
-					id="rangeProgress"
-				/>
-				<progress id="volume" max="1" value="1"></progress>
-				<input
-					type="range"
-					min="0"
-					max="1"
-					step="any"
-					value="1"
-					title="Громкость"
-					id="rangeVolume"
-				/>
-				<p id="trackTime"></p>
+    <button onclick="playOnClick()" class="playButton" id="playButton" href="" style="background-color: #230030;">⏵
+    </button>
+    <button onclick="changeTrack('previous')" class="previousButton" href="" style="background-color: #4C1C62;">⏮
+    </button>
+    <button onclick="changeTrack('next')" class="nextButton" href="" style="background-color: #4C1C62;">⏭</button>
+</footer>
 
-				<!-- Кнопки -->
-				<button
-					onclick="playOnClick()"
-					class="playButton"
-					id="playButton"
-					href=""
-					style="background-color: #230030"
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="40"
-						height="40"
-						fill="currentColor"
-						class="bi bi-play-fill"
-						viewBox="0 0 15 16"
-					>
-						<path
-							d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"
-						/>
-					</svg>
-				</button>
+<!-- <button onclick="currentTime()">fff</button> -->
 
-				<button
-					onclick="settrack('previous')"
-					class="previousButton"
-					id="eblan"
-					href=""
-					style="background-color: #4c1c62"
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="40"
-						height="40"
-						fill="currentColor"
-						class="bi bi-rewind-fill"
-						viewBox="0 0 16 16"
-					>
-						<path
-							d="M8.404 7.304a.802.802 0 0 0 0 1.392l6.363 3.692c.52.302 1.233-.043 1.233-.696V4.308c0-.653-.713-.998-1.233-.696L8.404 7.304Z"
-						/>
-						<path
-							d="M.404 7.304a.802.802 0 0 0 0 1.392l6.363 3.692c.52.302 1.233-.043 1.233-.696V4.308c0-.653-.713-.998-1.233-.696L.404 7.304Z"
-						/>
-					</svg>
-				</button>
-
-				<button
-					onclick="settrack('next')"
-					class="nextButton"
-					id="debil"
-					href=""
-					style="background-color: #4c1c62"
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="40"
-						height="40"
-						fill="currentColor"
-						class="bi bi-fast-forward-fill"
-						viewBox="0 0 16 16"
-					>
-						<path
-							d="M7.596 7.304a.802.802 0 0 1 0 1.392l-6.363 3.692C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692Z"
-						/>
-						<path
-							d="M15.596 7.304a.802.802 0 0 1 0 1.392l-6.363 3.692C8.713 12.69 8 12.345 8 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692Z"
-						/>
-					</svg>
-				</button>
-			</div>
-		</footer>
-
-		<!-- Скрипты -->
-		<script src="./scripts/vars.js"></script>
-		<script src="./scripts/playerFunctions.js"></script>
-		<script src="./scripts/progressBars.js"></script>
-		<script src="./scripts/keyWork.js"></script>
-		<script src="./scripts/playerOpen.js"></script>
-		<script src="./scripts/playlistPage.js"></script>
-	</body>
+<script src="script.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</body>
 </html>
