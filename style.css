@@ -4,7 +4,7 @@ body {
     background-color: #451365;
 }
 
-header{
+header {
     position: absolute;
     top: 0;
     width: calc(100% - 80px);
@@ -18,56 +18,59 @@ header{
     padding-right: 40px;
 
 
-    .logo{
+    .logo {
         text-decoration: none;
         cursor: pointer;
-    
+
         color: #fff;
         font-family: 'Koulen';
         font-size: 36px;
         letter-spacing: 20%;
         transition: all 0.4s ease-out;
     }
-    .logo:hover{
+
+    .logo:hover {
         transition: all 0.4s ease-out;
         letter-spacing: 30%;
     }
-    
-    .nav{
+
+    .nav {
         display: flex;
         align-items: center;
-    
-        .nav-top{
+
+        .nav-top {
             margin-right: 15px;
         }
-        
-        .nav-popular{
+
+        .nav-popular {
             margin-left: 15px;
         }
-        
+
         .nav-top,
-        .nav-popular{
+        .nav-popular {
             text-decoration: none;
             cursor: pointer;
-        
+
             color: #fff;
             font-family: 'Koulen';
             font-size: 24px;
             letter-spacing: 20%;
             transition: all 0.4s ease-out;
         }
-        .nav-top:hover{
+
+        .nav-top:hover {
             transition: all 0.4s ease-out;
             letter-spacing: 30%;
         }
-        .nav-popular:hover{
+
+        .nav-popular:hover {
             transition: all 0.4s ease-out;
             letter-spacing: 30%;
         }
-    }    
+    }
 }
 
-main{
+main {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -82,15 +85,16 @@ main{
         border-radius: 50%;
         cursor: pointer;
         margin-left: 42px;
-        transition: all 0.3s cubic-bezier(.45,.06,.19,.97);
+        transition: all 0.3s cubic-bezier(.45, .06, .19, .97);
         box-shadow: 0 0 10px #38004F;
     }
+
     > img:hover {
-        transition: all 0.3s cubic-bezier(.45,.06,.19,.97);
+        transition: all 0.3s cubic-bezier(.45, .06, .19, .97);
         box-shadow: 0 0 20px #38004F;
     }
 
-    >p {
+    > p {
         position: relative;
         right: 160px;
         color: #fff;
@@ -100,7 +104,7 @@ main{
     }
 }
 
-footer{
+footer {
     display: flex;
     align-items: center;
     /* justify-content: space-between; */
@@ -113,7 +117,7 @@ footer{
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
 
-    #playerTrackName{
+    #playerTrackName {
         position: absolute;
         left: 95px;
         color: #fff;
@@ -143,6 +147,7 @@ footer{
         background-color: #1E1E1E;
         color: #1E1E1E;
     }
+
     > progress::-webkit-progress-value {
         border-radius: 6px;
         border-top-left-radius: 0;
@@ -150,6 +155,7 @@ footer{
         background-color: #230030;
         color: #230030;
     }
+
     > progress::-moz-progress-bar {
         border-radius: 6px;
         border-top-left-radius: 0;
@@ -172,7 +178,7 @@ footer{
         display: flex;
         align-items: center;
         justify-content: center;
-        
+
         font-family: 'Koulen';
         color: #ffffff7a;
         font-size: 40px;
@@ -184,42 +190,41 @@ footer{
     .playButton {
         right: 85px;
     }
+
     .nextButton {
         right: 10px;
     }
+
     .previousButton {
         right: 160px;
     }
 
-    .playButton:hover{
+    .playButton:hover {
         transition: all 0.2s ease-out;
         box-shadow: 0 0 20px #4C1C62;
     }
-    .nextButton:hover{
+
+    .nextButton:hover {
         transition: all 0.2s ease-out;
         box-shadow: 0 0 20px #230030;
     }
-    .previousButton:hover{
+
+    .previousButton:hover {
         transition: all 0.2s ease-out;
         box-shadow: 0 0 20px #230030;
     }
 }
-
 
 
 /* Animations */
 @keyframes rotate {
     0% {
         transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(360deg);
-	}
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
-
-
-
-
 
 
 @font-face {

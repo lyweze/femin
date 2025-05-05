@@ -11,7 +11,6 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 app = FastAPI(title="Femin tracks API")
 
-
 # Настройка CORS
 app.add_middleware(
     CORSMiddleware,
@@ -20,6 +19,7 @@ app.add_middleware(
     allow_methods=["*"],  # Разрешить все методы (GET, POST, PUT и т. д.)
     allow_headers=["*"],  # Разрешить все заголовки
 )
+
 
 # модель ответа апи по сингл треку
 class TrackResponse(BaseModel):

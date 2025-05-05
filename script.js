@@ -22,8 +22,8 @@ window.addEventListener('keydown', (event) => {
 
 function playOnClick() {
     audio.addEventListener('playing', currentTime());
-    
-    if (!audio.paused){
+
+    if (!audio.paused) {
         audio.pause();
         miniCover.style.cssText = 'width: 65px; border-radius: 8px; margin-left: 10px; transition: all 0.3s cubic-bezier(.45,.06,.19,.97); transform: scale(0.94); filter: brightness(80%)';
         cover.style.cssText = 'animation: rotate 10s linear infinite; width: 400px; animation-play-state: paused; filter: brightness(80%) grayscale(40%);';
@@ -43,7 +43,7 @@ function changeTrack(pressedBtn) {
     if (pressedBtn == 'next') {
         currenttrack++;
 
-        if (!audio.paused){
+        if (!audio.paused) {
             isPaused = false;
             playOnClick();
         }
@@ -57,11 +57,10 @@ function changeTrack(pressedBtn) {
         if (!isPaused) {
             playOnClick();
         }
-    }
-    else {
+    } else {
         currenttrack--;
 
-        if (!audio.paused){
+        if (!audio.paused) {
             isPaused = false;
             playOnClick();
         }
@@ -79,7 +78,7 @@ function changeTrack(pressedBtn) {
 }
 
 
-function currentTime(){
+function currentTime() {
     progressBar.setAttribute('value', audio.currentTime.toString());
     console.log('it works');
 }
