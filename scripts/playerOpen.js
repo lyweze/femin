@@ -52,11 +52,9 @@ function openPlayer() {
 
 	if (main.style.marginTop === "150vh") {
 		lk = true;
-		console.log(1);
 	}
 	if (main.style.marginTop === "-100vh") {
 		pl = true;
-		console.log(2);
 	}
 
 	if (isOpened === false) {
