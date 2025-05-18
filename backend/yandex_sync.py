@@ -31,13 +31,13 @@ def save_cover(track_id, artwork_url, cover_path):
     try:
         high_quality_cover = f'https://{artwork_url.replace("%%", "1000x1000")}'
 
-        response = requests.get(high_quality_cover)
+        response_cover = requests.get(high_quality_cover)
 
-        response.raise_for_status()
+        response_cover.raise_for_status()
 
         supabase.storage.from_("covers").upload(
             path=cover_path,
-            file=response.content
+            file=response_cover.content
         )
         public_url = supabase.storage.from_("covers").get_public_url(cover_path)
         cover_id = disk_to_db.save_cover_to_db(track_id, public_url)
@@ -55,7 +55,6 @@ def save_cover(track_id, artwork_url, cover_path):
                     (RequestException, StorageApiError, HTTPError, ConnectionResetError)),
                 before_sleep=tenacity.before_sleep_log(logger, logging.WARNING)
                 )
-
 def save_track(YaClient, track_id):
     try:
         track = YaClient.tracks([track_id])[0]
