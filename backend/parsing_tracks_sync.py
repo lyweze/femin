@@ -1,9 +1,6 @@
 import io
 import logging
 import os
-from dataclasses import dataclass
-from pathlib import Path
-from typing import Optional, List, Tuple, Union
 from urllib.error import HTTPError
 import time
 import requests
@@ -20,158 +17,226 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s -- %(levelname)s -- 
 logger = logging.getLogger(__name__)
 
 
-@dataclass
-class TrackResult:
-    track_id: str
-    cover_id: str
+def sanitize_path(text):
+    translit_dict = {
+        'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'e',
+        'ж': 'zh', 'з': 'z', 'и': 'i', 'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm',
+        'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u',
+        'ф': 'f', 'х': 'h', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'sch',
+        'ъ': '', 'ы': 'y', 'ь': '', 'э': 'e', 'ю': 'yu', 'я': 'ya'
+    }
+    text = text.lower()
+    for cyr, lat in translit_dict.items():
+        text = text.replace(cyr, lat)
+    return text
 
 
-class SoundCloudManager:
-    def __init__(self, supabase_client: Client, soundcloud_api: SoundcloudAPI):
-        self.supabase = supabase_client
-        self.sc_api = soundcloud_api
-        self._transliteration = {
-            'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'e',
-            'ж': 'zh', 'з': 'z', 'и': 'i', 'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm',
-            'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u',
-            'ф': 'f', 'х': 'h', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'sch',
-            'ъ': '', 'ы': 'y', 'ь': '', 'э': 'e', 'ю': 'yu', 'я': 'ya'
-        }
+## получаем ссылку на supabase
+def get_url(bucket_name, file_path):
+    public_url = supabase.storage.from_(bucket_name).get_public_url(file_path)
+    print(f"public_url: {public_url}")
+    return public_url
 
-    def _sanitize_path(self, text: str) -> str:
-        """Sanitize text for use in file paths."""
-        text = text.lower()
-        return ''.join(self._transliteration.get(c, c) for c in text)
 
-    def _get_public_url(self, bucket_name: str, file_path: str) -> str:
-        """Get public URL for a file in storage."""
-        return self.supabase.storage.from_(bucket_name).get_public_url(file_path)
+## сохранение обложки
+@tenacity.retry(stop=tenacity.stop_after_attempt(5),
+                wait=tenacity.wait_fixed(3),
+                retry=tenacity.retry_if_exception_type(
+                    (RequestException, StorageApiError, HTTPError, ConnectionResetError)),
+                before_sleep=tenacity.before_sleep_log(logger, logging.WARNING)
+                )
+# get high_quality
+# pass
 
-    @tenacity.retry(
-        stop=tenacity.stop_after_attempt(5),
-        wait=tenacity.wait_fixed(3),
-        retry=tenacity.retry_if_exception_type((RequestException, StorageApiError, HTTPError)),
-        before_sleep=tenacity.before_sleep_log(logger, logging.WARNING)
-    )
-    def _save_cover(self, track_id: str, artwork_url: str, cover_path: str) -> str:
-        """Save track cover to storage."""
-        if not artwork_url:
-            return config.DEFAULT_COVER
+def save_cover(solo_track_id: str, artwork_url: str, solo_cover_path: str) -> str:
+    if not artwork_url:
+        cover_id = config.DEFAULT_COVER
+        return cover_id
 
-        try:
-            high_quality_url = artwork_url.replace("large", "t500x500")
-            response = requests.get(high_quality_url, timeout=10)
-            response.raise_for_status()
+    try:
 
-            self.supabase.storage.from_("covers").upload(
-                path=cover_path,
-                file=response.content
-            )
-            public_url = self._get_public_url("covers", cover_path)
-            return disk_to_db.save_cover_to_db(track_id, public_url)
-        except Exception as e:
-            logger.error(f"Error saving cover for track {track_id}: {e}")
-            raise
+        high_quality_url = artwork_url.replace("large", "t500x500")
 
-    def _save_track_file(self, track: Track, file_path: str) -> str:
-        """Save track audio file to storage."""
-        with tempfile.NamedTemporaryFile(suffix=".mp3", delete=True) as tmp_file:
+        response = requests.get(high_quality_url)
+        response.raise_for_status()
+
+        supabase.storage.from_("covers").upload(
+            path=solo_cover_path,
+            file=response.content
+        )
+        public_url = supabase.storage.from_("covers").get_public_url(solo_cover_path)
+        cover_id = disk_to_db.save_cover_to_db(solo_track_id, public_url)
+        return cover_id
+    except Exception as e:
+        print(f"Error saving cover for track {solo_track_id}: {e}")
+        raise
+
+
+# сохранение трека в backblaze
+@tenacity.retry(stop=tenacity.stop_after_attempt(5),
+                wait=tenacity.wait_fixed(3),
+                retry=tenacity.retry_if_exception_type(
+                    (RequestException, StorageApiError, HTTPError, ConnectionResetError)),
+                before_sleep=tenacity.before_sleep_log(logger, logging.WARNING)
+                )
+def save_track(url, soundcloud_api):
+    try:
+        time.sleep(1)
+        track = soundcloud_api.resolve(url)
+        assert isinstance(track, Track), "URL is not managed to be a track"
+
+        mp3_data = io.BytesIO()
+        track.write_mp3_to(mp3_data)
+        mp3_data.seek(0)
+
+        with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as tmp_file:
             track.write_mp3_to(tmp_file)
             tmp_file.flush()
-            
-            with open(tmp_file.name, "rb") as mp3_file:
-                self.supabase.storage.from_("tracks").upload(
-                    path=file_path,
-                    file=mp3_file.read(),
+            temp_file_path = tmp_file.name
+
+            track_artist_path = sanitize_path(track.artist)
+            track_title_path = sanitize_path(track.title)
+            supabase_path = f"{track_artist_path}_{track_title_path}.mp3"
+
+        with open(temp_file_path, "rb") as mp3_file:
+            mp3_data = mp3_file.read()
+
+        track_bucket = "tracks"
+        supabase.storage.from_(track_bucket).upload(
+            path=supabase_path,
+            file=mp3_data,
+            file_options={"content-type": "audio/mp3"}
+        )
+        os.remove(temp_file_path)
+
+        download_url = get_url(track_bucket, supabase_path)
+        track_id = disk_to_db.save_track_to_db(track.title, download_url)
+
+        cover_path = f"{track_artist_path}_{track_title_path}.jpg"
+        cover_path = sanitize_path(cover_path)
+        cover_id = save_cover(track_id, track.artwork_url, cover_path)
+        time.sleep(1)
+
+        return track_id, cover_id
+
+
+
+    except AssertionError as e:
+        print(f"Error: url isnt a track: {e}")
+        return None
+    except requests.RequestException as e:
+        print(f"Error: url isn't a track: {e}")
+        return None
+    except StorageApiError as e:
+        print(f"eRROR WE CANT MANAGED THIS TRACK: {e}")
+        return None
+    except HTTPError as e:
+        print(f"Error: url isn't a track: {e}")
+        return None
+
+
+# сохранение альбома с sk в supabase
+def save_album(url, soundcloud_api):
+    """
+
+    :type api: object
+    """
+    try:
+        playlist = soundcloud_api.resolve(url)
+        assert isinstance(playlist, Playlist), "URL is not managed to be a playlist"
+
+        playlist_id = disk_to_db.save_playlist_to_db(playlist.title)
+        track_ids = []
+        album_bucket = "tracks"
+
+        for track in playlist.tracks:
+            time.sleep(1)
+
+            @tenacity.retry(stop=tenacity.stop_after_attempt(5),
+                            wait=tenacity.wait_fixed(3),
+                            retry=tenacity.retry_if_exception_type(
+                                (RequestException, StorageApiError, HTTPError, ConnectionResetError)),
+                            before_sleep=tenacity.before_sleep_log(logger, logging.WARNING)
+                            )
+            def single_track():
+                with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as tmp_file:
+                    track.write_mp3_to(tmp_file)
+                    tmp_file.flush()
+                    temp_file_path = tmp_file.name
+
+                    playlist_title_path = sanitize_path(playlist.title)
+                    track_artist_path = sanitize_path(track.artist)
+                    track_title_path = sanitize_path(track.title)
+                    supabase_path = f"{playlist_title_path}/{track_artist_path}_{track_title_path}.mp3"
+
+                with open(temp_file_path, "rb") as mp3_file:
+                    mp3_data = mp3_file.read()
+
+                supabase.storage.from_(album_bucket).upload(
+                    path=supabase_path,
+                    file=mp3_data,
                     file_options={"content-type": "audio/mp3"}
                 )
+                os.remove(temp_file_path)
 
-        return self._get_public_url("tracks", file_path)
+                solo_download_url = get_url(album_bucket, supabase_path)
 
-    @tenacity.retry(
-        stop=tenacity.stop_after_attempt(5),
-        wait=tenacity.wait_fixed(3),
-        retry=tenacity.retry_if_exception_type((RequestException, StorageApiError, HTTPError)),
-        before_sleep=tenacity.before_sleep_log(logger, logging.WARNING)
-    )
-    def save_track(self, url: str) -> Optional[TrackResult]:
-        """Save a single track from SoundCloud."""
-        try:
-            track = self.sc_api.resolve(url)
-            if not isinstance(track, Track):
-                logger.error(f"URL is not a track: {url}")
-                return None
+                solo_track_id = disk_to_db.save_track_to_db(track.title, solo_download_url, playlist_id)
 
-            track_path = f"{self._sanitize_path(track.artist)}_{self._sanitize_path(track.title)}.mp3"
-            download_url = self._save_track_file(track, track_path)
-            track_id = disk_to_db.save_track_to_db(track.title, download_url)
+                solo_cover_path = f"{playlist.title}/{track.artist}_{track.title}.jpg"
+                solo_cover_path = sanitize_path(solo_cover_path)
+                time.sleep(1)
+                solo_cover_id = save_cover(solo_track_id, track.artwork_url, solo_cover_path)
 
-            cover_path = f"{self._sanitize_path(track.artist)}_{self._sanitize_path(track.title)}.jpg"
-            cover_id = self._save_cover(track_id, track.artwork_url, cover_path)
+                return solo_track_id, solo_cover_id
 
-            return TrackResult(track_id=track_id, cover_id=cover_id)
+            track_id, _ = single_track()
+            track_ids.append(track_id)
 
-        except Exception as e:
-            logger.error(f"Failed to save track {url}: {e}")
-            return None
+    except StorageApiError as e:
+        logging.error(f"error by uploading the playlist: {e}")
+        return []
+    except HTTPError as e:
+        logging.error(f"error by downloading the playlist: {e}")
+        return []
 
-    def save_album(self, url: str) -> List[str]:
-        """Save an album/playlist from SoundCloud."""
-        try:
-            playlist = self.sc_api.resolve(url)
-            if not isinstance(playlist, Playlist):
-                logger.error(f"URL is not a playlist: {url}")
-                return []
-
-            playlist_id = disk_to_db.save_playlist_to_db(playlist.title)
-            track_ids = []
-            playlist_path = self._sanitize_path(playlist.title)
-
-            for track in playlist.tracks:
-                track_path = f"{playlist_path}/{self._sanitize_path(track.artist)}_{self._sanitize_path(track.title)}.mp3"
-                download_url = self._save_track_file(track, track_path)
-                track_id = disk_to_db.save_track_to_db(track.title, download_url, playlist_id)
-                
-                cover_path = f"{playlist_path}/{self._sanitize_path(track.artist)}_{self._sanitize_path(track.title)}.jpg"
-                self._save_cover(track_id, track.artwork_url, cover_path)
-                
-                track_ids.append(track_id)
-
-            return track_ids
-
-        except Exception as e:
-            logger.error(f"Failed to save album {url}: {e}")
-            return []
-
-
-def main():
-    supabase = create_client(config.SUPABASE_URL, config.SUPABASE_KEY)
-    sc_api = SoundcloudAPI()
-    manager = SoundCloudManager(supabase, sc_api)
-
-    options = {
-        '1': ('Single track', lambda: manager.save_track(input("Input url: "))),
-        '2': ('Album of tracks', lambda: manager.save_album(input("Input url: "))),
-        '3': ('Multiple tracks', lambda: [manager.save_track(input(f"{i}: Input url: ")) 
-                                        for i in range(int(input("Input number of tracks: ")))]),
-        '4': ('Multiple albums', lambda: [manager.save_album(input(f"{i}: Input url: ")) 
-                                        for i in range(int(input("Input number of albums: ")))])
-    }
-
-    choice = input(
-        "Input what do you want to download?\n"
-        "1 - single track\n"
-        "2 - album of tracks\n"
-        "3 - multiple single tracks\n"
-        "4 - multiple albums\n"
-    )
-
-    if choice in options:
-        print(options[choice][0])
-        options[choice][1]()
-    else:
-        print("Invalid choice")
+    return track_ids
 
 
 if __name__ == "__main__":
-    main()
+    supabase: Client = create_client(config.SUPABASE_URL, config.SUPABASE_KEY)
+    sc_api = SoundcloudAPI()
+
+    n = input(
+        "Input what do you want to download? (1 - single track, 2 - album of  tracks, 3 - multiple of single tracks, 4 - multiple of albums):\n")
+    match n:
+        case '1':
+            print("Single track")
+            url = input("Input url: ")
+            save_track(url, sc_api)
+        case '2':
+            print("Album of tracks")
+            url = input("Input url: ")
+            save_album(url, sc_api)
+        case '3':
+            print("Multiple tracks")
+            num = int(input("Input number of tracks: "))
+            urls = []
+
+            for i in range(num):
+                url = input(f"{i}: Input url: ")
+                urls.append(url)
+
+            for url in urls:
+                save_track(url, sc_api)
+        case '4':
+            print("Multiple albums")
+            num = int(input("Input number of albums: "))
+            urls = []
+
+            for i in range(num):
+                url = input(f"{i}: Input url: ")
+                urls.append(url)
+
+            for url in urls:
+                save_album(url, sc_api)
