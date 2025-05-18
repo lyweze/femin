@@ -111,6 +111,7 @@ if __name__ == "__main__":
     supabase: Client = supabase.create_client(config.SUPABASE_URL, config.SUPABASE_KEY)
 
     YandexClient = Client(config.YANDEX_TOKEN).init()
-    id = 138207906
+    url = input("Enter Yandex URL: ")
+    id = extract_id_from_url(url)
     save_track(YandexClient, id)
 
