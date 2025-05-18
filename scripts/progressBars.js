@@ -31,6 +31,7 @@ function workingProgressBar() {
 
 	// Переключение трека по завершению
 	if (audio.duration === audio.currentTime && !isInput) {
+		let audioVol = audio.volume;
 		audio.volume = 0;
 		playOnClick();
 
@@ -73,7 +74,7 @@ function workingProgressBar() {
 				playerTrackName.innerHTML = track.title;
 			}
 
-			audio.volume = 1;
+			audio.volume = audioVol;
 
 			if (!isPaused) {
 				playOnClick();
