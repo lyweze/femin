@@ -8,8 +8,7 @@ import tempfile
 from requests import RequestException
 from sclib import SoundcloudAPI, Track, Playlist
 from storage3.exceptions import StorageApiError
-import config
-import disk_to_db
+import config, disk_to_db, sanitizer
 import tenacity
 from supabase import Client, create_client
 
@@ -17,18 +16,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s -- %(levelname)s -- 
 logger = logging.getLogger(__name__)
 
 
-def sanitize_path(text):
-    translit_dict = {
-        'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'e',
-        'ж': 'zh', 'з': 'z', 'и': 'i', 'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm',
-        'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u',
-        'ф': 'f', 'х': 'h', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'sch',
-        'ъ': '', 'ы': 'y', 'ь': '', 'э': 'e', 'ю': 'yu', 'я': 'ya'
-    }
-    text = text.lower()
-    for cyr, lat in translit_dict.items():
-        text = text.replace(cyr, lat)
-    return text
+
 
 
 ## получаем ссылку на supabase
@@ -94,8 +82,8 @@ def save_track(url, soundcloud_api):
             tmp_file.flush()
             temp_file_path = tmp_file.name
 
-            track_artist_path = sanitize_path(track.artist)
-            track_title_path = sanitize_path(track.title)
+            track_artist_path = sanitizer.sanitize_path(track.artist)
+            track_title_path = sanitizer.sanitize_path(track.title)
             supabase_path = f"{track_artist_path}_{track_title_path}.mp3"
 
         with open(temp_file_path, "rb") as mp3_file:
@@ -109,11 +97,11 @@ def save_track(url, soundcloud_api):
         )
         os.remove(temp_file_path)
 
-        download_url = get_url(track_bucket, supabase_path)
+        download_url = disk_to_db.get_url(track_bucket, supabase_path)
         track_id = disk_to_db.save_track_to_db(track.title, download_url)
 
         cover_path = f"{track_artist_path}_{track_title_path}.jpg"
-        cover_path = sanitize_path(cover_path)
+        cover_path = sanitizer.sanitize_path(cover_path)
         cover_id = save_cover(track_id, track.artwork_url, cover_path)
         time.sleep(1)
 
@@ -164,9 +152,9 @@ def save_album(url, soundcloud_api):
                     tmp_file.flush()
                     temp_file_path = tmp_file.name
 
-                    playlist_title_path = sanitize_path(playlist.title)
-                    track_artist_path = sanitize_path(track.artist)
-                    track_title_path = sanitize_path(track.title)
+                    playlist_title_path = sanitizer.sanitize_path(playlist.title)
+                    track_artist_path = sanitizer.sanitize_path(track.artist)
+                    track_title_path = sanitizer.sanitize_path(track.title)
                     supabase_path = f"{playlist_title_path}/{track_artist_path}_{track_title_path}.mp3"
 
                 with open(temp_file_path, "rb") as mp3_file:
@@ -179,12 +167,12 @@ def save_album(url, soundcloud_api):
                 )
                 os.remove(temp_file_path)
 
-                solo_download_url = get_url(album_bucket, supabase_path)
+                solo_download_url = disk_to_db.get_url(album_bucket, supabase_path)
 
                 solo_track_id = disk_to_db.save_track_to_db(track.title, solo_download_url, playlist_id)
 
                 solo_cover_path = f"{playlist.title}/{track.artist}_{track.title}.jpg"
-                solo_cover_path = sanitize_path(solo_cover_path)
+                solo_cover_path = sanitizer.sanitize_path(solo_cover_path)
                 time.sleep(1)
                 solo_cover_id = save_cover(solo_track_id, track.artwork_url, solo_cover_path)
 

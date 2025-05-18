@@ -3,6 +3,11 @@ import config
 
 supabase: Client = create_client(config.SUPABASE_URL, config.SUPABASE_KEY)
 
+## получаем ссылку на supabase
+def get_url(bucket_name, file_path):
+    public_url = supabase.storage.from_(bucket_name).get_public_url(file_path)
+    print(f"public_url: {public_url}")
+    return public_url
 
 # сохранение трека в бд
 def save_track_to_db(title, signed_url, playlist_id=None):
