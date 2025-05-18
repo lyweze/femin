@@ -46,7 +46,7 @@ const trackName = document.getElementById("trackName"); //Имя трека
 const cover = document.getElementById("cover"); //Обложка
 
 //?????? mb pomenyat
-let addToLike = document.getElementById("addToLike"); //Кнопка добавить в избранное/удалить из избранного
+const addToLike = document.getElementById("addToLike"); //Кнопка добавить в избранное/удалить из избранного
 /* ------------------------------------------------------------ */
 /* ENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDEND */
 //

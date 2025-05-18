@@ -8,7 +8,7 @@ function playOnClick() {
 			"animation: rotate 10s linear infinite; animation-play-state: paused; filter: brightness(80%) grayscale(40%);";
 		playerTrackName.style.letterSpacing = "2px";
 		playButton.innerHTML =
-			'<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 15 16"><path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>';
+			'<svg id="playSVG" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 15 16"><path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>';
 	} else {
 		audio.play();
 		miniCover.style.cssText =
@@ -16,9 +16,12 @@ function playOnClick() {
 		cover.style.cssText =
 			"animation: rotate 10s linear infinite; animation-play-state: running;";
 		playButton.innerHTML =
-			'<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-pause-fill" viewBox="0 0 16 16"><path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/></svg>';
+			'<svg id="playSVG" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-pause-fill" viewBox="0 0 16 16"><path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/></svg>';
 		playerTrackName.style.letterSpacing = "3px";
 	}
+
+	document.getElementById("playSVG").style.cssText =
+		"animation: player 0.6s cubic-bezier(0.45, 0.06, 0.19, 0.97) 1;";
 
 	let currenttrackLIKED;
 	for (let i = 0; i < likedTracks.length; i++) {
@@ -51,12 +54,26 @@ function settrack(key, n) {
 		}
 
 		if (key === "next") {
+			document.getElementById("nextSVG").style.cssText =
+				"animation: player 0.6s cubic-bezier(0.45, 0.06, 0.19, 0.97) 1;";
+
+			setTimeout(() => {
+				document.getElementById("nextSVG").style.cssText = "";
+			}, 600);
+
 			if (currenttrack + 1 >= json.length) {
 				currenttrack = 0;
 			} else {
 				currenttrack++;
 			}
 		} else if (key === "previous") {
+			document.getElementById("prevSVG").style.cssText =
+				"animation: player 0.6s cubic-bezier(0.45, 0.06, 0.19, 0.97) 1;";
+
+			setTimeout(() => {
+				document.getElementById("prevSVG").style.cssText = "";
+			}, 600);
+
 			if (audio.currentTime < 3) {
 				if (currenttrack - 1 < 0) {
 					currenttrack = json.length - 1;
@@ -192,6 +209,12 @@ function goToTrack(name) {
 
 //Добавить в избранное
 function moveToLike() {
+	addToLike.style.cssText =
+		"animation: like 0.6s cubic-bezier(0.45, 0.06, 0.19, 0.97) 1;";
+	setTimeout(() => {
+		addToLike.style.cssText = "";
+	}, 600);
+
 	if (!likedTracks.includes(jsonParsed[currenttrack].track_id)) {
 		likedTracks.push(jsonParsed[currenttrack].track_id);
 

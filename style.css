@@ -420,6 +420,32 @@ footer {
 	}
 }
 
+@keyframes like {
+	0% {
+		transform: scale(0.8);
+		filter: blur(3px);
+	}
+	50% {
+		transform: scale(1.1);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+@keyframes player {
+	0% {
+		transform: scale(0.9);
+		filter: blur(3px);
+	}
+	50% {
+		transform: scale(1.1);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
 /* Адаптация ширина 1300px*/
 @media screen and (max-width: 1300px) {
 	header {
