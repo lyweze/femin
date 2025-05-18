@@ -17,15 +17,6 @@ logger = logging.getLogger(__name__)
 
 
 
-
-
-## получаем ссылку на supabase
-def get_url(bucket_name, file_path):
-    public_url = supabase.storage.from_(bucket_name).get_public_url(file_path)
-    print(f"public_url: {public_url}")
-    return public_url
-
-
 ## сохранение обложки
 @tenacity.retry(stop=tenacity.stop_after_attempt(5),
                 wait=tenacity.wait_fixed(3),
@@ -127,6 +118,8 @@ def save_track(url, soundcloud_api):
 def save_album(url, soundcloud_api):
     """
 
+    :param url:
+    :param soundcloud_api:
     :type api: object
     """
     try:
