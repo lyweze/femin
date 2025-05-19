@@ -33,6 +33,7 @@ function workingProgressBar() {
 	if (audio.duration === audio.currentTime && !isInput) {
 		let audioVol = audio.volume;
 		audio.volume = 0;
+		currentPlaylist = [];
 		playOnClick();
 
 		function moveTrackIfEnded(json) {
@@ -43,59 +44,142 @@ function workingProgressBar() {
 				playOnClick();
 			}
 
-			if (currenttrack + 1 >= json.length) {
-				currenttrack = 0;
-			} else {
-				currenttrack++;
+			if (isRepeat) {
+				audio.currentTime = 0;
+
+				if (!isPaused) {
+					playOnClick();
+				}
+
+				audio.volume = audioVol;
+
+				return 0;
 			}
 
-			let track = new currentTrack(json[currenttrack]);
-			let currenttrack_exists = saveTrack(json, track, currenttrack);
+			if (!isShuffled) {
+				if (currenttrack + 1 >= json.length) {
+					currenttrack = 0;
+				} else {
+					currenttrack++;
+				}
 
-			if (currenttrack_exists === true) {
-				let currenttrack_id = 0;
+				let track = new currentTrack(json[currenttrack]);
+				let currenttrack_exists = saveTrack(json, track, currenttrack);
 
-				for (let i = 0; i < cachedTracks.length; i++) {
-					if (track.track_id === cachedTracks[i].track_id) {
-						currenttrack_id = i;
+				if (currenttrack_exists === true) {
+					let currenttrack_id = 0;
+
+					for (let i = 0; i < cachedTracks.length; i++) {
+						if (track.track_id === cachedTracks[i].track_id) {
+							currenttrack_id = i;
+						}
+					}
+
+					cover.setAttribute("src", cachedTracks[currenttrack_id].cover_url);
+					audio.setAttribute("src", cachedTracks[currenttrack_id].mp3_url);
+					miniCover.setAttribute(
+						"src",
+						cachedTracks[currenttrack_id].cover_url
+					);
+					trackName.innerHTML = cachedTracks[currenttrack_id].title;
+					playerTrackName.innerHTML = cachedTracks[currenttrack_id].title;
+				} else {
+					cover.setAttribute("src", track.cover_url);
+					audio.setAttribute("src", track.mp3_url);
+					miniCover.setAttribute("src", track.cover_url);
+					trackName.innerHTML = track.title;
+					playerTrackName.innerHTML = track.title;
+				}
+
+				audio.volume = audioVol;
+
+				if (!isPaused) {
+					playOnClick();
+				}
+
+				if (minutes === false) {
+					if (timeOfTrack <= 9) {
+						trackTime.innerHTML = "0:0" + timeOfTrack.toString();
+					} else {
+						trackTime.innerHTML = "0:" + timeOfTrack.toString();
+					}
+				} else {
+					trackTime.innerHTML = timeOfTrack.toString();
+				}
+
+				if (!likedTracks.includes(track.track_id)) {
+					addToLike.innerHTML =
+						'<svg xmlns="http://www.w3.org/2000/svg"width="32"height="32"fill="currentColor"class="bi bi-heart" viewBox="0 0 16 16"><path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/></svg>';
+				} else {
+					addToLike.innerHTML =
+						'<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/></svg>';
+				}
+			} else {
+				currentPlaylistI = getShuffled();
+
+				for (let i = 0; i < currentPlaylistI.length; i++) {
+					if (currentPlaylistI[i] == currenttrack) {
+						currenttrack = i;
 					}
 				}
 
-				cover.setAttribute("src", cachedTracks[currenttrack_id].cover_url);
-				audio.setAttribute("src", cachedTracks[currenttrack_id].mp3_url);
-				miniCover.setAttribute("src", cachedTracks[currenttrack_id].cover_url);
-				trackName.innerHTML = cachedTracks[currenttrack_id].title;
-				playerTrackName.innerHTML = cachedTracks[currenttrack_id].title;
-			} else {
-				cover.setAttribute("src", track.cover_url);
-				audio.setAttribute("src", track.mp3_url);
-				miniCover.setAttribute("src", track.cover_url);
-				trackName.innerHTML = track.title;
-				playerTrackName.innerHTML = track.title;
-			}
-
-			audio.volume = audioVol;
-
-			if (!isPaused) {
-				playOnClick();
-			}
-
-			if (minutes === false) {
-				if (timeOfTrack <= 9) {
-					trackTime.innerHTML = "0:0" + timeOfTrack.toString();
+				if (currenttrack + 1 >= json.length) {
+					currenttrack = currentPlaylistI[0];
 				} else {
-					trackTime.innerHTML = "0:" + timeOfTrack.toString();
+					currenttrack += +parseInt(Math.random() * 10);
 				}
-			} else {
-				trackTime.innerHTML = timeOfTrack.toString();
-			}
 
-			if (!likedTracks.includes(track.track_id)) {
-				addToLike.innerHTML =
-					'<svg xmlns="http://www.w3.org/2000/svg"width="32"height="32"fill="currentColor"class="bi bi-heart" viewBox="0 0 16 16"><path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/></svg>';
-			} else {
-				addToLike.innerHTML =
-					'<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/></svg>';
+				let track = new currentTrack(json[currenttrack]);
+				let currenttrack_exists = saveTrack(json, track, currenttrack);
+
+				if (currenttrack_exists === true) {
+					let currenttrack_id = 0;
+
+					for (let i = 0; i < cachedTracks.length; i++) {
+						if (track.track_id === cachedTracks[i].track_id) {
+							currenttrack_id = i;
+						}
+					}
+
+					cover.setAttribute("src", cachedTracks[currenttrack_id].cover_url);
+					audio.setAttribute("src", cachedTracks[currenttrack_id].mp3_url);
+					miniCover.setAttribute(
+						"src",
+						cachedTracks[currenttrack_id].cover_url
+					);
+					trackName.innerHTML = cachedTracks[currenttrack_id].title;
+					playerTrackName.innerHTML = cachedTracks[currenttrack_id].title;
+				} else {
+					cover.setAttribute("src", track.cover_url);
+					audio.setAttribute("src", track.mp3_url);
+					miniCover.setAttribute("src", track.cover_url);
+					trackName.innerHTML = track.title;
+					playerTrackName.innerHTML = track.title;
+				}
+
+				audio.volume = audioVol;
+
+				if (!isPaused) {
+					playOnClick();
+				}
+
+				if (minutes === false) {
+					if (timeOfTrack <= 9) {
+						trackTime.innerHTML = "0:0" + timeOfTrack.toString();
+					} else {
+						trackTime.innerHTML = "0:" + timeOfTrack.toString();
+					}
+				} else {
+					trackTime.innerHTML = timeOfTrack.toString();
+				}
+
+				if (!likedTracks.includes(track.track_id)) {
+					addToLike.innerHTML =
+						'<svg xmlns="http://www.w3.org/2000/svg"width="32"height="32"fill="currentColor"class="bi bi-heart" viewBox="0 0 16 16"><path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/></svg>';
+				} else {
+					addToLike.innerHTML =
+						'<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/></svg>';
+				}
 			}
 		}
 

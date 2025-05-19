@@ -30,11 +30,19 @@
 
 			<div class="nav">
 				<button
-					style="background: none; border: none"
+					style="background: none"
 					class="nav-liked"
 					onclick="openLiked()"
 				>
 					ИЗБРАННОЕ
+				</button>
+
+				<button
+					style="background: none; border: none"
+					class="nav-playlists"
+					onclick="openPlaylists()"
+				>
+					ПЛЕЙЛИСТЫ
 				</button>
 			</div>
 		</header>
@@ -60,25 +68,85 @@
 
 			<p id="trackName"></p>
 
-			<button id="addToLike" onclick="moveToLike()">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="32"
-					height="32"
-					fill="currentColor"
-					class="bi bi-heart"
-					viewBox="0 0 16 16"
-				>
-					<path
-						d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
-					/>
-				</svg>
-			</button>
+			<div>
+				<button id="shuffle" onclick="shuffle()">
+					<svg
+						width="32"
+						height="32"
+						viewBox="0 0 32 32"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							fill-rule="evenodd"
+							clip-rule="evenodd"
+							d="M0 7C0 6.73478 0.105357 6.48043 0.292893 6.29289C0.48043 6.10536 0.734784 6 1 6H2C6.404 6 9.654 8.48 11.748 10.836C12.728 11.94 13.478 13.04 14 13.9C14.52 13.04 15.272 11.94 16.252 10.836C18.346 8.48 21.596 6 26 6V8C22.404 8 19.654 10.02 17.748 12.164C16.7174 13.3313 15.8323 14.6194 15.112 16C15.8316 17.3805 16.7161 18.6686 17.746 19.836C19.656 21.98 22.408 24 26 24V26C21.596 26 18.346 23.52 16.252 21.164C15.411 20.2122 14.6573 19.1868 14 18.1C13.48 18.96 12.728 20.06 11.748 21.164C9.654 23.52 6.404 26 2 26H1C0.734784 26 0.48043 25.8946 0.292893 25.7071C0.105357 25.5196 0 25.2652 0 25C0 24.7348 0.105357 24.4804 0.292893 24.2929C0.48043 24.1054 0.734784 24 1 24H2C5.596 24 8.346 21.98 10.252 19.836C11.2826 18.6687 12.1677 17.3806 12.888 16C12.1684 14.6195 11.2839 13.3314 10.254 12.164C8.344 10.02 5.592 8 2 8H1C0.734784 8 0.48043 7.89464 0.292893 7.70711C0.105357 7.51957 0 7.26522 0 7Z"
+							fill="white"
+						/>
+						<path
+							d="M26 10.932V3.068C26 2.973 26.0271 2.87997 26.0781 2.79981C26.1291 2.71965 26.2019 2.65567 26.288 2.61538C26.374 2.57509 26.4697 2.56015 26.564 2.5723C26.6582 2.58445 26.747 2.6232 26.82 2.684L31.54 6.616C31.78 6.816 31.78 7.184 31.54 7.384L26.82 11.316C26.747 11.3768 26.6582 11.4156 26.564 11.4277C26.4697 11.4399 26.374 11.4249 26.288 11.3846C26.2019 11.3443 26.1291 11.2804 26.0781 11.2002C26.0271 11.12 26 11.027 26 10.932ZM26 28.932V21.068C26 20.973 26.0271 20.88 26.0781 20.7998C26.1291 20.7196 26.2019 20.6557 26.288 20.6154C26.374 20.5751 26.4697 20.5601 26.564 20.5723C26.6582 20.5845 26.747 20.6232 26.82 20.684L31.54 24.616C31.78 24.816 31.78 25.184 31.54 25.384L26.82 29.316C26.747 29.3768 26.6582 29.4156 26.564 29.4277C26.4697 29.4399 26.374 29.4249 26.288 29.3846C26.2019 29.3443 26.1291 29.2804 26.0781 29.2002C26.0271 29.12 26 29.027 26 28.932Z"
+							fill="white"
+						/>
+					</svg>
+				</button>
+
+				<button id="addToLike" onclick="moveToLike()">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="32"
+						height="32"
+						fill="currentColor"
+						class="bi bi-heart"
+						viewBox="0 0 16 16"
+					>
+						<path
+							d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
+						/>
+					</svg>
+				</button>
+
+				<button id="repeat" onclick="repeat()">
+					<img style="width: 32px;" id="rep-img" src="./img/132.png" alt="">
+				</button>
+			</div>
 		</main>
+
+		<section
+			id="playlistsSection"
+			style="margin-top: 150vh; filter: blur(30px); transform: scale(0.8)"
+		>
+			<ul id="playlists">
+				<li>
+					<img src="./img/liked.png" alt="" onclick="openLiked()" />
+					<p>ИЗБРАННОЕ</p>
+				</li>
+				<li>
+					<img
+						src="https://cache3.youla.io/files/images/780_780/59/d8/59d8fd2bcf204571de353b33.jpg"
+						alt=""
+					/>
+					<p>GOAT</p>
+				</li>
+				<li>
+					<img
+						src="https://cache3.youla.io/files/images/780_780/59/d8/59d8fd2bcf204571de353b33.jpg"
+						alt=""
+					/>
+					<p>GOAT</p>
+				</li>
+				<li>
+					<img
+						src="https://cache3.youla.io/files/images/780_780/59/d8/59d8fd2bcf204571de353b33.jpg"
+						alt=""
+					/>
+					<p>GOAT</p>
+				</li>
+			</ul>
+		</section>
 
 		<!-- Футер (мини-плеер) -->
 		<footer id="footer">
-			<ul id="playList" style="opacity: 0;"></ul>
+			<ul id="playList" style="opacity: 0"></ul>
 
 			<div id="footer-div">
 				<audio id="audioPlayer" src=""></audio>
@@ -129,7 +197,8 @@
 					href=""
 					style="background-color: #230030"
 				>
-					<svg id="playSVG"
+					<svg
+						id="playSVG"
 						xmlns="http://www.w3.org/2000/svg"
 						width="40"
 						height="40"
@@ -150,7 +219,8 @@
 					href=""
 					style="background-color: #4c1c62"
 				>
-					<svg id="prevSVG"
+					<svg
+						id="prevSVG"
 						xmlns="http://www.w3.org/2000/svg"
 						width="40"
 						height="40"
@@ -174,7 +244,8 @@
 					href=""
 					style="background-color: #4c1c62"
 				>
-					<svg id="nextSVG"
+					<svg
+						id="nextSVG"
 						xmlns="http://www.w3.org/2000/svg"
 						width="40"
 						height="40"

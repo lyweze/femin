@@ -43,6 +43,7 @@ function playOnClick() {
 
 //Смена аудиофайла
 function settrack(key, n) {
+	console.log(currenttrack);
 	progressBar.setAttribute("value", "0");
 
 	function moveTrack(json) {
@@ -61,10 +62,22 @@ function settrack(key, n) {
 				document.getElementById("nextSVG").style.cssText = "";
 			}, 600);
 
-			if (currenttrack + 1 >= json.length) {
-				currenttrack = 0;
+			if (!isShuffled) {
+				if (currenttrack + 1 >= json.length) {
+					currenttrack = 0;
+				} else {
+					currenttrack++;
+				}
 			} else {
-				currenttrack++;
+				currentPlaylistI = getShuffled();
+
+				if (currenttrack + 1 >= json.length) {
+					currenttrack = currentPlaylistI[0];
+					console.log("ueban");
+				} else {
+					currenttrack += +parseInt(Math.random() * 10);
+					// console.log(currenttrack);
+				}
 			}
 		} else if (key === "previous") {
 			document.getElementById("prevSVG").style.cssText =
@@ -74,20 +87,47 @@ function settrack(key, n) {
 				document.getElementById("prevSVG").style.cssText = "";
 			}, 600);
 
-			if (audio.currentTime < 3) {
-				if (currenttrack - 1 < 0) {
-					currenttrack = json.length - 1;
+			if (!isShuffled) {
+				if (audio.currentTime < 3) {
+					if (currenttrack - 1 < 0) {
+						currenttrack = json.length - 1;
+					} else {
+						currenttrack--;
+					}
 				} else {
-					currenttrack--;
+					audio.currentTime = 0;
 				}
 			} else {
-				audio.currentTime = 0;
+				currentPlaylistI = getShuffled();
+
+				for (let i = 0; i < currentPlaylistI.length; i++) {
+					if (currentPlaylistI[i] == currenttrack) {
+						currenttrack = i;
+					}
+				}
+
+				if (audio.currentTime < 3) {
+					if (currenttrack - 1 < 0) {
+						currenttrack = json.length - 1;
+					} else {
+						currenttrack--;
+						currenttrack = currentPlaylistI[currenttrack];
+					}
+				} else {
+					audio.currentTime = 0;
+				}
 			}
 		}
 
 		if (n != undefined) {
 			currenttrack = +n;
 		}
+
+		// if (isShuffled != undefined && isShuffled) {
+		// 	console.log(1)
+		// 	let currentShtrack = currentPlaylist[currenttrack];
+		// 	currenttrack = currentShtrack;
+		// }
 
 		let track = new currentTrack(json[currenttrack]);
 		let currenttrack_exists = saveTrack(json, track, currenttrack);
@@ -275,4 +315,55 @@ function moveToLike() {
 	} else {
 		likedSectionText.innerHTML = "избранное";
 	}
+}
+
+function shuffle() {
+	if (!isShuffled) {
+		document.getElementById("shuffle").style.cssText =
+			"animation: like 0.6s cubic-bezier(0.45, 0.06, 0.19, 0.97) 1; box-shadow: 0 0 7px #fff;";
+
+		setTimeout(() => {
+			document.getElementById("shuffle").style.cssText =
+				"box-shadow: 0 0 7px #fff;";
+		}, 600);
+	} else {
+		document.getElementById("shuffle").style.cssText =
+			"animation: like 0.6s cubic-bezier(0.45, 0.06, 0.19, 0.97) 1;";
+
+		setTimeout(() => {
+			document.getElementById("shuffle").style.cssText = "";
+		}, 600);
+	}
+
+	if (!isShuffled) {
+		currentPlaylistI = currentPlaylistI.sort(() => Math.random() - 0.5);
+
+		isShuffled = true;
+	} else {
+		isShuffled = false;
+	}
+	console.log(currentPlaylistI);
+}
+
+function getShuffled() {
+	return currentPlaylistI;
+}
+
+function repeat() {
+	document.getElementById("repeat").style.cssText =
+		"animation: like 0.6s cubic-bezier(0.45, 0.06, 0.19, 0.97) 1;";
+
+	setTimeout(() => {
+		document.getElementById("repeat").style.cssText = "";
+	}, 600);
+
+	if (!isRepeat) {
+		document.getElementById("rep-img").setAttribute("src", "./img/133.png");
+		isRepeat = true;
+	} else {
+		document.getElementById("rep-img").setAttribute("src", "./img/132.png");
+		isRepeat = false;
+	}
+
+	console.log(isRepeat);
 }

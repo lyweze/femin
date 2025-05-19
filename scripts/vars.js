@@ -21,6 +21,7 @@ class currentTrack {
 	}
 }
 
+let currentPlaylistI = [];
 //Запращиваю JSON с сервака и переножу ответ в переменную jsonParsed
 fetch("https://femin.onrender.com/tracks")
 	.then((response) => {
@@ -28,6 +29,9 @@ fetch("https://femin.onrender.com/tracks")
 	})
 	.then((json) => {
 		jsonParsed = json;
+		for (let i = 0; i < json.length; i++) {
+			currentPlaylistI.push(i);
+		}
 	})
 	.catch((error) => console.error("Ошибка при исполнении запроса: ", error));
 
@@ -82,7 +86,10 @@ const playList = document.getElementById("playList"); //Текущий плей�
 /* STARTSTARTSTARTSTARTSTARTSTARTSTARTSTARTSTARTSTARTSTARTSTART */
 //Несортированное
 const liked = document.getElementById("likedSection"); //Плейлисты избранное
+const playlists = document.getElementById("playlistsSection"); //Плейлисты
 const likedSectionText = document.getElementById("likedSectionText"); //Текст в блоке избранного
 const likedPlayList = document.getElementById("likedPlayList"); //Плейлист избранное
+let isShuffled = false;
+let isRepeat = false;
 /* ------------------------------------------------------------ */
 /* ENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDEND */
