@@ -12,7 +12,7 @@ import config, disk_to_db, sanitizer
 import tenacity
 import supabase
 from yandex_music import Client
-from .yandex_config import YANDEX_CONFIG, URL_PATTERNS, ERROR_MESSAGES
+from yandex_config import YANDEX_CONFIG, URL_PATTERNS, ERROR_MESSAGES
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s -- %(levelname)s -- %(message)s')
 logger = logging.getLogger(__name__)
