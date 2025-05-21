@@ -12,7 +12,7 @@ from storage3.exceptions import StorageApiError
 import config, disk_to_db, sanitizer
 import tenacity
 from supabase import Client, create_client
-from .soundcloud_config import SOUNDCLOUD_CONFIG, URL_PATTERNS
+from soundcloud_config import SOUNDCLOUD_CONFIG, URL_PATTERNS
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s -- %(levelname)s -- %(message)s')
 logger = logging.getLogger(__name__)
