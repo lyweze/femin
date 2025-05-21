@@ -5,7 +5,7 @@ from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from supabase import create_client, Client
-from backend.config import SUPABASE_URL, SUPABASE_KEY
+from backend.config import SUPABASE_URL, SUPABASE_KEY, API_BASE_URL
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -106,9 +106,11 @@ async def get_playlists(supabase: Client = Depends(get_supabase)):
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to Femin tracks API",
-            "tracks": "femin.onrender.com/tracks",
-            "playlists": "femin.onrender.com/playlists"}
+    return {
+        "message": "Welcome to Femin tracks API",
+        "tracks": f"{API_BASE_URL}/tracks",
+        "playlists": f"{API_BASE_URL}/playlists"
+    }
 
 
 if __name__ == "__main__":
