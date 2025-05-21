@@ -1,6 +1,7 @@
 import io
 import logging
 import os
+from typing import Any, Optional, Tuple, Union
 from urllib.error import HTTPError
 import time
 import requests
@@ -15,8 +16,22 @@ from yandex_music import Client
 logging.basicConfig(level=logging.INFO, format='%(asctime)s -- %(levelname)s -- %(message)s')
 logger = logging.getLogger(__name__)
 
-def extract_id_from_url(url):
-    return url.split('/')[-1]
+def extract_id_from_url(yandex_url: str) -> int:
+    """
+    Extract track/album ID from Yandex Music URL.
+    
+    Args:
+        yandex_url: Yandex Music URL to extract ID from
+        
+    Returns:
+        Extracted ID as string
+        
+    Raises:
+        ValueError: If URL is empty or invalid
+    """
+    if not yandex_url:
+        raise ValueError("URL cannot be empty")
+    return int(yandex_url.split('/')[-1])
 
 @tenacity.retry(stop=tenacity.stop_after_attempt(5),
                 wait=tenacity.wait_fixed(3),
@@ -24,7 +39,23 @@ def extract_id_from_url(url):
                     (RequestException, StorageApiError, HTTPError, ConnectionResetError)),
                 before_sleep=tenacity.before_sleep_log(logger, logging.WARNING)
                 )
-def save_cover(track_id, artwork_url, cover_path):
+def save_cover(track_id: int, artwork_url: str, cover_path: str) -> Optional[Union[str, int]]:
+    """
+    Save track cover to storage and database.
+    
+    Args:
+        track_id: Track ID in database
+        artwork_url: URL of the artwork from Yandex Music
+        cover_path: Path where to save the cover in storage
+        
+    Returns:
+        Cover ID from database if successful, None if failed
+        
+    Raises:
+        RequestException: If download fails
+        StorageApiError: If storage operations fail
+        HTTPError: If artwork URL is invalid
+    """
     if not artwork_url:
         cover_id = config.DEFAULT_COVER
         return cover_id
@@ -32,7 +63,6 @@ def save_cover(track_id, artwork_url, cover_path):
         high_quality_cover = f'https://{artwork_url.replace("%%", "1000x1000")}'
 
         response_cover = requests.get(high_quality_cover)
-
         response_cover.raise_for_status()
 
         supabase.storage.from_("covers").upload(
@@ -45,9 +75,8 @@ def save_cover(track_id, artwork_url, cover_path):
     except Exception as e:
         print(f"Error saving cover for track {track_id}: {e}")
         raise
-    except StorageApiError as e:
-        return
-
+    except StorageApiError:
+        return None
 
 @tenacity.retry(stop=tenacity.stop_after_attempt(5),
                 wait=tenacity.wait_fixed(3),
@@ -55,7 +84,23 @@ def save_cover(track_id, artwork_url, cover_path):
                     (RequestException, StorageApiError, HTTPError, ConnectionResetError)),
                 before_sleep=tenacity.before_sleep_log(logger, logging.WARNING)
                 )
-def save_track(YaClient, track_id):
+def save_track(YaClient: Client, track_id: int) -> Optional[Tuple[int, Optional[int]]]:
+    """
+    Save a single track from Yandex Music to the database and storage.
+    
+    Args:
+        YaClient: Initialized Yandex Music API client
+        track_id: Track ID from Yandex Music
+        
+    Returns:
+        Tuple of (track_id, cover_id) if successful, None if failed
+        
+    Raises:
+        AssertionError: If track_id is not a valid track
+        RequestException: If download fails
+        StorageApiError: If storage operations fail
+        HTTPError: If track URL is invalid
+    """
     try:
         track = YaClient.tracks([track_id])[0]
 
@@ -104,13 +149,25 @@ def save_track(YaClient, track_id):
                     (RequestException, StorageApiError, HTTPError, ConnectionResetError)),
                 before_sleep=tenacity.before_sleep_log(logger, logging.WARNING)
                 )
-def save_album():
+def save_album() -> None:
+    """
+    Save an album from Yandex Music to the database and storage.
+    
+    This function is currently not implemented.
+    
+    Returns:
+        None
+        
+    Raises:
+        NotImplementedError: This function is not yet implemented
+    """
     pass
+
 if __name__ == "__main__":
     supabase: Client = supabase.create_client(config.SUPABASE_URL, config.SUPABASE_KEY)
 
     YandexClient = Client(config.YANDEX_TOKEN).init()
     url = input("Enter Yandex URL: ")
-    id = extract_id_from_url(url)
-    save_track(YandexClient, id)
+    id_track = extract_id_from_url(url)
+    save_track(YandexClient, id_track)
 
