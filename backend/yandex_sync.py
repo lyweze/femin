@@ -1,7 +1,7 @@
 import io
 import logging
 import os
-from typing import Any, Optional, Tuple, Union
+from typing import Optional, Tuple, List, Union
 from urllib.error import HTTPError
 import time
 import requests
@@ -12,9 +12,18 @@ import config, disk_to_db, sanitizer
 import tenacity
 import supabase
 from yandex_music import Client
+from .yandex_config import YANDEX_CONFIG, URL_PATTERNS, ERROR_MESSAGES
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s -- %(levelname)s -- %(message)s')
 logger = logging.getLogger(__name__)
+
+# Constants
+COVER_BUCKET = YANDEX_CONFIG['buckets']['covers']
+TRACK_BUCKET = YANDEX_CONFIG['buckets']['tracks']
+DEFAULT_COVER_SIZE = YANDEX_CONFIG['cover_size']
+RETRY_ATTEMPTS = YANDEX_CONFIG['retry_attempts']
+RETRY_WAIT = YANDEX_CONFIG['retry_wait']
+MP3_OPTIONS = YANDEX_CONFIG['file_options']['mp3']
 
 def extract_id_from_url(yandex_url: str) -> int:
     """
@@ -24,17 +33,17 @@ def extract_id_from_url(yandex_url: str) -> int:
         yandex_url: Yandex Music URL to extract ID from
         
     Returns:
-        Extracted ID as string
+        Extracted ID as integer
         
     Raises:
         ValueError: If URL is empty or invalid
     """
     if not yandex_url:
-        raise ValueError("URL cannot be empty")
+        raise ValueError(ERROR_MESSAGES['empty_url'])
     return int(yandex_url.split('/')[-1])
 
-@tenacity.retry(stop=tenacity.stop_after_attempt(5),
-                wait=tenacity.wait_fixed(3),
+@tenacity.retry(stop=tenacity.stop_after_attempt(RETRY_ATTEMPTS),
+                wait=tenacity.wait_fixed(RETRY_WAIT),
                 retry=tenacity.retry_if_exception_type(
                     (RequestException, StorageApiError, HTTPError, ConnectionResetError)),
                 before_sleep=tenacity.before_sleep_log(logger, logging.WARNING)
@@ -60,26 +69,27 @@ def save_cover(track_id: int, artwork_url: str, cover_path: str) -> Optional[Uni
         cover_id = config.DEFAULT_COVER
         return cover_id
     try:
-        high_quality_cover = f'https://{artwork_url.replace("%%", "1000x1000")}'
+        high_quality_cover = f'https://{artwork_url.replace("%%", DEFAULT_COVER_SIZE)}'
 
         response_cover = requests.get(high_quality_cover)
         response_cover.raise_for_status()
 
-        supabase.storage.from_("covers").upload(
+        supabase.storage.from_(COVER_BUCKET).upload(
             path=cover_path,
             file=response_cover.content
         )
-        public_url = supabase.storage.from_("covers").get_public_url(cover_path)
+        public_url = supabase.storage.from_(COVER_BUCKET).get_public_url(cover_path)
         cover_id = disk_to_db.save_cover_to_db(track_id, public_url)
         return cover_id
     except Exception as e:
-        print(f"Error saving cover for track {track_id}: {e}")
+        logger.error(f"{ERROR_MESSAGES['cover_download_failed']} for track {track_id}: {e}")
         raise
     except StorageApiError:
+        logger.error(f"{ERROR_MESSAGES['cover_upload_failed']} for track {track_id}")
         return None
 
-@tenacity.retry(stop=tenacity.stop_after_attempt(5),
-                wait=tenacity.wait_fixed(3),
+@tenacity.retry(stop=tenacity.stop_after_attempt(RETRY_ATTEMPTS),
+                wait=tenacity.wait_fixed(RETRY_WAIT),
                 retry=tenacity.retry_if_exception_type(
                     (RequestException, StorageApiError, HTTPError, ConnectionResetError)),
                 before_sleep=tenacity.before_sleep_log(logger, logging.WARNING)
@@ -113,14 +123,13 @@ def save_track(YaClient: Client, track_id: int) -> Optional[Tuple[int, Optional[
         supabase_path = f"{track_artist_path}_{track_title_path}.mp3"
 
         # supabase
-        track_bucket = "tracks"
-        supabase.storage.from_(track_bucket).upload(
+        supabase.storage.from_(TRACK_BUCKET).upload(
             path=supabase_path,
-            file=mp3_bytes,  # BYTES LOLLLL
-            file_options={"content-type": "audio/mp3"}
+            file=mp3_bytes,
+            file_options=MP3_OPTIONS
         )
 
-        download_url = disk_to_db.get_url(track_bucket, supabase_path)
+        download_url = disk_to_db.get_url(TRACK_BUCKET, supabase_path)
         track_id = disk_to_db.save_track_to_db(track.title, download_url)
 
         # cover
@@ -131,20 +140,20 @@ def save_track(YaClient: Client, track_id: int) -> Optional[Tuple[int, Optional[
         return track_id, cover_id
 
     except AssertionError as e:
-        print(f"Error: url isnt a track: {e}")
+        logger.error(f"{ERROR_MESSAGES['track_not_found']}: {e}")
         return None
     except requests.RequestException as e:
-        print(f"Error: url isn't a track: {e}")
+        logger.error(f"{ERROR_MESSAGES['download_failed']}: {e}")
         return None
     except StorageApiError as e:
-        print(f"eRROR WE CANT MANAGED THIS TRACK: {e}")
+        logger.error(f"{ERROR_MESSAGES['upload_failed']}: {e}")
         return None
     except HTTPError as e:
-        print(f"Error: url isn't a track: {e}")
+        logger.error(f"{ERROR_MESSAGES['download_failed']}: {e}")
         return None
 
-@tenacity.retry(stop=tenacity.stop_after_attempt(5),
-                wait=tenacity.wait_fixed(3),
+@tenacity.retry(stop=tenacity.stop_after_attempt(RETRY_ATTEMPTS),
+                wait=tenacity.wait_fixed(RETRY_WAIT),
                 retry=tenacity.retry_if_exception_type(
                     (RequestException, StorageApiError, HTTPError, ConnectionResetError)),
                 before_sleep=tenacity.before_sleep_log(logger, logging.WARNING)
