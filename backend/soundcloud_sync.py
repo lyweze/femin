@@ -1,7 +1,6 @@
-import io
 import logging
 import os
-from typing import Optional, Tuple, List, Union
+from typing import Optional, Tuple, List
 from urllib.error import HTTPError, URLError
 import time
 import requests
@@ -9,10 +8,11 @@ import tempfile
 from requests import RequestException
 from sclib import SoundcloudAPI, Track, Playlist
 from storage3.exceptions import StorageApiError
-import config, disk_to_db, sanitizer
+import disk_to_db, sanitizer
+from cfg import config
 import tenacity
-from supabase import Client, create_client
-from soundcloud_config import SOUNDCLOUD_CONFIG, URL_PATTERNS
+from supabase import create_client
+from cfg.soundcloud_config import SOUNDCLOUD_CONFIG, URL_PATTERNS
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s -- %(levelname)s -- %(message)s')
 logger = logging.getLogger(__name__)

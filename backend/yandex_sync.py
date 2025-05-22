@@ -1,18 +1,15 @@
-import io
 import logging
-import os
-from typing import Optional, Tuple, List, Union
+from typing import Optional, Tuple, Union
 from urllib.error import HTTPError
-import time
 import requests
-import tempfile
 from requests import RequestException
 from storage3.exceptions import StorageApiError
-import config, disk_to_db, sanitizer
+import disk_to_db, sanitizer
+from cfg import config
 import tenacity
 import supabase
 from yandex_music import Client
-from yandex_config import YANDEX_CONFIG, URL_PATTERNS, ERROR_MESSAGES
+from cfg.yandex_config import YANDEX_CONFIG, ERROR_MESSAGES
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s -- %(levelname)s -- %(message)s')
 logger = logging.getLogger(__name__)
