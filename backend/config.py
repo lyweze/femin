@@ -9,3 +9,4 @@ SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 GENIUS_TOKEN = "9pn8XpBMqFHjtoZnG74pyp93DIsT_Ha4oZlyVOT6zdPOTN4UB-JYzYci9YYIRK6n"
 YANDEX_TOKEN = "y0__xC1o_ikqveAAhje-AYgu6KdlRPCk8IDwwj-KaqsvUWEppqSQ_8wuA"
 API_BASE_URL = "https://femin.onrender.com"  # Базовый URL для API
+SPOTIFY_TOKEN = "b1183bda85014814a6692617bf286807"  # client id
