@@ -815,12 +815,6 @@ footer {
 			width: calc(100% - 330px);
 			overflow: scroll;
 		}
-		#progressBar {
-			display: none;
-		}
-		#rangeProgress {
-			display: none;
-		}
 	}
 }
 
