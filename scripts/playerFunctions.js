@@ -43,7 +43,7 @@ function playOnClick() {
 
 //Смена аудиофайла
 function settrack(key, n) {
-	console.log(currenttrack);
+	// console.log(currenttrack);
 	progressBar.setAttribute("value", "0");
 
 	function moveTrack(json) {

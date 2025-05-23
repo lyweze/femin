@@ -582,6 +582,15 @@ footer {
 			padding: 0;
 			text-align: center;
 		}
+
+		> div {
+			height: auto;
+			width: 156px;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			margin: 0;
+		}
 	}
 
 	#likedSection {
@@ -602,18 +611,29 @@ footer {
 		}
 
 		#progressBar {
-			display: none;
+			position: fixed;
+			bottom: 100px;
+			width: 80vw;
+			left: 2vw;
 		}
+		#rangeProgress {
+			position: fixed;
+			bottom: 100px;
+			width: 80vw;
+			left: 2vw;
+		}
+		#trackTime {
+			position: fixed;
+			bottom: 97px;
+			width: auto;
+			margin: 0;
+			left: calc(100vw - 30px - 2vw);
+		}
+
 		#rangeVolume {
 			display: none;
 		}
 		#volume {
-			display: none;
-		}
-		#rangeProgress {
-			display: none;
-		}
-		#trackTime {
 			display: none;
 		}
 	}
@@ -733,16 +753,23 @@ footer {
 		}
 
 		#progressBar {
-			display: flex;
-			width: 20vw;
-			left: auto;
-			right: 270px;
+			position: fixed;
+			bottom: 100px;
+			width: 50vw;
+			left: 2vw;
 		}
 		#rangeProgress {
-			display: flex;
-			width: 20vw;
-			left: auto;
-			right: 270px;
+			position: fixed;
+			bottom: 100px;
+			width: 80vw;
+			left: 2vw;
+		}
+		#trackTime {
+			position: fixed;
+			bottom: 97px;
+			width: auto;
+			margin: 0;
+			left: calc(60vw - 30px);
 		}
 
 		> ul {
@@ -815,6 +842,7 @@ footer {
 /* Остальные настройки */
 * {
 	touch-action: manipulation;
+	-webkit-tap-highlight-color: transparent;
 }
 body {
 	overflow: hidden;
