@@ -213,21 +213,56 @@ function workingProgressBar() {
 setInterval(workingProgressBar, 50);
 
 //Перелистывание прогрессбара
-rangeProgress.addEventListener("input", () => {
-	isInput = true;
+if (pageWidth < 1300) {
+	rangeProgress.addEventListener("touchmove", () => {
+		isInput = true;
 
-	if (!audio.paused) {
-		audio.pause();
-		cover.style.cssText =
-			"animation: rotate 10s linear infinite; animation-play-state: paused;";
-	}
+		if (!audio.paused) {
+			audio.pause();
+			cover.style.cssText =
+				"animation: rotate 10s linear infinite; animation-play-state: paused;";
+		}
 
-	audio.currentTime = (audio.duration - 0.2) * (rangeProgress.value / 100);
-	progressBar.setAttribute("max", audio.duration.toString());
-	progressBar.setAttribute("value", audio.currentTime.toString());
-	progressBar.style.scale = "1.03";
-	progressBar.style.boxShadow = "0 0 10px rgba(128, 52, 163, 0.35)";
-});
+		audio.currentTime = (audio.duration - 0.2) * (rangeProgress.value / 100);
+		progressBar.setAttribute("max", audio.duration.toString());
+		progressBar.setAttribute("value", audio.currentTime.toString());
+		progressBar.style.scale = "1.03";
+		progressBar.style.boxShadow = "0 0 10px rgba(128, 52, 163, 0.35)";
+
+		// setTimeout(() => {
+		// 	audio.play();
+		// }, 500);
+	});
+	rangeProgress.addEventListener("touchend", () => {
+		isInput = false;
+
+		if (cover.style.filter != "brightness(80%) grayscale(40%)") {
+			audio.play();
+			cover.style.cssText =
+				"animation: rotate 10s linear infinite; animation-play-state: running;";
+		}
+
+		progressBar.style.scale = "1";
+		progressBar.style.boxShadow = "";
+		rangeProgress.blur();
+	});
+} else {
+	rangeProgress.addEventListener("input", () => {
+		isInput = true;
+
+		if (!audio.paused) {
+			audio.pause();
+			cover.style.cssText =
+				"animation: rotate 10s linear infinite; animation-play-state: paused;";
+		}
+
+		audio.currentTime = (audio.duration - 0.2) * (rangeProgress.value / 100);
+		progressBar.setAttribute("max", audio.duration.toString());
+		progressBar.setAttribute("value", audio.currentTime.toString());
+		progressBar.style.scale = "1.03";
+		progressBar.style.boxShadow = "0 0 10px rgba(128, 52, 163, 0.35)";
+	});
+}
 rangeProgress.addEventListener("mouseup", () => {
 	isInput = false;
 
