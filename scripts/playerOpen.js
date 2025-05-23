@@ -64,6 +64,14 @@ function openPlayer() {
 		playList.style.filter = "";
 		playList.style.height = "calc(100% - 105px)";
 
+		setTimeout(() => {
+			if (pageWidth < 1300) {
+				progressBar.style.display = "none";
+				rangeProgress.style.display = "none";
+				trackTime.style.display = "none";
+			}
+		}, 40);
+
 		if (lk === true) {
 			liked.style.transform = "scale(0.6)";
 			liked.style.filter = "blur(20px)";
@@ -80,6 +88,12 @@ function openPlayer() {
 		playList.style.opacity = "0";
 		playList.style.filter = "blur(30px)";
 		footer.style.height = "85px";
+
+		setTimeout(() => {
+			progressBar.style.display = "";
+			rangeProgress.style.display = "";
+			trackTime.style.display = "";
+		}, 620);
 
 		if (lk === true) {
 			liked.style.transform = "";

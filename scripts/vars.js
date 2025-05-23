@@ -91,5 +91,6 @@ const likedSectionText = document.getElementById("likedSectionText"); //Текс
 const likedPlayList = document.getElementById("likedPlayList"); //Плейлист избранное
 let isShuffled = false;
 let isRepeat = false;
+const pageWidth = document.documentElement.scrollWidth;
 /* ------------------------------------------------------------ */
 /* ENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDENDEND */
