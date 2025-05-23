@@ -46,6 +46,25 @@ function settrack(key, n) {
 	// console.log(currenttrack);
 	progressBar.setAttribute("value", "0");
 
+	switch (key) {
+		case "previous":
+			document.getElementById("prevSVG").style.cssText =
+				"animation: player 0.6s cubic-bezier(0.45, 0.06, 0.19, 0.97) 1;";
+
+			setTimeout(() => {
+				document.getElementById("prevSVG").style.cssText = "";
+			}, 600);
+			break;
+		case "next":
+			document.getElementById("nextSVG").style.cssText =
+				"animation: player 0.6s cubic-bezier(0.45, 0.06, 0.19, 0.97) 1;";
+
+			setTimeout(() => {
+				document.getElementById("nextSVG").style.cssText = "";
+			}, 600);
+			break;
+	}
+
 	function moveTrack(json) {
 		let isPaused = true;
 
@@ -55,13 +74,6 @@ function settrack(key, n) {
 		}
 
 		if (key === "next") {
-			document.getElementById("nextSVG").style.cssText =
-				"animation: player 0.6s cubic-bezier(0.45, 0.06, 0.19, 0.97) 1;";
-
-			setTimeout(() => {
-				document.getElementById("nextSVG").style.cssText = "";
-			}, 600);
-
 			if (!isShuffled) {
 				if (currenttrack + 1 >= json.length) {
 					currenttrack = 0;
@@ -80,13 +92,6 @@ function settrack(key, n) {
 				}
 			}
 		} else if (key === "previous") {
-			document.getElementById("prevSVG").style.cssText =
-				"animation: player 0.6s cubic-bezier(0.45, 0.06, 0.19, 0.97) 1;";
-
-			setTimeout(() => {
-				document.getElementById("prevSVG").style.cssText = "";
-			}, 600);
-
 			if (!isShuffled) {
 				if (audio.currentTime < 3) {
 					if (currenttrack - 1 < 0) {
