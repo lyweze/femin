@@ -8,7 +8,7 @@ function playOnClick() {
 			"animation: rotate 10s linear infinite; animation-play-state: paused; filter: brightness(80%) grayscale(40%);";
 		playerTrackName.style.letterSpacing = "2px";
 		playButton.innerHTML =
-			'<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 15 16"><path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>';
+			'<svg id="playSVG" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 15 16"><path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>';
 	} else {
 		audio.play();
 		miniCover.style.cssText =
@@ -16,9 +16,12 @@ function playOnClick() {
 		cover.style.cssText =
 			"animation: rotate 10s linear infinite; animation-play-state: running;";
 		playButton.innerHTML =
-			'<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-pause-fill" viewBox="0 0 16 16"><path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/></svg>';
+			'<svg id="playSVG" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-pause-fill" viewBox="0 0 16 16"><path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/></svg>';
 		playerTrackName.style.letterSpacing = "3px";
 	}
+
+	document.getElementById("playSVG").style.cssText =
+		"animation: player 0.6s cubic-bezier(0.45, 0.06, 0.19, 0.97) 1;";
 
 	let currenttrackLIKED;
 	for (let i = 0; i < likedTracks.length; i++) {
@@ -40,7 +43,27 @@ function playOnClick() {
 
 //Смена аудиофайла
 function settrack(key, n) {
+	// console.log(currenttrack);
 	progressBar.setAttribute("value", "0");
+
+	switch (key) {
+		case "previous":
+			document.getElementById("prevSVG").style.cssText =
+				"animation: player 0.6s cubic-bezier(0.45, 0.06, 0.19, 0.97) 1;";
+
+			setTimeout(() => {
+				document.getElementById("prevSVG").style.cssText = "";
+			}, 600);
+			break;
+		case "next":
+			document.getElementById("nextSVG").style.cssText =
+				"animation: player 0.6s cubic-bezier(0.45, 0.06, 0.19, 0.97) 1;";
+
+			setTimeout(() => {
+				document.getElementById("nextSVG").style.cssText = "";
+			}, 600);
+			break;
+	}
 
 	function moveTrack(json) {
 		let isPaused = true;
@@ -51,26 +74,65 @@ function settrack(key, n) {
 		}
 
 		if (key === "next") {
-			if (currenttrack + 1 >= json.length) {
-				currenttrack = 0;
-			} else {
-				currenttrack++;
-			}
-		} else if (key === "previous") {
-			if (audio.currentTime < 3) {
-				if (currenttrack - 1 < 0) {
-					currenttrack = json.length - 1;
+			if (!isShuffled) {
+				if (currenttrack + 1 >= json.length) {
+					currenttrack = 0;
 				} else {
-					currenttrack--;
+					currenttrack++;
 				}
 			} else {
-				audio.currentTime = 0;
+				currentPlaylistI = getShuffled();
+
+				if (currenttrack + 1 >= json.length) {
+					currenttrack = currentPlaylistI[0];
+					console.log("ueban");
+				} else {
+					currenttrack += +parseInt(Math.random() * 10);
+					// console.log(currenttrack);
+				}
+			}
+		} else if (key === "previous") {
+			if (!isShuffled) {
+				if (audio.currentTime < 3) {
+					if (currenttrack - 1 < 0) {
+						currenttrack = json.length - 1;
+					} else {
+						currenttrack--;
+					}
+				} else {
+					audio.currentTime = 0;
+				}
+			} else {
+				currentPlaylistI = getShuffled();
+
+				for (let i = 0; i < currentPlaylistI.length; i++) {
+					if (currentPlaylistI[i] == currenttrack) {
+						currenttrack = i;
+					}
+				}
+
+				if (audio.currentTime < 3) {
+					if (currenttrack - 1 < 0) {
+						currenttrack = json.length - 1;
+					} else {
+						currenttrack--;
+						currenttrack = currentPlaylistI[currenttrack];
+					}
+				} else {
+					audio.currentTime = 0;
+				}
 			}
 		}
 
 		if (n != undefined) {
 			currenttrack = +n;
 		}
+
+		// if (isShuffled != undefined && isShuffled) {
+		// 	console.log(1)
+		// 	let currentShtrack = currentPlaylist[currenttrack];
+		// 	currenttrack = currentShtrack;
+		// }
 
 		let track = new currentTrack(json[currenttrack]);
 		let currenttrack_exists = saveTrack(json, track, currenttrack);
@@ -192,6 +254,12 @@ function goToTrack(name) {
 
 //Добавить в избранное
 function moveToLike() {
+	addToLike.style.cssText =
+		"animation: like 0.6s cubic-bezier(0.45, 0.06, 0.19, 0.97) 1;";
+	setTimeout(() => {
+		addToLike.style.cssText = "";
+	}, 600);
+
 	if (!likedTracks.includes(jsonParsed[currenttrack].track_id)) {
 		likedTracks.push(jsonParsed[currenttrack].track_id);
 
@@ -252,4 +320,55 @@ function moveToLike() {
 	} else {
 		likedSectionText.innerHTML = "избранное";
 	}
+}
+
+function shuffle() {
+	if (!isShuffled) {
+		document.getElementById("shuffle").style.cssText =
+			"animation: like 0.6s cubic-bezier(0.45, 0.06, 0.19, 0.97) 1; box-shadow: 0 0 7px #fff;";
+
+		setTimeout(() => {
+			document.getElementById("shuffle").style.cssText =
+				"box-shadow: 0 0 7px #fff;";
+		}, 600);
+	} else {
+		document.getElementById("shuffle").style.cssText =
+			"animation: like 0.6s cubic-bezier(0.45, 0.06, 0.19, 0.97) 1;";
+
+		setTimeout(() => {
+			document.getElementById("shuffle").style.cssText = "";
+		}, 600);
+	}
+
+	if (!isShuffled) {
+		currentPlaylistI = currentPlaylistI.sort(() => Math.random() - 0.5);
+
+		isShuffled = true;
+	} else {
+		isShuffled = false;
+	}
+	console.log(currentPlaylistI);
+}
+
+function getShuffled() {
+	return currentPlaylistI;
+}
+
+function repeat() {
+	document.getElementById("repeat").style.cssText =
+		"animation: like 0.6s cubic-bezier(0.45, 0.06, 0.19, 0.97) 1;";
+
+	setTimeout(() => {
+		document.getElementById("repeat").style.cssText = "";
+	}, 600);
+
+	if (!isRepeat) {
+		document.getElementById("rep-img").setAttribute("src", "./img/133.png");
+		isRepeat = true;
+	} else {
+		document.getElementById("rep-img").setAttribute("src", "./img/132.png");
+		isRepeat = false;
+	}
+
+	console.log(isRepeat);
 }
