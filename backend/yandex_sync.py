@@ -5,7 +5,7 @@ import requests
 from requests import RequestException
 from storage3.exceptions import StorageApiError
 import disk_to_db, sanitizer
-from cfg import config
+from backend import config
 import tenacity
 import supabase
 from yandex_music import Client

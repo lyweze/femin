@@ -5,7 +5,7 @@ from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from supabase import create_client, Client
-from cfg.config import SUPABASE_URL, SUPABASE_KEY, API_BASE_URL
+from backend.config import SUPABASE_URL, SUPABASE_KEY, API_BASE_URL
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
