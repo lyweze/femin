@@ -465,6 +465,9 @@ footer {
 	.playButton,
 	.nextButton,
 	.previousButton {
+		appearance: none;
+		-webkit-appearance: none;
+		-moz-appearance: none;
 		position: absolute;
 		width: 65px;
 		height: 65px;
