@@ -52,11 +52,9 @@ function openPlayer() {
 
 	if (main.style.marginTop === "150vh") {
 		lk = true;
-		console.log(1);
 	}
 	if (main.style.marginTop === "-100vh") {
 		pl = true;
-		console.log(2);
 	}
 
 	if (isOpened === false) {
@@ -65,6 +63,14 @@ function openPlayer() {
 		playList.style.transform = "scale(1)";
 		playList.style.filter = "";
 		playList.style.height = "calc(100% - 105px)";
+
+		setTimeout(() => {
+			if (pageWidth < 1300) {
+				progressBar.style.display = "none";
+				rangeProgress.style.display = "none";
+				trackTime.style.display = "none";
+			}
+		}, 40);
 
 		if (lk === true) {
 			liked.style.transform = "scale(0.6)";
@@ -82,6 +88,12 @@ function openPlayer() {
 		playList.style.opacity = "0";
 		playList.style.filter = "blur(30px)";
 		footer.style.height = "85px";
+
+		setTimeout(() => {
+			progressBar.style.display = "";
+			rangeProgress.style.display = "";
+			trackTime.style.display = "";
+		}, 620);
 
 		if (lk === true) {
 			liked.style.transform = "";
