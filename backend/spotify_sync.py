@@ -1,7 +1,7 @@
 from savify import Savify
 from savify.types import Type
 from savify.utils import PathHolder
-from cfg.config import SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET
+from backend.config import SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET
 import os
 import logging
 
