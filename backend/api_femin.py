@@ -5,7 +5,7 @@ from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from supabase import create_client, Client
-from backend.config import SUPABASE_URL, SUPABASE_KEY, API_BASE_URL
+from backend.config import SUPABASE_URL, SUPABASE_ANON_KEY, API_BASE_URL
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -14,9 +14,10 @@ app = FastAPI(title="Femin tracks API")
 # Настройка CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Разрешить все домены (небезопасно для продакшена!)
+    allow_origins=["http://127.0.0.1:8000/",
+                   "https://femin-front.netlify.app/"],  # Разрешить все домены (небезопасно для продакшена!)
     allow_credentials=True,
-    allow_methods=["*"],  # Разрешить все методы (GET, POST, PUT и т. д.)
+    allow_methods=["GET"],  # Разрешить все методы (GET, POST, PUT и т. д.)
     allow_headers=["*"],  # Разрешить все заголовки
 )
 
@@ -41,7 +42,7 @@ class PlaylistTrackResponse(BaseModel):
 
 # подклююченте к supabase
 def get_supabase() -> Client:
-    supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+    supabase: Client = create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
     return supabase
 
 
