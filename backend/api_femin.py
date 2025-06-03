@@ -20,9 +20,9 @@ app = FastAPI(title="Femin tracks API")
 # Настройка CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:8000/",
-                   "https://femin-front.netlify.app/",
-                   "https://femin.onrender.com/"],
+    allow_origins=["http://127.0.0.1:8000",
+                   "https://femin-front.netlify.app",
+                   "https://femin.onrender.com"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
