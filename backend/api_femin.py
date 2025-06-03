@@ -1,3 +1,4 @@
+import os
 import logging
 from typing import List
 import uvicorn
@@ -5,10 +6,15 @@ from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from supabase import create_client, Client
-from backend.config import SUPABASE_URL, SUPABASE_ANON_KEY, API_BASE_URL
+from dotenv import load_dotenv
 
+load_dotenv()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+SUPABASE_URL = os.getenv('SUPABASE_URL')
+SUPABASE_ANON_KEY = os.getenv('SUPABASE_ANON_KEY')
+API_BASE_URL = os.getenv('API_BASE_URL')
 app = FastAPI(title="Femin tracks API")
 
 # Настройка CORS
@@ -16,10 +22,10 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://127.0.0.1:8000/",
                    "https://femin-front.netlify.app/",
-                   "https://femin.onrender.com/"],  # Разрешить все домены (небезопасно для продакшена!)
+                   "https://femin.onrender.com/"],
     allow_credentials=True,
-    allow_methods=["GET"],  # Разрешить все методы (GET, POST, PUT и т. д.)
-    allow_headers=["*"],  # Разрешить все заголовки
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 

@@ -8,12 +8,18 @@ import tempfile
 from requests import RequestException
 from sclib import SoundcloudAPI, Track, Playlist
 from storage3.exceptions import StorageApiError
-import config, disk_to_db, sanitizer
+import disk_to_db, sanitizer
 import tenacity
 from supabase import Client, create_client
+from dotenv import load_dotenv
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s -- %(levelname)s -- %(message)s')
 logger = logging.getLogger(__name__)
+load_dotenv()
+
+DEFAULT_COVER = os.getenv('DEFAULT_COVER')
+SUPABASE_URL = os.getenv('SUPABASE_URL')
+SUPABASE_KEY = os.getenv('SUPABASE_KEY')
 
 
 ## сохранение обложки
@@ -28,7 +34,7 @@ logger = logging.getLogger(__name__)
 
 def save_cover(solo_track_id: str, artwork_url: str, solo_cover_path: str) -> str:
     if not artwork_url:
-        cover_id = config.DEFAULT_COVER
+        cover_id = DEFAULT_COVER
         return cover_id
 
     try:
@@ -184,7 +190,7 @@ def save_album(url, soundcloud_api):
 
 
 if __name__ == "__main__":
-    supabase: Client = create_client(config.SUPABASE_URL, config.SUPABASE_KEY)
+    supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
     sc_api = SoundcloudAPI()
 
     n = input(

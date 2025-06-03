@@ -1,13 +1,19 @@
+import os
 from supabase import create_client, Client
-from backend import config
+from dotenv import load_dotenv
 
-supabase: Client = create_client(config.SUPABASE_URL, config.SUPABASE_KEY)
+load_dotenv()
+SUPABASE_URL = os.getenv('SUPABASE_URL')
+SUPABASE_KEY = os.getenv('SUPABASE_KEY')
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+
 
 ## получаем ссылку на supabase
 def get_url(bucket_name, file_path):
     public_url = supabase.storage.from_(bucket_name).get_public_url(file_path)
     print(f"public_url: {public_url}")
     return public_url
+
 
 # сохранение трека в бд
 def save_track_to_db(title, signed_url, playlist_id=None):

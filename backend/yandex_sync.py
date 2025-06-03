@@ -1,3 +1,5 @@
+import os
+
 import logging
 from typing import Optional, Tuple, Union
 from urllib.error import HTTPError
@@ -5,16 +7,20 @@ import requests
 from requests import RequestException
 from storage3.exceptions import StorageApiError
 import disk_to_db, sanitizer
-from backend import config
 import tenacity
 import supabase
 from yandex_music import Client
 from cfg.yandex_config import YANDEX_CONFIG, ERROR_MESSAGES
+from dotenv import load_dotenv
 
+load_dotenv()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s -- %(levelname)s -- %(message)s')
 logger = logging.getLogger(__name__)
 
-# Constants
+YANDEX_TOKEN = os.getenv('YANDEX_TOKEN')
+DEFAULT_COVER = os.getenv('DEFAULT_COVER')
+SUPABASE_URL = os.getenv('SUPABASE_URL')
+SUPABASE_KEY = os.getenv('SUPABASE_KEY')
 COVER_BUCKET = YANDEX_CONFIG['buckets']['covers']
 TRACK_BUCKET = YANDEX_CONFIG['buckets']['tracks']
 DEFAULT_COVER_SIZE = YANDEX_CONFIG['cover_size']
@@ -63,7 +69,7 @@ def save_cover(track_id: int, artwork_url: str, cover_path: str) -> Optional[Uni
         HTTPError: If artwork URL is invalid
     """
     if not artwork_url:
-        cover_id = config.DEFAULT_COVER
+        cover_id = DEFAULT_COVER
         return cover_id
     try:
         high_quality_cover = f'https://{artwork_url.replace("%%", DEFAULT_COVER_SIZE)}'
@@ -170,9 +176,9 @@ def save_album() -> None:
     pass
 
 if __name__ == "__main__":
-    supabase: Client = supabase.create_client(config.SUPABASE_URL, config.SUPABASE_KEY)
+    supabase: Client = supabase.create_client(SUPABASE_URL, SUPABASE_KEY)
 
-    YandexClient = Client(config.YANDEX_TOKEN).init()
+    YandexClient = Client(YANDEX_TOKEN).init()
     url = input("Enter Yandex URL: ")
     id_track = extract_id_from_url(url)
     save_track(YandexClient, id_track)
