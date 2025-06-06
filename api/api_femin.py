@@ -14,15 +14,13 @@ logger = logging.getLogger(__name__)
 
 SUPABASE_URL = os.getenv('SUPABASE_URL')
 SUPABASE_ANON_KEY = os.getenv('SUPABASE_ANON_KEY')
-API_BASE_URL = os.getenv('API_BASE_URL')
 app = FastAPI(title="Femin tracks API")
 
 # Настройка CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://127.0.0.1:8000",
-                   "https://femin-front.netlify.app",
-                   "https://femin.onrender.com"],
+                   "https://femin-front.netlify.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -116,8 +114,8 @@ async def get_playlists(supabase: Client = Depends(get_supabase)):
 async def root():
     return {
         "message": "Welcome to Femin tracks API",
-        "tracks": f"{API_BASE_URL}/tracks",
-        "playlists": f"{API_BASE_URL}/playlists"
+        "tracks": f"/tracks",
+        "playlists": f"/playlists"
     }
 
 
