@@ -11,7 +11,7 @@ import sanitizer
 import tenacity
 import supabase
 from yandex_music import Client
-from cfg.yandex_config import YANDEX_CONFIG, ERROR_MESSAGES
+from services.yandex.yandex_config import YANDEX_CONFIG, ERROR_MESSAGES
 from dotenv import load_dotenv
 
 load_dotenv()
