@@ -18,7 +18,7 @@ SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_ANON_KEY = os.getenv("SUPABASE_ANON_KEY")
 app = FastAPI(title="Femin tracks API")
 
-# Настройка CORS
+# настройка CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://127.0.0.1:8000", "https://femin-front.netlify.app"],
