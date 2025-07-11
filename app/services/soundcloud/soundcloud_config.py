@@ -1,4 +1,3 @@
-# SoundCloud sync configuration
 SOUNDCLOUD_CONFIG = {
     "cover_size": "t500x500",
     "retry_attempts": 5,
@@ -8,5 +7,4 @@ SOUNDCLOUD_CONFIG = {
     "buckets": {"covers": "covers", "tracks": "tracks"},
 }
 
-# URL validation patterns
 URL_PATTERNS = {"soundcloud": ["https://soundcloud.com/", "http://soundcloud.com/"]}
